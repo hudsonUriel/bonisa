@@ -30,9 +30,9 @@
         
         // Bonisa structure and Selectors
         SLIDES_SELECTOR = '.bonisa section',
-        HORIZONTAL_SLIDES_SELECTOR = '.slides>section',
-        VERTICAL_SLIDES_SELECTOR = '.slides>section.present>section',
-        HOME_SLIDE_SELECTOR = '.slides>section:first-of-type',
+        HORIZONTAL_SLIDES_SELECTOR = '.bonisa>section',
+        VERTICAL_SLIDES_SELECTOR = '.bonisa>section.present>section',
+        HOME_SLIDE_SELECTOR = '.bonisa>section:first-of-type',
         UA = navigator.userAgent,
 
         // Configuration defaults, can be overridden at initialization time
@@ -331,7 +331,7 @@
 
             // Cache references to key DOM elements
             dom.wrapper = document.querySelector( '.bonisa' );
-            dom.slides = document.querySelector( '.bonisa .slides' );
+            dom.slides = document.querySelector( '.bonisa>section' );
 
             // Force a layout when the whole page, incl fonts, has loaded
             window.addEventListener( 'load', layout, false );
@@ -2778,7 +2778,7 @@
                     }
 
                     // Flag if there are ANY vertical slides, anywhere in the deck
-                    if( dom.wrapper.querySelectorAll( '.slides>section>section' ).length ) {
+                    if( dom.wrapper.querySelectorAll( '.bonisa>section>section' ).length ) {
                             dom.wrapper.classList.add( 'has-vertical-slides' );
                     }
                     else {
@@ -2786,7 +2786,7 @@
                     }
 
                     // Flag if there are ANY horizontal slides, anywhere in the deck
-                    if( dom.wrapper.querySelectorAll( '.slides>section' ).length > 1 ) {
+                    if( dom.wrapper.querySelectorAll( '.bonisa>section' ).length > 1 ) {
                             dom.wrapper.classList.add( 'has-horizontal-slides' );
                     }
                     else {
