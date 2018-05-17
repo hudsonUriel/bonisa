@@ -20,276 +20,279 @@
 }( this, function() {
 
     'use strict';
+    
+    var 
+        // Global variavle Bonisa
+        Bonisa,
+        
+        // The bonisa.js version
+        VERSION = '1.0.0',
+        
+        // Bonisa structure and Selectors
+        SLIDES_SELECTOR = '.bonisa section',
+        HORIZONTAL_SLIDES_SELECTOR = '.slides>section',
+        VERTICAL_SLIDES_SELECTOR = '.slides>section.present>section',
+        HOME_SLIDE_SELECTOR = '.slides>section:first-of-type',
+        UA = navigator.userAgent,
 
-    var Bonisa;
+        // Configuration defaults, can be overridden at initialization time
+        config = {
 
-    // The bonisa.js version
-    var VERSION = '1.0.0';
+                // The "normal" size of the presentation, aspect ratio will be preserved
+                // when the presentation is scaled to fit different resolutions
+                width: 960,
+                height: 700,
 
-    var SLIDES_SELECTOR = '.slides section',
-            HORIZONTAL_SLIDES_SELECTOR = '.slides>section',
-            VERTICAL_SLIDES_SELECTOR = '.slides>section.present>section',
-            HOME_SLIDE_SELECTOR = '.slides>section:first-of-type',
-            UA = navigator.userAgent,
+                // Factor of the display size that should remain empty around the content
+                margin: 0.04,
 
-            // Configuration defaults, can be overridden at initialization time
-            config = {
+                // Bounds for smallest/largest possible scale to apply to content
+                minScale: 0.2,
+                maxScale: 2.0,
 
-                    // The "normal" size of the presentation, aspect ratio will be preserved
-                    // when the presentation is scaled to fit different resolutions
-                    width: 960,
-                    height: 700,
+                // Display presentation control arrows
+                controls: true,
 
-                    // Factor of the display size that should remain empty around the content
-                    margin: 0.04,
+                // Help the user learn the controls by providing hints, for example by
+                // bouncing the down arrow when they first encounter a vertical slide
+                controlsTutorial: true,
 
-                    // Bounds for smallest/largest possible scale to apply to content
-                    minScale: 0.2,
-                    maxScale: 2.0,
+                // Determines where controls appear, "edges" or "bottom-right"
+                controlsLayout: 'bottom-right',
 
-                    // Display presentation control arrows
-                    controls: true,
+                // Visibility rule for backwards navigation arrows; "faded", "hidden"
+                // or "visible"
+                controlsBackArrows: 'faded',
 
-                    // Help the user learn the controls by providing hints, for example by
-                    // bouncing the down arrow when they first encounter a vertical slide
-                    controlsTutorial: true,
+                // Display a presentation progress bar
+                progress: true,
 
-                    // Determines where controls appear, "edges" or "bottom-right"
-                    controlsLayout: 'bottom-right',
+                // Display the page number of the current slide
+                slideNumber: false,
 
-                    // Visibility rule for backwards navigation arrows; "faded", "hidden"
-                    // or "visible"
-                    controlsBackArrows: 'faded',
+                // Determine which displays to show the slide number on
+                showSlideNumber: 'all',
 
-                    // Display a presentation progress bar
-                    progress: true,
+                // Push each slide change to the browser history
+                history: false,
 
-                    // Display the page number of the current slide
-                    slideNumber: false,
+                // Enable keyboard shortcuts for navigation
+                keyboard: true,
 
-                    // Determine which displays to show the slide number on
-                    showSlideNumber: 'all',
+                // Optional function that blocks keyboard events when retuning false
+                keyboardCondition: null,
 
-                    // Push each slide change to the browser history
-                    history: false,
+                // Enable the slide overview mode
+                overview: true,
 
-                    // Enable keyboard shortcuts for navigation
-                    keyboard: true,
+                // Vertical centering of slides
+                center: true,
 
-                    // Optional function that blocks keyboard events when retuning false
-                    keyboardCondition: null,
+                // Enables touch navigation on devices with touch input
+                touch: true,
 
-                    // Enable the slide overview mode
-                    overview: true,
+                // Loop the presentation
+                loop: false,
 
-                    // Vertical centering of slides
-                    center: true,
+                // Change the presentation direction to be RTL
+                rtl: false,
 
-                    // Enables touch navigation on devices with touch input
-                    touch: true,
+                // Randomizes the order of slides each time the presentation loads
+                shuffle: false,
 
-                    // Loop the presentation
-                    loop: false,
+                // Turns fragments on and off globally
+                fragments: true,
 
-                    // Change the presentation direction to be RTL
-                    rtl: false,
+                // Flags if the presentation is running in an embedded mode,
+                // i.e. contained within a limited portion of the screen
+                embedded: false,
 
-                    // Randomizes the order of slides each time the presentation loads
-                    shuffle: false,
+                // Flags if we should show a help overlay when the question-mark
+                // key is pressed
+                help: true,
 
-                    // Turns fragments on and off globally
-                    fragments: true,
+                // Flags if it should be possible to pause the presentation (blackout)
+                pause: true,
 
-                    // Flags if the presentation is running in an embedded mode,
-                    // i.e. contained within a limited portion of the screen
-                    embedded: false,
+                // Flags if speaker notes should be visible to all viewers
+                showNotes: false,
 
-                    // Flags if we should show a help overlay when the question-mark
-                    // key is pressed
-                    help: true,
+                // Global override for autolaying embedded media (video/audio/iframe)
+                // - null:   Media will only autoplay if data-autoplay is present
+                // - true:   All media will autoplay, regardless of individual setting
+                // - false:  No media will autoplay, regardless of individual setting
+                autoPlayMedia: null,
 
-                    // Flags if it should be possible to pause the presentation (blackout)
-                    pause: true,
+                // Controls automatic progression to the next slide
+                // - 0:      Auto-sliding only happens if the data-autoslide HTML attribute
+                //           is present on the current slide or fragment
+                // - 1+:     All slides will progress automatically at the given interval
+                // - false:  No auto-sliding, even if data-autoslide is present
+                autoSlide: 0,
 
-                    // Flags if speaker notes should be visible to all viewers
-                    showNotes: false,
+                // Stop auto-sliding after user input
+                autoSlideStoppable: true,
 
-                    // Global override for autolaying embedded media (video/audio/iframe)
-                    // - null:   Media will only autoplay if data-autoplay is present
-                    // - true:   All media will autoplay, regardless of individual setting
-                    // - false:  No media will autoplay, regardless of individual setting
-                    autoPlayMedia: null,
+                // Use this method for navigation when auto-sliding (defaults to navigateNext)
+                autoSlideMethod: null,
 
-                    // Controls automatic progression to the next slide
-                    // - 0:      Auto-sliding only happens if the data-autoslide HTML attribute
-                    //           is present on the current slide or fragment
-                    // - 1+:     All slides will progress automatically at the given interval
-                    // - false:  No auto-sliding, even if data-autoslide is present
-                    autoSlide: 0,
+                // Enable slide navigation via mouse wheel
+                mouseWheel: false,
 
-                    // Stop auto-sliding after user input
-                    autoSlideStoppable: true,
+                // Apply a 3D roll to links on hover
+                rollingLinks: false,
 
-                    // Use this method for navigation when auto-sliding (defaults to navigateNext)
-                    autoSlideMethod: null,
+                // Hides the address bar on mobile devices
+                hideAddressBar: true,
 
-                    // Enable slide navigation via mouse wheel
-                    mouseWheel: false,
+                // Opens links in an iframe preview overlay
+                // Add `data-preview-link` and `data-preview-link="false"` to customise each link
+                // individually
+                previewLinks: false,
 
-                    // Apply a 3D roll to links on hover
-                    rollingLinks: false,
+                // Exposes the bonisa.js API through window.postMessage
+                postMessage: true,
 
-                    // Hides the address bar on mobile devices
-                    hideAddressBar: true,
+                // Dispatches all bonisa.js events to the parent window through postMessage
+                postMessageEvents: false,
 
-                    // Opens links in an iframe preview overlay
-                    // Add `data-preview-link` and `data-preview-link="false"` to customise each link
-                    // individually
-                    previewLinks: false,
+                // Focuses body when page changes visibility to ensure keyboard shortcuts work
+                focusBodyOnPageVisibilityChange: true,
 
-                    // Exposes the bonisa.js API through window.postMessage
-                    postMessage: true,
+                // Transition style
+                transition: 'slide', // none/fade/slide/convex/concave/zoom
 
-                    // Dispatches all bonisa.js events to the parent window through postMessage
-                    postMessageEvents: false,
+                // Transition speed
+                transitionSpeed: 'default', // default/fast/slow
 
-                    // Focuses body when page changes visibility to ensure keyboard shortcuts work
-                    focusBodyOnPageVisibilityChange: true,
+                // Transition style for full page slide backgrounds
+                backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
 
-                    // Transition style
-                    transition: 'slide', // none/fade/slide/convex/concave/zoom
+                // Parallax background image
+                parallaxBackgroundImage: '', // CSS syntax, e.g. "a.jpg"
 
-                    // Transition speed
-                    transitionSpeed: 'default', // default/fast/slow
+                // Parallax background size
+                parallaxBackgroundSize: '', // CSS syntax, e.g. "3000px 2000px"
 
-                    // Transition style for full page slide backgrounds
-                    backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+                // Amount of pixels to move the parallax background per slide step
+                parallaxBackgroundHorizontal: null,
+                parallaxBackgroundVertical: null,
 
-                    // Parallax background image
-                    parallaxBackgroundImage: '', // CSS syntax, e.g. "a.jpg"
+                // The maximum number of pages a single slide can expand onto when printing
+                // to PDF, unlimited by default
+                pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
 
-                    // Parallax background size
-                    parallaxBackgroundSize: '', // CSS syntax, e.g. "3000px 2000px"
+                // Offset used to reduce the height of content within exported PDF pages.
+                // This exists to account for environment differences based on how you
+                // print to PDF. CLI printing options, like phantomjs and wkpdf, can end
+                // on precisely the total height of the document whereas in-browser
+                // printing has to end one pixel before.
+                pdfPageHeightOffset: -1,
 
-                    // Amount of pixels to move the parallax background per slide step
-                    parallaxBackgroundHorizontal: null,
-                    parallaxBackgroundVertical: null,
+                // Number of slides away from the current that are visible
+                viewDistance: 3,
 
-                    // The maximum number of pages a single slide can expand onto when printing
-                    // to PDF, unlimited by default
-                    pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+                // The display mode that will be used to show slides
+                display: 'block',
 
-                    // Offset used to reduce the height of content within exported PDF pages.
-                    // This exists to account for environment differences based on how you
-                    // print to PDF. CLI printing options, like phantomjs and wkpdf, can end
-                    // on precisely the total height of the document whereas in-browser
-                    // printing has to end one pixel before.
-                    pdfPageHeightOffset: -1,
+                // Script dependencies to load
+                dependencies: []
 
-                    // Number of slides away from the current that are visible
-                    viewDistance: 3,
+        },
 
-                    // The display mode that will be used to show slides
-                    display: 'block',
+        // Flags if Bonisa.initialize() has been called
+        initialized = false,
 
-                    // Script dependencies to load
-                    dependencies: []
+        // Flags if bonisa.js is loaded (has dispatched the 'ready' event)
+        loaded = false,
 
-            },
+        // Flags if the overview mode is currently active
+        overview = false,
 
-            // Flags if Bonisa.initialize() has been called
-            initialized = false,
+        // Holds the dimensions of our overview slides, including margins
+        overviewSlideWidth = null,
+        overviewSlideHeight = null,
 
-            // Flags if bonisa.js is loaded (has dispatched the 'ready' event)
-            loaded = false,
+        // The horizontal and vertical index of the currently active slide
+        indexh,
+        indexv,
 
-            // Flags if the overview mode is currently active
-            overview = false,
+        // The previous and current slide HTML elements
+        previousSlide,
+        currentSlide,
 
-            // Holds the dimensions of our overview slides, including margins
-            overviewSlideWidth = null,
-            overviewSlideHeight = null,
+        previousBackground,
 
-            // The horizontal and vertical index of the currently active slide
-            indexh,
-            indexv,
+        // Remember which directions that the user has navigated towards
+        hasNavigatedRight = false,
+        hasNavigatedDown = false,
 
-            // The previous and current slide HTML elements
-            previousSlide,
-            currentSlide,
+        // Slides may hold a data-state attribute which we pick up and apply
+        // as a class to the body. This list contains the combined state of
+        // all current slides.
+        state = [],
 
-            previousBackground,
+        // The current scale of the presentation (see width/height config)
+        scale = 1,
 
-            // Remember which directions that the user has navigated towards
-            hasNavigatedRight = false,
-            hasNavigatedDown = false,
+        // CSS transform that is currently applied to the slides container,
+        // split into two groups
+        slidesTransform = { layout: '', overview: '' },
 
-            // Slides may hold a data-state attribute which we pick up and apply
-            // as a class to the body. This list contains the combined state of
-            // all current slides.
-            state = [],
+        // Cached references to DOM elements
+        dom = {},
 
-            // The current scale of the presentation (see width/height config)
-            scale = 1,
+        // Features supported by the browser, see #checkCapabilities()
+        features = {},
 
-            // CSS transform that is currently applied to the slides container,
-            // split into two groups
-            slidesTransform = { layout: '', overview: '' },
+        // Client is a mobile device, see #checkCapabilities()
+        isMobileDevice,
 
-            // Cached references to DOM elements
-            dom = {},
+        // Client is a desktop Chrome, see #checkCapabilities()
+        isChrome,
 
-            // Features supported by the browser, see #checkCapabilities()
-            features = {},
+        // Throttles mouse wheel navigation
+        lastMouseWheelStep = 0,
 
-            // Client is a mobile device, see #checkCapabilities()
-            isMobileDevice,
+        // Delays updates to the URL due to a Chrome thumbnailer bug
+        writeURLTimeout = 0,
 
-            // Client is a desktop Chrome, see #checkCapabilities()
-            isChrome,
+        // Flags if the interaction event listeners are bound
+        eventsAreBound = false,
 
-            // Throttles mouse wheel navigation
-            lastMouseWheelStep = 0,
+        // The current auto-slide duration
+        autoSlide = 0,
 
-            // Delays updates to the URL due to a Chrome thumbnailer bug
-            writeURLTimeout = 0,
+        // Auto slide properties
+        autoSlidePlayer,
+        autoSlideTimeout = 0,
+        autoSlideStartTime = -1,
+        autoSlidePaused = false,
 
-            // Flags if the interaction event listeners are bound
-            eventsAreBound = false,
+        // Holds information about the currently ongoing touch input
+        touch = {
+                startX: 0,
+                startY: 0,
+                startSpan: 0,
+                startCount: 0,
+                captured: false,
+                threshold: 40
+        },
 
-            // The current auto-slide duration
-            autoSlide = 0,
-
-            // Auto slide properties
-            autoSlidePlayer,
-            autoSlideTimeout = 0,
-            autoSlideStartTime = -1,
-            autoSlidePaused = false,
-
-            // Holds information about the currently ongoing touch input
-            touch = {
-                    startX: 0,
-                    startY: 0,
-                    startSpan: 0,
-                    startCount: 0,
-                    captured: false,
-                    threshold: 40
-            },
-
-            // Holds information about the keyboard shortcuts
-            keyboardShortcuts = {
-                    'N  ,  SPACE':			'Next slide',
-                    'P':					'Previous slide',
-                    '&#8592;  ,  H':		'Navigate left',
-                    '&#8594;  ,  L':		'Navigate right',
-                    '&#8593;  ,  K':		'Navigate up',
-                    '&#8595;  ,  J':		'Navigate down',
-                    'Home':					'First slide',
-                    'End':					'Last slide',
-                    'B  ,  .':				'Pause',
-                    'F':					'Fullscreen',
-                    'ESC, O':				'Slide overview'
-            };
+        // Holds information about the keyboard shortcuts
+        keyboardShortcuts = {
+                'N  ,  SPACE':			'Next slide',
+                'P':					'Previous slide',
+                '&#8592;  ,  H':		'Navigate left',
+                '&#8594;  ,  L':		'Navigate right',
+                '&#8593;  ,  K':		'Navigate up',
+                '&#8595;  ,  J':		'Navigate down',
+                'Home':					'First slide',
+                'End':					'Last slide',
+                'B  ,  .':				'Pause',
+                'F':					'Fullscreen',
+                'ESC, O':				'Slide overview'
+        };
 
     /**
      * Starts up the presentation if the client is capable.
