@@ -193,11 +193,7 @@
 			viewDistance: 3,
 
 			// The display mode that will be used to show slides
-			display: 'block',
-
-			// Script dependencies to load
-			dependencies: []
-
+			display: 'block'
 		},
 
 		// Flags if Bonisa.initialize() has been called
@@ -321,20 +317,33 @@
 		window.addEventListener( 'load', layout, false );
 
 		var query = Bonisa.getQueryHash();
-
-		// Do not accept new dependencies via query config to avoid
-		// the potential of malicious script injection
-		if( typeof query['dependencies'] !== 'undefined' ) delete query['dependencies'];
-
+                
+                
+                /****************** | DISABLED | ******************
+                 *
+                 * Do not accept new dependencies via query config to avoid
+                 * the potential of malicious script injection
+                 * 
+                 * if( typeof query['dependencies'] !== 'undefined' ) delete query['dependencies'];
+                 * 
+                 **************************************************/
+                
 		// Copy options over to our config object
 		extend( config, options );
 		extend( config, query );
 
 		// Hide the address bar in mobile browsers
 		hideAddressBar();
-
-		// Loads the dependencies and continues to #start() once done
-		load();
+                
+                
+                /****************** | DISABLED | ******************
+                 *
+                 * Loads the dependencies
+                 * 
+                 **************************************************/
+                
+		// Continues to #start()
+                start();
 
 	}
 
@@ -378,69 +387,11 @@
 
 	}
 
-    /**
-     * Loads the dependencies of bonisa.js. Dependencies are
-     * defined via the configuration option 'dependencies'
-     * and will be loaded prior to starting/binding bonisa.js.
-     * Some dependencies may have an 'async' flag, if so they
-     * will load after bonisa.js has been started up.
-     */
-	function load() {
-
-		var scripts = [],
-			scriptsAsync = [],
-			scriptsToPreload = 0;
-
-		// Called once synchronous scripts finish loading
-		function proceed() {
-			if( scriptsAsync.length ) {
-				// Load asynchronous scripts
-				head.js.apply( null, scriptsAsync );
-			}
-
-			start();
-		}
-
-		function loadScript( s ) {
-			head.ready( s.src.match( /([\w\d_\-]*)\.?js$|[^\\\/]*$/i )[0], function() {
-				// Extension may contain callback functions
-				if( typeof s.callback === 'function' ) {
-					s.callback.apply( this );
-				}
-
-				if( --scriptsToPreload === 0 ) {
-					proceed();
-				}
-			});
-		}
-
-		for( var i = 0, len = config.dependencies.length; i < len; i++ ) {
-			var s = config.dependencies[i];
-
-			// Load if there's no condition or the condition is truthy
-			if( !s.condition || s.condition() ) {
-				if( s.async ) {
-					scriptsAsync.push( s.src );
-				}
-				else {
-					scripts.push( s.src );
-				}
-
-				loadScript( s );
-			}
-		}
-
-		if( scripts.length ) {
-			scriptsToPreload = scripts.length;
-
-			// Load synchronous scripts
-			head.js.apply( null, scripts );
-		}
-		else {
-			proceed();
-		}
-
-	}
+        /****************** | DISABLED | ******************
+         *
+         * Function load() --> load the dependecies of old reveal.js
+         * 
+         **************************************************/
 
 	/**
 	 * Starts up bonisa.js by binding input events and navigating
