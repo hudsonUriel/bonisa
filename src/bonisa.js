@@ -310,7 +310,7 @@
                
 		// Cache references to key DOM elements
 		dom.wrapper = document.querySelector( 'main.bonisa' );
-		dom.slides = document.querySelector( '.bonisa .slides' );
+		dom.slides = document.querySelector( '.slides section' );
 
 		// Force a layout when the whole page, incl fonts, has loaded
 		window.addEventListener( 'load', layout, false );
