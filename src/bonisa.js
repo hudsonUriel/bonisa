@@ -21,16 +21,18 @@
 
 	'use strict';
 
-	var Bonisa;
+	var 
+            Bonisa,
+            
+            // Bonisa version
+            VERSION = '1.0.1';
 
-	// The bonisa.js version
-	var VERSION = '1.0.1';
-
-	var SLIDES_SELECTOR = '.slides section',
-		HORIZONTAL_SLIDES_SELECTOR = '.slides>section',
-		VERTICAL_SLIDES_SELECTOR = '.slides>section.present>section',
-		HOME_SLIDE_SELECTOR = '.slides>section:first-of-type',
-		UA = navigator.userAgent,
+	var 
+            SLIDES_SELECTOR = '.slides section',
+            HORIZONTAL_SLIDES_SELECTOR = '.slides>section',
+            VERTICAL_SLIDES_SELECTOR = '.slides>section.present>section',
+            HOME_SLIDE_SELECTOR = '.slides>section:first-of-type',
+            UA = navigator.userAgent,
 
 		// Configuration defaults, can be overridden at initialization time
 		config = {
@@ -307,7 +309,7 @@
                  **************************************************/
                
 		// Cache references to key DOM elements
-		dom.wrapper = document.querySelector( '.bonisa' );
+		dom.wrapper = document.querySelector( 'main.bonisa' );
 		dom.slides = document.querySelector( '.bonisa .slides' );
 
 		// Force a layout when the whole page, incl fonts, has loaded
