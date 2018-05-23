@@ -8,16 +8,13 @@
 
 (function( root, factory ) {
 	if( typeof define === 'function' && define.amd ) {
-		// AMD. Register as an anonymous module.
 		define( function() {
 			root.Bonisa = factory();
 			return root.Bonisa;
 		} );
 	} else if( typeof exports === 'object' ) {
-		// Node. Does not work with strict CommonJS.
 		module.exports = factory();
 	} else {
-		// Browser globals.
 		root.Bonisa = factory();
 	}
 }( this, function() {
@@ -335,7 +332,6 @@
 		// Hide the address bar in mobile browsers
 		hideAddressBar();
                 
-                
                 /****************** | DISABLED | ******************
                  *
                  * Loads the dependencies
@@ -344,7 +340,6 @@
                 
 		// Continues to #start()
                 start();
-
 	}
 
 	/**
@@ -398,9 +393,8 @@
 	 * to the current URL deeplink if there is one.
 	 */
 	function start() {
-
 		loaded = true;
-
+                
 		// Make sure we've got all the DOM elements we need
 		setupDOM();
 
@@ -422,8 +416,7 @@
 		// Update all backgrounds
 		updateBackground( true );
 
-		// Notify listeners that the presentation is ready but use a 1ms
-		// timeout to ensure it's not fired synchronously after #initialize()
+		// Syncronize
 		setTimeout( function() {
 			// Enable transitions now that we're loaded
 			dom.slides.classList.remove( 'no-transition' );
@@ -436,21 +429,12 @@
 				'currentSlide': currentSlide
 			} );
 		}, 1 );
-
-		// Special setup and config is required when printing to PDF
-		if( isPrintingPDF() ) {
-			removeEventListeners();
-
-			// The document needs to have loaded for the PDF layout
-			// measurements to be accurate
-			if( document.readyState === 'complete' ) {
-				setupPDF();
-			}
-			else {
-				window.addEventListener( 'load', setupPDF );
-			}
-		}
-
+                
+                /****************** | DISABLED | ******************
+                *
+                * PDF printing - special setup and configurations
+                * 
+                **************************************************/
 	}
 
 	/**
@@ -459,48 +443,51 @@
 	 * not found, it is created.
 	 */
 	function setupDOM() {
-
 		// Prevent transitions while we're loading
 		dom.slides.classList.add( 'no-transition' );
-
+                
+                // Mobile Devices Configurations
 		if( isMobileDevice ) {
 			dom.wrapper.classList.add( 'no-hover' );
-		}
-		else {
+		} else {
 			dom.wrapper.classList.remove( 'no-hover' );
 		}
 
 		if( /iphone/gi.test( UA ) ) {
 			dom.wrapper.classList.add( 'ua-iphone' );
-		}
-		else {
+		} else {
 			dom.wrapper.classList.remove( 'ua-iphone' );
 		}
+                
+                /*** BACKGROUND ***/
+                    // Background element
+                    dom.background = createSingletonNode( dom.wrapper, 'div', 'backgrounds', null );
+                
+                /*** CONTROLS ***/
+                    // Progress bar
+                    dom.progress = createSingletonNode( dom.wrapper, 'div', 'progress', '<span></span>' );
+                    dom.progressbar = dom.progress.querySelector( 'span' );
 
-		// Background element
-		dom.background = createSingletonNode( dom.wrapper, 'div', 'backgrounds', null );
+                    // Arrow controls
+                    dom.controls = createSingletonNode( dom.wrapper, 'aside', 'controls',
+                            '<button class="navigate-left" aria-label="previous slide"><div class="controls-arrow"></div></button>' +
+                            '<button class="navigate-right" aria-label="next slide"><div class="controls-arrow"></div></button>' +
+                            '<button class="navigate-up" aria-label="above slide"><div class="controls-arrow"></div></button>' +
+                            '<button class="navigate-down" aria-label="below slide"><div class="controls-arrow"></div></button>'
+                    );
 
-		// Progress bar
-		dom.progress = createSingletonNode( dom.wrapper, 'div', 'progress', '<span></span>' );
-		dom.progressbar = dom.progress.querySelector( 'span' );
-
-		// Arrow controls
-		dom.controls = createSingletonNode( dom.wrapper, 'aside', 'controls',
-			'<button class="navigate-left" aria-label="previous slide"><div class="controls-arrow"></div></button>' +
-			'<button class="navigate-right" aria-label="next slide"><div class="controls-arrow"></div></button>' +
-			'<button class="navigate-up" aria-label="above slide"><div class="controls-arrow"></div></button>' +
-			'<button class="navigate-down" aria-label="below slide"><div class="controls-arrow"></div></button>' );
-
-		// Slide number
-		dom.slideNumber = createSingletonNode( dom.wrapper, 'div', 'slide-number', '' );
-
-		// Element containing notes that are visible to the audience
-		dom.speakerNotes = createSingletonNode( dom.wrapper, 'div', 'speaker-notes', null );
-		dom.speakerNotes.setAttribute( 'data-prevent-swipe', '' );
-		dom.speakerNotes.setAttribute( 'tabindex', '0' );
-
-		// Overlay graphic which is displayed during the paused mode
-		createSingletonNode( dom.wrapper, 'div', 'pause-overlay', null );
+                    // Slide number
+                    dom.slideNumber = createSingletonNode( dom.wrapper, 'div', 'slide-number', '' );
+                
+                /*** NOTES ***/
+                    // Element containing notes that are visible to the audience
+                    dom.speakerNotes = createSingletonNode( dom.wrapper, 'div', 'speaker-notes', null );
+                    dom.speakerNotes.setAttribute( 'data-prevent-swipe', '' );
+                    dom.speakerNotes.setAttribute( 'tabindex', '0' );
+                
+                /*** PAUSE MODE ***/
+                    // Overlay graphic which is displayed during the paused mode
+                    createSingletonNode( dom.wrapper, 'div', 'pause-overlay', null );
 
 		dom.wrapper.setAttribute( 'role', 'application' );
 
@@ -744,7 +731,6 @@
 	 * @return {HTMLElement}
 	 */
 	function createSingletonNode( container, tagname, classname, innerHTML ) {
-
 		// Find all nodes matching the description
 		var nodes = container.querySelectorAll( '.' + classname );
 
