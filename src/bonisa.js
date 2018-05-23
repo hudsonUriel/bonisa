@@ -24,7 +24,7 @@
 	var Bonisa;
 
 	// The bonisa.js version
-	var VERSION = '3.6.0';
+	var VERSION = '1.0.1';
 
 	var SLIDES_SELECTOR = '.slides section',
 		HORIZONTAL_SLIDES_SELECTOR = '.slides>section',
@@ -789,7 +789,6 @@
 	 *   args: [ 2 ]
 	 * }), '*' );
          **************************************************/
-        
 
 	/**
 	 * Applies the configuration settings from the config
