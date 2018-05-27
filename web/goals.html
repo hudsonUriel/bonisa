@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>BONISA GOALS</title>
+        <meta charset="UTF-8">
+        <style>
+            li{
+                font-family: sans-serif;
+                list-style-type: none;
+                padding: 0.5%;
+                color: #222;
+            }
+            
+            span{
+                display: inline-block;
+                width: 1.25em;
+                height: 1.25em;
+                padding: 0.25%;
+                
+                border-radius: 100%;
+                background: #d55;
+                text-align: center;
+                font-weight: bold;
+                font-size: 0.85em;
+            }
+            
+            .goal-progress{
+                background: #fd0;
+                color: #660;
+                
+            }
+            
+            .goal-ok{
+                background: #0d0;
+                color: #060;
+                
+            }
+            
+            .goal-future{
+                background: #d00;
+                color: #600;
+                
+            }
+        </style>
+        
+        <script>
+            window.onload = function(){
+                ok = document.getElementsByClassName('goal-ok');
+             
+                progress = document.getElementsByClassName('goal-progress');
+                
+                future = document.getElementsByClassName('goal-future');
+                
+                for(let i = 0; i <ok.length; i++){
+                    ok[i].innerHTML = '&#10003;';
+                }
+                
+                for(let i = 0; i < progress.length; i++){
+                    progress[i].innerHTML = '&#8722;';
+                }
+                
+                for(let i = 0; i <future.length; i++){
+                    future[i].innerHTML = '&#128473;';
+                }
+                
+            };
+        </script>
+    </head>
+    <body>
+        <main id="wrapper">
+            <ol>
+                <li class="goal"><span class="goal-progress"></span>
+                    bonisa.js documentation
+                    <ol>
+                        <li class="goal"><span class="goal-progress"></span>
+                            Defines goals
+                        </li>
+                        
+                        <li class="goal"><span class="goal-ok"></span>
+                            Defines README.md
+                        </li>
+                        
+                        <li class="goal"><span class="goal-progress"></span>
+                            Configure bonisa documentation
+                        </li>
+                    </ol>
+                </li>
+                
+                <li class="goal"><span class="goal-progress"></span>
+                    bonisa.js structure
+                    <ol>
+                        <li class="goal"><span class="goal-progress"></span>
+                            Defines wrapper
+                        </li>
+                        
+                        <li class="goal"><span class="goal-progress"></span>
+                            Defines slides
+                        </li>
+                        
+                        <li class="goal"><span class="goal-future"></span>
+                            Configure wrapper and slides
+                        </li>
+                        
+                        <li class="goal"><span class="goal-future"></span>
+                            Style
+                        </li>
+                    </ol>
+                </li>
+                
+                
+            </ol>
+        </main>
+    </body>
+</html>
