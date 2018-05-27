@@ -3,7 +3,7 @@
  * AGPL-3.0 licensed
  *
  * 
- * --> this file is a bonisa.js modification
+ * --> this file is a reveal.js modification
  */
 
 (function( root, factory ) {
