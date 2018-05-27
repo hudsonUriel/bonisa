@@ -1,5 +1,5 @@
 * [PROGRESS] DOCUMENTATION
-    * [PROGRESS] Defines goals
+    * [OK] Defines goals
     * [OK] Defines README.md
     * [PROGRESS] Configure bonisa documentation
 
