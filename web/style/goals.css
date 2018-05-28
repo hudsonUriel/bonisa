@@ -75,6 +75,12 @@ span{
     width: 97%;
 }
 
+.masterItem:not(:nth-child(1)){
+    border-top: dotted 0.1em #88f;
+    margin-top: 1%;
+    padding-top: 1%;
+}
+
 .normalItem{
     border-left: dotted 0.1em #88f;
     margin-left: 2.5%;
