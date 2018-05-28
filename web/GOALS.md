@@ -1,3 +1,8 @@
+* [PROGRESS] CODE
+    * [OK] Set Bonisa to Window object
+    * [OK] Test Bonisa from Window object
+    * [FUTURE] Defines main functions to basic structure
+
 * [PROGRESS] DOCUMENTATION
     * [OK] Defines goals
     * [OK] Defines README.md
