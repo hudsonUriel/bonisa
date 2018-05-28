@@ -36,18 +36,21 @@ window.onload = function(){
                     if(value){
                         // cretes te the current item (li)
                         item = document.createElement('li');
-
+                        
+                        // configures item class
+                        item.className = 'normalItem';
+                        
                         // creates the span and appends it
                         span = document.createElement('span');
                         span.className = 'goal-' + cls.toString().replace(' ', '').toLocaleLowerCase();
-
+                        
                         // put the text in span
-                        if(span.className == 'goal-ok'){span.innerHTML = '&#10003;'}
-                        else if(span.className == 'goal-progress'){span.innerHTML = '&#8722;'}
-                        else if(span.className == 'goal-future'){span.innerHTML = '&#128473;'}
+                        if(span.className == 'goal-ok'){span.innerHTML = '&#10003;';}
+                        else if(span.className == 'goal-progress'){span.innerHTML = '&#8722;';}
+                        else if(span.className == 'goal-future'){span.innerHTML = '&#128473;';}
+                        else if(span.className == 'goal-master'){span.innerHTML = '...';item.className = 'masterItem';}
 
                         // innerHTML
-
                         item.innerHTML = value;
                         item.appendChild(span);
 
