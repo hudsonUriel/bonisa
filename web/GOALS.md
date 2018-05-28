@@ -1,3 +1,6 @@
+
+* [MASTER] FUNCTIONS EXAMPLE
+
 * [PROGRESS] CODE
     * [OK] Set Bonisa to Window object
     * [OK] Test Bonisa from Window object
