@@ -37,17 +37,37 @@
         VERSION = '1.0.0';
     
     /* --------------- FUNCTIONS --------------- */
+    
+    /*
+     * *************** | HELP Functions | ***************
+     * 
+     * Returns the standard variable "textHelp" as:
+     * 
+     * --> Pure String [md formated]: help()
+     * --> HTML formated: htmlHelp()
+     * 
+     * ******************************************** 
+     * 
+     * @returns {String}
+     */
     help = function(){
         return(
-            'Welcome to Bonisa ' + VERSION
+            'Welcome to Bonisa ' + VERSION + '\n' +
+            'COMMANDS\n' +
+            '[... INSERT COMANDS ...]'
         );
+    };
+    
+    htmlHelp = function(){
+        return(help().toString().replace('\n', '<br/>'));
     };
     
     /* ------------------ API ------------------ */
     Bonisa = {
         version: VERSION,
         
-        help: help
+        help: help,
+        htmlHelp: htmlHelp
     };
     
     /* ----------------- RETURNS ---------------- */
