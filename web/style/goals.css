@@ -67,3 +67,21 @@ span{
     background: #00d;
     color: #88f;
 }
+
+/* configures .masterItem and .normalItem */
+.masterItem{
+    border-bottom: dotted 0.1em #88f;
+    margin: 0 0 1% 0.5%;
+    width: 97%;
+}
+
+.normalItem{
+    border-left: dotted 0.1em #88f;
+    margin-left: 2.5%;
+    padding-left: 1%;
+}
+
+.normalItem ol li{
+    border: none;
+    margin: 0%;
+}
