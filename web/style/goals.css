@@ -24,8 +24,8 @@ li ol{
 }
 
 #wrapper>ol{
-    padding: 0.5%;
-    border: dotted 0.1em #333;
+    padding: 1.0%;
+    border-left: dotted 0.1em #333;
 }
 
 /* configures the span */
@@ -70,19 +70,16 @@ span{
 
 /* configures .masterItem and .normalItem */
 .masterItem{
-    border-bottom: dotted 0.1em #88f;
-    margin: 0 0 1% 0.5%;
+    border-top: dotted 0.1em #333;
+    border-bottom: dotted 0.1em #333;
+    
+    margin: 1% 0 1% 0.5%;
+    padding-top: 1%;
     width: 97%;
 }
 
-.masterItem:not(:nth-child(1)){
-    border-top: dotted 0.1em #88f;
-    margin-top: 1%;
-    padding-top: 1%;
-}
-
 .normalItem{
-    border-left: dotted 0.1em #88f;
+    border-left: dotted 0.1em #333;
     margin-left: 2.5%;
     padding-left: 1%;
 }
