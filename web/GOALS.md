@@ -33,3 +33,9 @@
         * [FUTURE] Setup the DOM elements
         * [FUTURE] Starts everything
 
+* [MASTER] DEPENDENCIES STATUS
+    
+    * [PROGRESS] STRUCTURE
+        * [PROGRESS] Showdown ^1.8.6 --> Markdown suport
+    
+    
