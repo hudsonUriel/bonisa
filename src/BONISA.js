@@ -28,7 +28,7 @@
 (function(root, factory){
     root.Bonisa = factory();
     
-    console.log(root.Bonisa);
+    root.Bonisa.init({modules: 'pdf'});
 }(this, function(){
     // using strict mode
     'use strict';
@@ -42,12 +42,68 @@
         VERSION = '0.0.3',
         
         // Bonisa functions
-            // help functions
-            help, htmlHelp
-        
+            // Help functions
+            help, htmlHelp,
+            
+            // Initialize function
+            init,
+            
+            // Load function
+            load,
+       
+        // Bonisa 0.0.3 dependencies
+            // Showdown: Markdown Converter
+            Showdown,
+            
+        // Bonisa flags
+        initialized = false
         ;
     
+    // Bonisa Dependencies
+        // Markdown to HTML converter
+            // Showdown = require('showdown');
+            
+    
+//    var showdown  = require('showdown'),
+//     converter = new showdown.Converter(),
+//     text      = '#hello, markdown!',
+//     html      = converter.makeHtml(text);
+    
+    
+    
     /* --------------- FUNCTIONS --------------- */
+    
+    init = function(params){
+        // Initializes just once
+            // Check
+            if(initialized === true){return;}
+                
+            // Change initializes flag
+            initialized = true;
+        
+        // Check user agent
+        
+        // Check params
+        if(params){
+            console.log('\nReceived the params: ' + JSON.stringify(params));
+            
+            // Check modules
+                if(params.modules){
+                    // check if module exists
+                    
+                    // load module
+                    
+                    // that's all
+                }
+        }
+        
+        
+    };
+    
+    load = function(){
+      console.log('Bonisa is loaded!')  ;
+    };
+    
     
     /*
      * *************** | HELP Functions | ***************
@@ -75,12 +131,21 @@
     
     /* ------------------ API ------------------ */
     Bonisa = {
+        // Version
         version: VERSION,
         
+        // Help functions
         help: help,
-        htmlHelp: htmlHelp
+        htmlHelp: htmlHelp,
+        
+        // Main functions
+        init: init,
+        load: load,
+        
+        // Modules
     };
     
+   
     /* ----------------- RETURNS ---------------- */
     return Bonisa;
 }));
