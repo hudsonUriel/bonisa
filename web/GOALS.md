@@ -3,7 +3,7 @@
     * [PROGRESS] CODE
         * [OK] Set Bonisa to root (window) object
         * [OK] Test Bonisa from root (window) object
-        * [FUTURE] Defines main functions to basic structure
+        * [PROGRESS] Defines main functions to basic structure
 
     * [PROGRESS] DOCUMENTATION
         * [OK] Defines goals
@@ -22,10 +22,10 @@
 
 * [MASTER] FUNCTIONS STATUS
 
-    * [FUTURE] INITIALIZE()
-        * [FUTURE] Check if initialized
+    * [PROGRESS] INIT()
+        * [OK] Check if initialized
         * [FUTURE] Kind of device
-        * [FUTURE] Load external modules --> Load()
+        * [PROGRESS] Load external modules --> Load()
         * [FUTURE] Start()
 
     * [FUTURE] START()
