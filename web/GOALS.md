@@ -1,8 +1,8 @@
 * [MASTER] PROJECT STATUS
 
     * [PROGRESS] CODE
-        * [OK] Set Bonisa to Window object
-        * [OK] Test Bonisa from Window object
+        * [OK] Set Bonisa to root (window) object
+        * [OK] Test Bonisa from root (window) object
         * [FUTURE] Defines main functions to basic structure
 
     * [PROGRESS] DOCUMENTATION
