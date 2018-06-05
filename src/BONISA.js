@@ -26,15 +26,19 @@
  * 
  */
 (function(root, factory){
-    window.Bonisa = factory();
+    root.Bonisa = factory();
+    
+    console.log(root.Bonisa);
 }(this, function(){
     /* ---------- INITIAL VARIABLES ---------- */
     var 
         // null object
         Bonisa, 
         
-        // Bonisa version and codename
-        VERSION = '1.0.0';
+        // Bonisa version
+        VERSION = '0.0.3'
+        
+        ;
     
     /* --------------- FUNCTIONS --------------- */
     
