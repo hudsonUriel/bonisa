@@ -43,7 +43,7 @@
         
         // Bonisa functions
             // Help functions
-            help, htmlHelp,
+            help, htmlHelp, showModules,  
             
             // Initialize function
             init,
@@ -51,12 +51,23 @@
             // Load function
             load,
        
-        // Bonisa 0.0.3 dependencies
-            // Showdown: Markdown Converter
-            Showdown,
+//        // Bonisa modules
+//            // Showdown: Markdown Converter
+//            Showdown,
             
         // Bonisa flags
-        initialized = false
+            // Is initialized
+            initialized = false,
+            
+            // Modules
+            modules = {available: [
+                    // Bonisa available modules
+                        // Showdown = Markdown to HTML Converter
+                        {name: 'showdown', first: '0.0.3', last: null}
+                    ],
+                        loaded: null
+            }
+        
         ;
     
     // Bonisa Dependencies
@@ -89,19 +100,25 @@
             
             // Check modules
                 if(params.modules){
-                    // check if module exists
-                    
-                    // load module
-                    
-                    // that's all
+                    load(params.modules);
                 }
         }
         
         
     };
     
-    load = function(){
-      console.log('Bonisa is loaded!')  ;
+    /*
+     * Loads bonisa external modules
+     * @returns {undefined}
+     */
+    load = function(modules){
+        // check if module are available
+                    
+        // load modules
+
+        // that's all
+        
+        console.log('Bonisa is loaded!')  ;
     };
     
     
@@ -129,6 +146,10 @@
         return(help().toString().replace('\n', '<br/>'));
     };
     
+    showModules = function(){
+        console.log('Showng the modules');
+    };
+    
     /* ------------------ API ------------------ */
     Bonisa = {
         // Version
@@ -137,6 +158,7 @@
         // Help functions
         help: help,
         htmlHelp: htmlHelp,
+        showModules: showModules,
         
         // Main functions
         init: init,
