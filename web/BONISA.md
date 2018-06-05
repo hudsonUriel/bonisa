@@ -69,6 +69,7 @@ If you want to know the available modules of Bonisa, type `Bonisa.showModules()`
 This function whill return a JSON object, with:
 
 * name: Name of the module
+* version: Version of the module
 * description: A brief description about the module
 * first: The first version of Bonisa when the module was added
 * last: The last version of Bonisa when the module was available. If it is still available for use, the current versio will be showed.
