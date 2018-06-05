@@ -25,7 +25,7 @@ framework used to create HTML slides with a lot of cool extras and features:
 With Bonisa, the inclusion of more dynamic and visual impacting elements in presentations will make them
 more modern and interactive.
 
-And more important: it must be easy, quick and free to use
+And more important: it must be easy, quick and free to use.
 
 ## How to?
 
@@ -53,3 +53,30 @@ which [provides unique meaning to that document and excludes content that is rep
 
 In short, all of it means that each slide of the presentation is semantically independent,
 but also part of a bigger content: the presentation itself.
+
+## How does it works?
+
+After configures the basic HTML structure, open a `<script>` tag and type the following code:
+
+`<script> 
+    Bonisa.init();
+</script>`
+
+Bonisa includes some modules to implements many functionalities, like Markdown support.
+
+If you want to know the available modules of Bonisa, type `Bonisa.showModules()`.
+
+This function whill return a JSON object, with:
+
+* name: Name of the module
+* description: A brief description about the module
+* first: The first version of Bonisa when the module was added
+* last: The last version of Bonisa when the module was available. If it is still available for use, the current versio will be showed.
+* status: Shows if the module is still 'available', in 'test', 'disabled' or 'changed'
+    * In case of `status: 'changed'`, will also appears the option 'update' with the new module name
+
+To use a specific module, type, in the init function:
+
+`<script> 
+    Bonisa.init({modules: [firstModuleName, secondModuleName, thirdModuleName]});
+</script>`
