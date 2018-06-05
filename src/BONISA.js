@@ -50,10 +50,6 @@
             
             // Load function
             load,
-       
-//        // Bonisa modules
-//            // Showdown: Markdown Converter
-//            Showdown,
             
         // Bonisa flags
             // Is initialized
@@ -63,8 +59,17 @@
             modules = {available: [
                     // Bonisa available modules
                         // Showdown = Markdown to HTML Converter
-                        {name: 'showdown', first: '0.0.3', last: null}
+                        {
+                            name: 'showdown',
+                            version: '^1.8.6',
+                            description: 'Markdown to HTML Converter',
+                            first: '0.0.3',
+                            last: VERSION,
+                            status: 'available'
+                        }
                     ],
+                    
+                    // Bonisa loaded modules
                         loaded: null
             }
         
@@ -162,7 +167,7 @@
         
         // Main functions
         init: init,
-        load: load,
+        load: load
         
         // Modules
     };
