@@ -30,13 +30,20 @@
     
     console.log(root.Bonisa);
 }(this, function(){
+    // using strict mode
+    'use strict';
+    
     /* ---------- INITIAL VARIABLES ---------- */
     var 
-        // null object
+        // Bonisa object
         Bonisa, 
         
         // Bonisa version
-        VERSION = '0.0.3'
+        VERSION = '0.0.3',
+        
+        // Bonisa functions
+            // help functions
+            help, htmlHelp
         
         ;
     
