@@ -102,9 +102,9 @@
         
         // Check params
         if(params){
-            console.log('\nReceived the params: ' + JSON.stringify(params));
+            console.log('\nReceived the params: ' + JSON.stringify(params) + '\n\n');
             
-            // Check modules
+            // Check pmodules and load them
                 if(params.modules){
                     load(params.modules);
                 }
@@ -156,7 +156,6 @@
         // that's all
         
         console.log('Bonisa modules is loaded!')  ;
-        console.log(Bonisa.modules);
     };
     
     
