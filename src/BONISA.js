@@ -39,7 +39,7 @@
         Bonisa, 
         
         // Bonisa version
-        VERSION = '0.0.3',
+        VERSION = '0.1-alpha.0',
         
         // Bonisa functions
             // Help functions
