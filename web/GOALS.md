@@ -36,8 +36,9 @@
 * [MASTER] DEPENDENCIES STATUS
     
     * [PROGRESS] MODULE FUNCTION IN BONISA.JS
-        * [PROGRESS] Modules objects
-        * [FUTURE] Modules inclusion
+        * [OK] Modules objects
+        * [OK] Modules inclusion in Bonisa object
+        * [FUTURE] Modules loading
 
     * [PROGRESS] STRUCTURE
         * [PROGRESS] Showdown ^1.8.6 --> Markdown suport
