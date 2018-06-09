@@ -28,7 +28,7 @@
 (function(root, factory){
     root.Bonisa = factory();
     
-    root.Bonisa.init({modules: 'pdf'});
+    root.Bonisa.init({modules: ['pdf', 'md']});
 }(this, function(){
     // using strict mode
     'use strict';
@@ -63,7 +63,7 @@
                             name: 'showdown',
                             version: '^1.8.6',
                             description: 'Markdown to HTML Converter',
-                            keywords: ['md', 'mdConverterr'],
+                            keywords: ['md', 'mdconverter', 'md2html'],
                             first: '0.0.3',
                             last: VERSION,
                             status: 'available'
@@ -71,7 +71,7 @@
                     ],
                     
                     // Bonisa loaded modules
-                        loaded: null
+                        loaded: []
             }
         
         ;
@@ -118,13 +118,45 @@
      * @returns {undefined}
      */
     load = function(modules){
-        // check if module are available
-                    
+        // Turn modules to Array
+            if(! modules instanceof Array)
+                modules = new Array(modules);
+        
+        // Check if the requested modules are available
+            modules.forEach(function(mod){
+                // Convert to lowercase string
+                mod = mod.toString().toLowerCase();
+
+                // Search modules
+                Bonisa.modules.available.forEach(function(bonisaModule){
+                    // By Name
+                    if(bonisaModule.name === mod){
+                        console.log("Found the module " + mod + " by name!");
+
+                        // Load the module to Bonisa.modules.loaded
+                        Bonisa.modules.loaded[Bonisa.modules.loaded.length] = bonisaModule;
+                    }
+
+                    // By keyword
+                    else{
+                        bonisaModule.keywords.forEach(function(keyword){
+                            if(keyword === mod){
+                                console.log("Found the module " + mod + " by keyword!");
+
+                                // Load the module to Bonisa.modules.loaded
+                                Bonisa.modules.loaded[Bonisa.modules.loaded.length] = bonisaModule;
+                            }
+                        });
+                    }
+                });
+            });
+        
         // load modules
 
         // that's all
         
-        console.log('Bonisa is loaded!')  ;
+        console.log('Bonisa modules is loaded!')  ;
+        console.log(Bonisa.modules);
     };
     
     
