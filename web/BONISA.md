@@ -71,13 +71,24 @@ This function whill return a JSON object, with:
 * name: Name of the module
 * version: Version of the module
 * description: A brief description about the module
+* keywords: Keywords to alias call the module
 * first: The first version of Bonisa when the module was added
 * last: The last version of Bonisa when the module was available. If it is still available for use, the current versio will be showed.
 * status: Shows if the module is still 'available', in 'test', 'disabled' or 'changed'
     * In case of `status: 'changed'`, will also appears the option 'update' with the new module name
 
-To use a specific module, type, in the init function:
+To use a specific module, type, in the init function the module name or keyword:
 
 `<script> 
-    Bonisa.init({modules: [firstModuleName, secondModuleName, thirdModuleName]});
+    Bonisa.init({modules: [moduleName]});
+</script>`
+
+For example, if you want to call the Showdown Module, responsable to make Markdown to HTML conversion, you can use:
+
+`<script> 
+    // calling by name
+    Bonisa.init({modules: ['showdown']});
+    
+    // calling by keyword
+    Bonisa.init({modules: ['md']});
 </script>`
