@@ -63,6 +63,7 @@
                             name: 'showdown',
                             version: '^1.8.6',
                             description: 'Markdown to HTML Converter',
+                            keywords: ['md', 'mdConverterr'],
                             first: '0.0.3',
                             last: VERSION,
                             status: 'available'
@@ -152,7 +153,7 @@
     };
     
     showModules = function(){
-        console.log('Showng the modules');
+        console.log('Showing the modules');
     };
     
     /* ------------------ API ------------------ */
@@ -167,9 +168,10 @@
         
         // Main functions
         init: init,
-        load: load
+        load: load,
         
         // Modules
+        modules: modules
     };
     
    
