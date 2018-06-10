@@ -75,6 +75,7 @@ This function whill return a JSON object, with:
 * first: The first version of Bonisa when the module was added
 * last: The last version of Bonisa when the module was available. If it is still available for use, the current versio will be showed.
 * status: Shows if the module is still 'available', in 'test', 'disabled' or 'changed'
+* file: Local file to be used in browser, without Node
     * In case of `status: 'changed'`, will also appears the option 'update' with the new module name
 * loaded: Shows if the module is loaded. By default, the value is 'false'; 'true' when it was already called
 
