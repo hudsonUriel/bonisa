@@ -75,7 +75,7 @@
                         loaded: [],
                         
                     // Directory for modules scripts
-                        modDir: './lib/'
+                        modDir: '../src/node_modules/'
             }
         
         ; 
@@ -176,7 +176,7 @@
                                 Bonisa.modules.modDir +
 
                                 // Module directory
-                                mod.name + '/' +
+                                mod.name + '/src/' +
 
                                 // Module .js file
                                 mod.name + '.js',
