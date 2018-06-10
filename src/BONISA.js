@@ -67,6 +67,7 @@
                             first: '0.0.3',
                             last: VERSION,
                             status: 'available',
+                            file: '/showdown/dist/showdown.js',
                             loaded: false
                         }
                     ],
@@ -170,22 +171,17 @@
                 // Catch an error
                 
                 // Dynamic includes the module
-                    let 
-                        // File name
-                        modFile =   // Main ./lib/ Directory
-                                Bonisa.modules.modDir +
-
-                                // Module directory
-                                mod.name + '/src/' +
-
-                                // Module .js file
-                                mod.name + '.js',
-                    
+                    var
                         // 'script' DOM  element
                         modScript = document.createElement('script');
                         
                         // 'script' source file
-                        modScript.src = modFile;
+                        modScript.src = 
+                            // Module directory    
+                            Bonisa.modules.modDir + 
+                            
+                            // Module file
+                            mod.file;
                         
                         // Appends
                         document.head.appendChild(modScript);
