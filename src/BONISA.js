@@ -28,7 +28,7 @@
 (function(root, factory){
     root.Bonisa = factory();
     
-    root.Bonisa.init({modules: ['pdf', 'md']});
+    root.Bonisa.init({modules: ['pdf', 'md2html', 'md']});
 }(this, function(){
     // using strict mode
     'use strict';
@@ -66,7 +66,8 @@
                             keywords: ['md', 'mdconverter', 'md2html'],
                             first: '0.0.3',
                             last: VERSION,
-                            status: 'available'
+                            status: 'available',
+                            loaded: false
                         }
                     ],
                     
@@ -110,6 +111,9 @@
                 }
         }
         
+        // Start slides structure
+        
+        // Aujourd'hui allons-y, mes ami
         
     };
     
@@ -129,10 +133,20 @@
 
                 // Search modules
                 Bonisa.modules.available.forEach(function(bonisaModule){
+                    /*
+                     * 
+                     * If an module is called multiple time, 
+                     * it will just be loaded once
+                     * 
+                     * 
+                     */
                     // By Name
-                    if(bonisaModule.name === mod){
+                    if(bonisaModule.name === mod && !bonisaModule.loaded){
                         console.log("Found the module " + mod + " by name!");
-
+                        
+                        // Change module.loaded to 'true'
+                        bonisaModule.loaded = true;
+                        
                         // Load the module to Bonisa.modules.loaded
                         Bonisa.modules.loaded[Bonisa.modules.loaded.length] = bonisaModule;
                     }
@@ -140,9 +154,12 @@
                     // By keyword
                     else{
                         bonisaModule.keywords.forEach(function(keyword){
-                            if(keyword === mod){
+                            if(keyword === mod && !bonisaModule.loaded){
                                 console.log("Found the module " + mod + " by keyword!");
-
+                                
+                                // Change module.loaded to 'true'
+                                bonisaModule.loaded = true;
+                                
                                 // Load the module to Bonisa.modules.loaded
                                 Bonisa.modules.loaded[Bonisa.modules.loaded.length] = bonisaModule;
                             }
@@ -152,10 +169,13 @@
             });
         
         // load modules
+        Bonisa.modules.loaded.forEach(function(mod){
+           console.log('Module ' + JSON.stringify(mod)) ;
+        });
 
         // that's all
         
-        console.log('Bonisa modules is loaded!')  ;
+        console.log('Bonisa modules are loaded!')  ;
     };
     
     
