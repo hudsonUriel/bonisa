@@ -72,22 +72,13 @@
                     ],
                     
                     // Bonisa loaded modules
-                        loaded: []
+                        loaded: [],
+                        
+                    // Directory for modules scripts
+                        modDir: './lib/'
             }
         
-        ;
-    
-    // Bonisa Dependencies
-        // Markdown to HTML converter
-            // Showdown = require('showdown');
-            
-    
-//    var showdown  = require('showdown'),
-//     converter = new showdown.Converter(),
-//     text      = '#hello, markdown!',
-//     html      = converter.makeHtml(text);
-    
-    
+        ; 
     
     /* --------------- FUNCTIONS --------------- */
     
@@ -168,13 +159,42 @@
                 });
             });
         
-        // load modules
+        // Load requested modules
         Bonisa.modules.loaded.forEach(function(mod){
-           console.log('Module ' + JSON.stringify(mod)) ;
+            // Try require() -- for Node use
+            try{
+                require(mod.name);
+                console.log('OK!');
+            }
+            catch(err){
+                // Catch an error
+                
+                // Dynamic includes the module
+                    let 
+                        // File name
+                        modFile =   // Main ./lib/ Directory
+                                Bonisa.modules.modDir +
+
+                                // Module directory
+                                mod.name + '/' +
+
+                                // Module .js file
+                                mod.name + '.js',
+                    
+                        // 'script' DOM  element
+                        modScript = document.createElement('script');
+                        
+                        // 'script' source file
+                        modScript.src = modFile;
+                        
+                        // Appends
+                        document.head.appendChild(modScript);
+                        
+                        console.log(modScript + '\n');
+            }
         });
 
         // that's all
-        
         console.log('Bonisa modules are loaded!')  ;
     };
     
