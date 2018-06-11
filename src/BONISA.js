@@ -28,6 +28,7 @@
 (function(root, factory){
     root.Bonisa = factory();
     
+    // Testing modules loading
     root.Bonisa.init({modules: ['pdf', 'md2html', 'md']});
 }(this, function(){
     // using strict mode
@@ -55,6 +56,9 @@
             // Is initialized
             initialized = false,
             
+            // Is loaded
+            loaded = false,
+            
             // Modules
             modules = {available: [
                     // Bonisa available modules
@@ -76,7 +80,7 @@
                         loaded: [],
                         
                     // Directory for modules scripts
-                        modDir: '../src/node_modules/'
+                        modulesDir: '../src/node_modules/'
             }
         
         ; 
@@ -178,7 +182,7 @@
                         // 'script' source file
                         modScript.src = 
                             // Module directory    
-                            Bonisa.modules.modDir + 
+                            Bonisa.modules.modulesDir + 
                             
                             // Module file
                             mod.file;
@@ -194,6 +198,9 @@
         console.log('Bonisa modules are loaded!')  ;
     };
     
+    start = function(){
+        
+    };
     
     /*
      * *************** | HELP Functions | ***************
