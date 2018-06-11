@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>Modules Test</title>
+        <meta charset="UTF-8">
+        
+        <!-- OPENING BONISA -->
+            <script src="../../src/BONISA.js"> </script>
+            
+        <script>
+            // INITIALIZING BONISA
+                Bonisa.init(
+                        // Including Markdown module
+                        {modules: [
+                            // By keyword
+                            'md',
+                            
+                            // By name
+                            'showdown'
+                        ]}
+                );
+                
+                // Writing in the document
+                document.write(
+                    "<h3>Testing modules by name and keyword</h3>" +
+                    "<p>" + JSON.stringify(Bonisa.modules.loaded) + "</p>"
+                );
+            
+        </script>
+        
+    </head>
+</html>
