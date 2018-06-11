@@ -25,7 +25,7 @@
     * [PROGRESS] INIT()
         * [OK] Check if initialized
         * [FUTURE] Kind of device
-        * [PROGRESS] Load external modules --> Load()
+        * [OK] Load external modules --> Load()
         * [FUTURE] Start()
 
     * [FUTURE] START()
