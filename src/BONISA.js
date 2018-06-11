@@ -28,8 +28,11 @@
 (function(root, factory){
     root.Bonisa = factory();
     
-    // Testing modules loading
-    root.Bonisa.init({modules: ['pdf', 'md2html', 'md']});
+    // Calling Bonisa
+    root.Bonisa.init(
+        // Testing modules loading - OK
+            {modules: ['pdf', 'md2html', 'md']}
+    );
 }(this, function(){
     // using strict mode
     'use strict';
@@ -101,10 +104,17 @@
         if(params){
             console.log('\nReceived the params: ' + JSON.stringify(params) + '\n\n');
             
-            // Check pmodules and load them
+            // Check modules and load them
                 if(params.modules){
                     load(params.modules);
                 }
+                
+            //
+            // Here will be included codes to allow
+            // slides creation with just .md/.json
+            // and DOM
+            //
+            
         }
         
         // Start slides structure
