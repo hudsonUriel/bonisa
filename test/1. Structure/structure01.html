@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Strucutre 1st. Test</title>
+        <meta charset="UTF-8">
+        
+        <!-- OPENING BONISA -->
+            <script src="../../src/BONISA.js"> </script>
+            
+        <script>
+            // INITIALIZING BONISA
+                window.onload = function(){
+                    console.log("E aí...");
+                    Bonisa.init();
+                    
+                    // Writing in the document
+                    document.write(
+                        "<h3>Testing structure</h3>" +
+                        "<p>" + JSON.stringify(Bonisa.structure) + "</p>"
+                    );
+                };            
+                
+                // Writing in the document
+                    document.write(
+                        "<h3>Testing structure</h3>" +
+                        "<p>" + JSON.stringify(Bonisa.structure) + "</p>"
+                    );
+        </script>
+        
+        <style>
+            .bonisa{
+                width: 85%;
+                height: 5em;
+                border: solid 0.2em #233;
+            }
+            
+            .refText{
+                text-align: center;
+            }
+        </style>
+        
+    </head>
+    
+    <body>
+        <div class="bonisa">
+            <p class="refText">This is .bonisa</p>
+            
+        </div>
+    </body>
+</html>
