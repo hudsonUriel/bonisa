@@ -29,10 +29,7 @@
     root.Bonisa = factory();
     
     // Calling Bonisa
-    root.Bonisa.init(
-        // Testing modules loading - OK
-            {modules: ['pdf', 'md2html', 'md']}
-    );
+    root.Bonisa.init();
 }(this, function(){
     // using strict mode
     'use strict';
@@ -55,13 +52,10 @@
             // Load function
             load,
             
+            // Start function
+            start,
+            
         // Bonisa flags
-            // Is initialized
-            initialized = false,
-            
-            // Is loaded
-            loaded = false,
-            
             // Modules
             modules = {available: [
                     // Bonisa available modules
@@ -84,8 +78,17 @@
                         
                     // Directory for modules scripts
                         modulesDir: '../src/node_modules/'
-            }
-        
+            },
+            
+            // Structure - DOM Reference
+            dom = {},
+            
+        // Generic flags
+            // Is initialized
+            initialized = false,
+            
+            // Is loaded
+            loaded = false
         ; 
     
     /* --------------- FUNCTIONS --------------- */
@@ -98,7 +101,9 @@
             // Change initializes flag
             initialized = true;
         
+        //
         // Check user agent
+        //
         
         // Check params
         if(params){
@@ -117,10 +122,12 @@
             
         }
         
+        // Basic DOM structure
+            dom.wrapper = document.querySelector('*');
+            
+        
         // Start slides structure
-        
-        // Aujourd'hui allons-y, mes ami
-        
+            start();
     };
     
     /*
@@ -148,7 +155,6 @@
                      */
                     // By Name
                     if(bonisaModule.name === mod && !bonisaModule.loaded){
-                        console.log("Found the module " + mod + " by name!");
                         
                         // Change module.loaded to 'true'
                         bonisaModule.loaded = true;
@@ -161,8 +167,6 @@
                     else{
                         bonisaModule.keywords.forEach(function(keyword){
                             if(keyword === mod && !bonisaModule.loaded){
-                                console.log("Found the module " + mod + " by keyword!");
-                                
                                 // Change module.loaded to 'true'
                                 bonisaModule.loaded = true;
                                 
@@ -179,7 +183,7 @@
             // Try require() -- for Node use
             try{
                 require(mod.name);
-                console.log('OK!');
+                console.log('\nNODE -- ' + mod.name);
             }
             catch(err){
                 // Catch an error
@@ -195,12 +199,11 @@
                             Bonisa.modules.modulesDir + 
                             
                             // Module file
-                            mod.file;
+                            mod.file
+                    ;
                         
-                        // Appends
-                        document.head.appendChild(modScript);
-                        
-                        console.log(modScript + '\n');
+                    // Appends
+                    document.head.appendChild(modScript);
             }
         });
 
@@ -209,7 +212,11 @@
     };
     
     start = function(){
+        // Change loaded flag to "true"
+            loaded = true;
+            
         
+            
     };
     
     /*
@@ -237,7 +244,7 @@
     };
     
     showModules = function(){
-        console.log('Showing the modules');
+        console.log('Showing the modules \n\n' + JSON.stringify(Bonisa.modules.available));
     };
     
     /* ------------------ API ------------------ */
@@ -253,6 +260,10 @@
         // Main functions
         init: init,
         load: load,
+        start: start,
+        
+        // Structure
+        structure: dom,
         
         // Modules
         modules: modules
