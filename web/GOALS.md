@@ -10,9 +10,9 @@
         * [OK] Defines README.md
         * [PROGRESS] Configure bonisa documentation
 
-    * [FUTURE] STRUCTURE
-        * [FUTURE] Defines wrapper (main .bonisa)
-        * [FUTURE] Defines slides (main .bonisa section)
+    * [PROGRESS] STRUCTURE
+        * [OK] Defines wrapper (main.bonisa)
+        * [OK] Defines slides (.main.bonisa>section)
         * [FUTURE] Configure wrapper and slides
 
     * [FUTURE] STYLE
@@ -42,5 +42,4 @@
 
     * [PROGRESS] STRUCTURE
         * [PROGRESS] Showdown ^1.8.6 --> Markdown suport
-    
     
