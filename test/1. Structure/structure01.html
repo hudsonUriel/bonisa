@@ -6,46 +6,67 @@
         <meta charset="UTF-8">
         
         <!-- OPENING BONISA -->
-            <script src="../../src/BONISA.js"> </script>
+            <script src="../../src/BONISA.js"></script>
             
         <script>
             // INITIALIZING BONISA
-                window.onload = function(){
-                    console.log("E aí...");
-                    Bonisa.init();
-                    
-                    // Writing in the document
-                    document.write(
-                        "<h3>Testing structure</h3>" +
-                        "<p>" + JSON.stringify(Bonisa.structure) + "</p>"
-                    );
-                };            
-                
-                // Writing in the document
-                    document.write(
-                        "<h3>Testing structure</h3>" +
-                        "<p>" + JSON.stringify(Bonisa.structure) + "</p>"
-                    );
+                Bonisa.init();
+
+
+               // Writing in the document
+                document.write(
+                    "<h3>Testing structure</h3>"
+                );
         </script>
         
         <style>
+            main, div{
+                margin: 2.5%;
+            }
+            
             .bonisa{
                 width: 85%;
+                height: 10em;
+                border: solid 0.15em #222;
+            }
+            
+            section{
+                width: 75%;
+                margin: 0 0 0 10%;
                 height: 5em;
-                border: solid 0.2em #233;
+                border: dotted 0.15em #555;
             }
             
             .refText{
                 text-align: center;
+            }
+            
+            .ok{
+                color: #3d3;
+            }
+            
+            .error{
+                color: #d33;
             }
         </style>
         
     </head>
     
     <body>
+        
+        <main class="bonisa">
+            <p class="refText ok">This is main.bonisa.</p>
+            <section>
+                <p class="refText ok">This is .bonisa>section</p>
+            </section>
+        </main>
+        
         <div class="bonisa">
-            <p class="refText">This is .bonisa</p>
-            
+            <p class="refText error">This is div.bonisa. It will not work as a slide wrapper</p>
         </div>
+        
+        <section>
+            <p class="refText error">This is an alone section. It will not work as a slide.</p>
+        </section>
     </body>
 </html>
