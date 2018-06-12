@@ -227,7 +227,35 @@
                 if(document.readyState === "complete"){
                     // Get the wrapper and the slides
                         dom.wrapper = document.querySelector("main.bonisa");
-                        dom.slides = document.querySelector("section");
+                        dom.slides = [];
+
+                        // uses aux for store all main.bonisa>section
+                        var aux = document.querySelectorAll("main.bonisa>section");
+
+                    // Auxiliary class for wrapper
+                        dom.wrapper.className += " bonisaWrapper";
+                        
+                    // Search the valids slides
+                    
+                        // This is useful if in HTML there are
+                        // 2 or more main.bonisa>section
+                        // elements.
+                        //
+                        // The element wil be valid if its parent
+                        // have the "bonisaWrapper" class
+                    
+                        for(var i=0; i<aux.length; i++){
+                            // Check the element
+                            if(aux[i].parentNode.className.
+                                    toString().split(" ")[1] === "bonisaWrapper"
+                            ){
+                                // Includes in the dom.slides cache
+                                dom.slides[dom.slides.length] = aux[i];
+                                
+                                // Change className
+                                dom.slides[i].className = "bonisaSlide";
+                            }
+                        }
                 }
             };
     };
