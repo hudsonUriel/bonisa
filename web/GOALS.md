@@ -26,11 +26,11 @@
         * [OK] Check if initialized
         * [FUTURE] Kind of device
         * [OK] Load external modules --> Load()
-        * [FUTURE] Start()
+        * [PROGRESS] Start()
 
-    * [FUTURE] START()
-        * [FUTURE] Check if loaded
-        * [FUTURE] Setup the DOM elements
+    * [PROGRESS] START()
+        * [OK] Check if loaded
+        * [PROGRESS] Setup the DOM elements
         * [FUTURE] Starts everything
 
 * [MASTER] DEPENDENCIES STATUS
