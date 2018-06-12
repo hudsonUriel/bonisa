@@ -26,10 +26,17 @@
  * 
  */
 (function(root, factory){
-    root.Bonisa = factory();
+    // To be used in Node
+        if(typeof exports === 'object'){
+            module.exports = factory();
+        }else{
+            // Make Bonisa Global to the Browser
+            root.Bonisa = factory();
+        }
     
-    // Calling Bonisa
+    // Calling Bonisa - TEST
     root.Bonisa.init();
+    
 }(this, function(){
     // using strict mode
     'use strict';
@@ -122,8 +129,7 @@
             
         }
         
-        // Basic DOM structure
-            dom.wrapper = document.querySelector('*');
+        
             
         
         // Start slides structure
@@ -215,7 +221,9 @@
         // Change loaded flag to "true"
             loaded = true;
             
-        
+        // Basic DOM structure
+            dom.wrapper = document.getElementsByClassName('bonisa');
+            console.log(dom);
             
     };
     
