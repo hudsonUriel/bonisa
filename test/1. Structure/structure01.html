@@ -20,53 +20,133 @@
         </script>
         
         <style>
-            main, div{
-                margin: 2.5%;
-            }
+            /*** MAIN, DIV and SECTION ***/
+                main, div{
+                    margin: 2.5%;
+                    width: 85%;
+                    padding: 1%;
+                    border: solid 0.2em #222;
+                }
+
+                section, main>div{
+                    width: 75%;
+                    margin: 0 0 1% 10%;
+                    padding: 2.5%;
+                    border: dotted 0.2em #555;
+                }
             
-            .bonisa{
-                width: 85%;
-                height: 10em;
-                border: solid 0.15em #222;
-            }
-            
-            section{
-                width: 75%;
-                margin: 0 0 0 10%;
-                height: 5em;
-                border: dotted 0.15em #555;
-            }
-            
-            .refText{
-                text-align: center;
-            }
-            
-            .ok{
-                color: #3d3;
-            }
-            
-            .error{
-                color: #d33;
-            }
+            /*** TEXTS and HR ***/
+                p{
+                    text-align: center;
+                    color: #222;
+                    font-family: "sans-serif";
+                }
+
+                em{
+                    font-weight: bold;
+                }
+                
+                hr{
+                    border: solid 0.1em #222;
+                }
+                
+            /*** DOM BONISA CLASSES ***/
+                .bonisaWrapper{
+                    border-color: #1a1;
+                    background-color: #5f5;
+                }
+
+                .bonisaSlide{
+                    border-color: #181;
+                    background-color: #5c5;
+                }
+                
+            /*** OTHER CLASSES ***/
+                main:not(.bonisaWrapper),
+                div:not(.bonisaWrapper){
+                    border-color: #a11;
+                    background-color: #f55;
+                }
+
+                section:not(.bonisaSlide),
+                main>div:not(.bonisaSlide),
+                div>div:not(.bonisaSlide){
+                    border-color: #a11;
+                    background-color: #d33;
+                }
         </style>
         
     </head>
     
     <body>
+        <!-- MAIN.BONISA -->
+            <main class="bonisa">
+                <p>This is the first <em>main.bonisa</em></p>
+                <p>(it will work as a wrapper for the presentation)</p>
+
+                <section>
+                    <p>This is <em>main.bonisa>section</em></p>
+                    <p>(it is a slide)</p>
+                </section>
+
+                 <section>
+                     <p>This also is a <em>main.bonisa>section</em></p>
+                    <p>(it is another slide)</p>
+                </section>
+
+                <div>
+                     <p>This also is a <em>main.bonisa>div</em></p>
+                    <p>(it doesn't work as a slide!!!)</p>
+                </div>
+            </main>
         
-        <main class="bonisa">
-            <p class="refText ok">This is main.bonisa.</p>
-            <section>
-                <p class="refText ok">This is .bonisa>section</p>
-            </section>
-        </main>
+        <hr/>
+        
+        <!-- MAIN.BONISA -->
+            <main class="bonisa">
+                <p>This is the second <em>main.bonisa</em></p>
+                <p>(it will not work as a wrapper, because there is another <em>main.bonisa</em>)</p>
+
+                <section>
+                    <p>This is <em>main.bonisa>section</em></p>
+                    <p>(it is not a slide)</p>
+                </section>
+
+                 <section>
+                     <p>This also is a <em>main.bonisa>section</em></p>
+                    <p>(it is not a slide)</p>
+                </section>
+
+                <div>
+                     <p>This also is a <em>main.bonisa>div</em></p>
+                    <p>(it doesn't work as a slide, anyway!)</p>
+                </div>
+            </main>
+        
+        <hr/>
+        
+        <!-- DIV.BONISA -->
+            <div class="bonisa">
+                <p>This is <em>div.bonisa</em></p>
+                <p>(it will not work as a slide wrapper)</p>
+                <section>
+                    <p>This is <em>div.bonisa>section</em></p>
+                    <p>(it doesn't work as a slide)</p>
+                </section>
+            </div>
+        
+        <hr/>
+        
+        <!-- DIV.bonisa -->
         
         <div class="bonisa">
-            <p class="refText error">This is div.bonisa. It will not work as a slide wrapper</p>
+            <p>This is <em>div.bonisa</em></p>
+            <p>(it will not work as a slide wrapper, even without <em>section</em> elements within)</p>
         </div>
         
         <section>
-            <p class="refText error">This is an alone section. It will not work as a slide.</p>
+            <p>This is an alone <em>section</em>
+            <p>(it doesn't work as a slide... as well)</p>
         </section>
     </body>
 </html>
