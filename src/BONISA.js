@@ -222,9 +222,14 @@
             loaded = true;
             
         // Basic DOM structure
-            dom.wrapper = document.getElementsByClassName('bonisa');
-            console.log(dom);
-            
+            // Check if the document loading is complete
+           document.onreadystatechange = function(){
+                if(document.readyState === "complete"){
+                    // Get the wrapper and the slides
+                        dom.wrapper = document.querySelector("main.bonisa");
+                        dom.slides = document.querySelector("section");
+                }
+            };
     };
     
     /*
