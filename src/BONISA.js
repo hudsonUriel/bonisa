@@ -218,7 +218,9 @@
             
         // Basic DOM structure
             setupDOM();
-            alert("Oi!");
+            
+        // Configures the slide
+            configure();
     };
     
     /*
@@ -241,7 +243,7 @@
                         var aux = document.querySelectorAll("main.bonisa>section");
 
                     // Auxiliary class for wrapper
-                        dom.wrapper.className += " bonisaWrapper";
+                        dom.wrapper.classList.add("bonisaWrapper");
                         
                     // Search the valids slides
                     
@@ -261,12 +263,17 @@
                                 dom.slides[dom.slides.length] = aux[i];
                                 
                                 // Change className
-                                dom.slides[i].className = "bonisaSlide";
+                                dom.slides[i].classList.add("bonisaSlide");
                             }
                         }
                 }
             };
     }
+    
+    function configure(){
+        console.log(Bonisa.structure);
+        //dom.slides.classList.add( 'no-transition' );
+    };
     
     /*
      * *************** | HELP Functions | ***************
