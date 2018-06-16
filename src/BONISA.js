@@ -238,7 +238,7 @@
                     // Get the wrapper and the slides
                         dom.wrapper = document.querySelector("main.bonisa");
                         dom.slides = [];
-
+                        
                         // uses aux for store all main.bonisa>section
                         var aux = document.querySelectorAll("main.bonisa>section");
 
@@ -248,16 +248,14 @@
                     // Search the valids slides
                     
                         // This is useful if in HTML there are
-                        // 2 or more main.bonisa>section
-                        // elements.
+                        // 2 or more main.bonisa elements.
                         //
                         // The element wil be valid if its parent
                         // have the "bonisaWrapper" class
                     
                         for(var i=0; i<aux.length; i++){
                             // Check the element
-                            if(aux[i].parentNode.className.
-                                    toString().split(" ")[1] === "bonisaWrapper"
+                            if(aux[i].parentNode.classList.contains("bonisaWrapper")
                             ){
                                 // Includes in the dom.slides cache
                                 dom.slides[dom.slides.length] = aux[i];
@@ -271,8 +269,8 @@
     }
     
     function configure(){
-        console.log(Bonisa.structure);
-        //dom.slides.classList.add( 'no-transition' );
+        
+    
     };
     
     /*
