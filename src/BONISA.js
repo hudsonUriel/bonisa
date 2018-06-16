@@ -2,8 +2,6 @@
  * bonisa.js
  * AGPL-3.0 licensed
  *
- * 
- * --> this file is a bonisa.js modification
  */
 
 /*
@@ -128,10 +126,7 @@
             //
             
         }
-        
-        
-            
-        
+       
         // Start slides structure
             start();
     };
@@ -168,7 +163,7 @@
                         // Load the module to Bonisa.modules.loaded
                         Bonisa.modules.loaded[Bonisa.modules.loaded.length] = bonisaModule;
                     }
-
+                    
                     // By keyword
                     else{
                         bonisaModule.keywords.forEach(function(keyword){
@@ -222,7 +217,20 @@
             loaded = true;
             
         // Basic DOM structure
-            // Check if the document loading is complete
+            setupDOM();
+            alert("Oi!");
+    };
+    
+    /*
+     * NOTE: All sub-functions will
+     * be defined directly;
+     * 
+     * Main funtion( start, load, init)
+     * will be defined as anonymous
+     */
+    
+    function setupDOM(){
+        // Check if the document loading is complete
            document.onreadystatechange = function(){
                 if(document.readyState === "complete"){
                     // Get the wrapper and the slides
@@ -258,7 +266,7 @@
                         }
                 }
             };
-    };
+    }
     
     /*
      * *************** | HELP Functions | ***************
