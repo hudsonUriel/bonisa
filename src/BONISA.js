@@ -47,6 +47,14 @@
         // Bonisa version
         VERSION = '0.1-alpha.0',
         
+        // Bonisa selectors
+        WRAPPER_SELECTOR = "main.bonisa",
+        SLIDES_SELECTOR = "main.bonisa>section",
+        
+        // Bonisa classes
+        WRAPPER_CLASS = "bonisaWrapper",
+        SLIDES_CLASS = "bonisaSlide",
+        
         // Bonisa functions
             // Help functions
             help, htmlHelp, showModules,  
@@ -87,6 +95,13 @@
             
             // Structure - DOM Reference
             dom = {},
+            
+            // Slides configurations
+            config = {
+                // Slide default size
+                width: null,
+                height: null
+            },
             
         // Generic flags
             // Is initialized
@@ -145,33 +160,27 @@
                 // Convert to lowercase string
                 mod = mod.toString().toLowerCase();
 
-                // Search modules
+                
+                // Search modules and make them
+                // loaded just once
                 Bonisa.modules.available.forEach(function(bonisaModule){
-                    /*
-                     * 
-                     * If an module is called multiple time, 
-                     * it will just be loaded once
-                     * 
-                     * 
-                     */
-                    // By Name
+                    // Search by name
                     if(bonisaModule.name === mod && !bonisaModule.loaded){
-                        
                         // Change module.loaded to 'true'
                         bonisaModule.loaded = true;
                         
-                        // Load the module to Bonisa.modules.loaded
+                        // Load the module
                         Bonisa.modules.loaded[Bonisa.modules.loaded.length] = bonisaModule;
                     }
                     
-                    // By keyword
+                    // Search by keyword
                     else{
                         bonisaModule.keywords.forEach(function(keyword){
                             if(keyword === mod && !bonisaModule.loaded){
                                 // Change module.loaded to 'true'
                                 bonisaModule.loaded = true;
                                 
-                                // Load the module to Bonisa.modules.loaded
+                                // Load the module
                                 Bonisa.modules.loaded[Bonisa.modules.loaded.length] = bonisaModule;
                             }
                         });
@@ -218,9 +227,6 @@
             
         // Basic DOM structure
             setupDOM();
-            
-        // Configures the slide
-            configure();
     };
     
     /*
@@ -236,40 +242,40 @@
            document.onreadystatechange = function(){
                 if(document.readyState === "complete"){
                     // Get the wrapper and the slides
-                        dom.wrapper = document.querySelector("main.bonisa");
+                        dom.wrapper = document.querySelector(WRAPPER_SELECTOR);
                         dom.slides = [];
                         
                         // uses aux for store all main.bonisa>section
-                        var aux = document.querySelectorAll("main.bonisa>section");
+                        var aux = document.querySelectorAll(SLIDES_SELECTOR);
 
-                    // Auxiliary class for wrapper
-                        dom.wrapper.classList.add("bonisaWrapper");
-                        
-                    // Search the valids slides
-                    
-                        // This is useful if in HTML there are
-                        // 2 or more main.bonisa elements.
-                        //
-                        // The element wil be valid if its parent
-                        // have the "bonisaWrapper" class
-                    
-                        for(var i=0; i<aux.length; i++){
-                            // Check the element
-                            if(aux[i].parentNode.classList.contains("bonisaWrapper")
-                            ){
-                                // Includes in the dom.slides cache
-                                dom.slides[dom.slides.length] = aux[i];
-                                
-                                // Change className
-                                dom.slides[i].classList.add("bonisaSlide");
+                        // Auxiliary class for wrapper
+                            dom.wrapper.classList.add(WRAPPER_CLASS);
+
+                        // Search the valids slides
+                            for(var i=0; i<aux.length; i++){
+                                // Check the element
+                                if(aux[i].parentNode.classList.contains(WRAPPER_CLASS)
+                                ){
+                                    // Includes in the dom.slides cache
+                                    dom.slides[dom.slides.length] = aux[i];
+
+                                    // Change className
+                                    dom.slides[i].classList.add(SLIDES_CLASS);
+                                }
                             }
-                        }
+                            
+                    // Reconfigure the width and height
+                        config.width = window.innerWidth;
+                        config.hright = window.innerHeight;
+                        
+                    // Configures the presentation
+                         configure();
                 }
             };
     }
     
     function configure(){
-        
+
     
     };
     
