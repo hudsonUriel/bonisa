@@ -22,6 +22,3 @@ interactive and cool slides
     * First official ALPHA version
     * Third draft of the code, using [Node](https://github.com/nodejs/node) and based on [reveal.js](https://github.com/hakimel/reveal.js/) idea
     * Including [Showdown](https://github.com/showdownjs/showdown) module
-
-* First Release
-  * 1.0.0: [To be published ~ 15/06/2018]
