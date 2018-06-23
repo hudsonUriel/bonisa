@@ -1,5 +1,7 @@
 # BONISA.JS
 
+![Bonisa Logo](../src/media/img/logo/svg/logo-full.svg)
+
 Bonisa means "to show" in zulu language.
 
 This library was developed to make a user-friendly interface between JavaScript libraries and dynamic, 
