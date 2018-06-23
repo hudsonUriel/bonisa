@@ -1,6 +1,6 @@
 # BONISA.JS
 
-![Bonisa Logo](../src/media/img/logo/svg/logo-full.svg)
+![Bonisa Logo](./src/media/img/logo/svg/logo-full.svg)
 
 Bonisa means "to show" in zulu language.
 
