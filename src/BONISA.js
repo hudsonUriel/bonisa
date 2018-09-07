@@ -99,8 +99,8 @@
             // Slides configurations
             config = {
                 // Slide default size
-                width: null,
-                height: null
+                width: "1280px",
+                height: "720px"
             },
             
         // Generic flags
