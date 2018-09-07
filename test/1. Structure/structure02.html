@@ -8,17 +8,35 @@
         <!-- 32px Bonisa Icon -->
         <link rel="icon" href="../../src/media/img/logo/png/icon-text.png" />
         
+        <!-- Style -->
+        <link rel="stylesheet" type="text/css" href="../src/css/style.css" />
+        
         <!-- OPENING BONISA -->
-            <script src="../../src/BONISA.js"></script>
+        <script src="../../src/BONISA.js"></script>
+            
+        <script>
+        // INITIALIZING BONISA
+            Bonisa.init();
+
+           // Writing in the document
+            document.write(
+                "<h3>Testing structure</h3>"
+            );
+        </script>
     </head>
     <body>
         <main class="bonisa">
+            <p>This is <em>main.bonisa</em></p>
+            <p>(it will work as a wrapper for the presentation)</p>
+            
             <section>
-                <h2>This is the first slide</h2>
+                <p>This is <em>main.bonisa>section</em></p>
+                <p>a.k.a. slide</p>
             </section>
             
             <section>
-                <h2>This is the second slide</h2>
+                <p>This is <em>main.bonisa>section</em></p>
+                <p>a.k.a. another slide</p>
             </section>
         </main>
     </body>
