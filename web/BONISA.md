@@ -1,6 +1,6 @@
 # BONISA.JS
 
-![Bonisa Logo](../src/media/img/logo/svg/logo-full.svg)
+![Bonisa Logo](../media/img/logo/svg/logo-full.svg)
 
 Bonisa is a user-friendly framework to create dinamic, interactive and awesome HTML presentations, with:
 
