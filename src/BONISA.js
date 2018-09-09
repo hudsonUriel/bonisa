@@ -1,6 +1,12 @@
 /*!
  * bonisa.js
+ * 
+ * github.com/hudsonUriel/bonisa
+ * gitlab.com/zmdy/bonisa
+ * 
  * AGPL-3.0 licensed
+ * 
+ * Copyright (C) 2018 Hudson Uriel
  *
  */
 
