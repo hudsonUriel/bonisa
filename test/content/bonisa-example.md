@@ -13,3 +13,9 @@ Bonisa means "to show" in zulu language. This is a personal framework used to bu
 # Markdown... it, right now!
 
 This is a presentation built with a Markdown text file.
+
+---
+
+# Links are alowed
+
+You can put links here too... [Google](http://google.com)
