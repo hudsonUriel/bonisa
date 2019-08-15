@@ -124,6 +124,7 @@ var Bonisa = (function (){
 	}
 	
 	Bonisa.createSlide = function(content){
+		content = relativeReference(content);
 		content = content.split('---');
 
 		for(let c in content){
