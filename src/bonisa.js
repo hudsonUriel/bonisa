@@ -22,9 +22,15 @@ var Bonisa = (function (){
 				impress: 'div#impress div.step'
 			}
 		},
+			
 		// Functions
 		init
 	;
+	
+	// Sleep function
+	const sleep = (milliseconds) => {
+		return new Promise(resolve => setTimeout(resolve, milliseconds))
+	}
 	
 	Bonisa.init = function(configs){
 		// Normalizes the input
@@ -35,12 +41,14 @@ var Bonisa = (function (){
 			file,
 			dir,
 			engine,
-			callback;
+			callback,
+			wait;
 		
 		file = configs.file || null;
 		dir = configs.dir || './';
 		engine = configs.engine || configs.framework || configs.tool || 'reveal';
 		callback = configs.callback || Bonisa.createSlide;
+		wait = configs.wait;
 		
 		// If there is no file, returns an error
 		if(!file){Bonisa.error(); return -1;}
@@ -52,7 +60,13 @@ var Bonisa = (function (){
 		Bonisa.engine = Bonisa.engines.hasOwnProperty(engine) ? engine : 'reveal';
 		Bonisa.callback = callback;
 		
+		// Creats the wait page
+		Bonisa.createWait();
+		
 		// Creates the framework structure
+		Bonisa.configStructure();
+		
+		// Configures the framework
 		Bonisa.configEngine();
 		
 		// Opens the file(s)
@@ -84,13 +98,7 @@ var Bonisa = (function (){
 		console.log()
 	}
 	
-	Bonisa.fixLocations = function(){
-		/*
-		* MAKE THE LOCATIONS RELATIVE
-		*/
-	}
-	
-	Bonisa.configEngine = function(){
+	Bonisa.configStructure = function(){
 		var
 			structure = {
 				'.': 'className',
@@ -123,8 +131,40 @@ var Bonisa = (function (){
 		return element;
 	}
 	
+	Bonisa.configEngine = function(){
+		var
+			baseDir = '../libs/',
+			script, link;
+		
+		// Creates the script and the link
+		script = document.createElement('script');
+		link = document.createElement('link');
+		
+		script.src = baseDir + Bonisa.engine + '/' + Bonisa.engine + '.min.js';
+		
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = baseDir + Bonisa.engine + '/' + Bonisa.engine + '.min.css';
+		
+		// Appends in the end of the document
+		document.body.appendChild(script);
+		document.body.appendChild(link);
+		
+		sleep(1500).then(() => {
+				// Initializes the slide
+			Bonisa.wait.style.display = 'none';
+			
+			switch(Bonisa.engine){
+				case 'reveal':
+					Reveal.initialize();
+					break;
+			}					 
+	 	});
+	}
+	
 	Bonisa.createSlide = function(content){
 		content = relativeReference(content);
+		
 		content = content.split('---');
 
 		for(let c in content){
@@ -136,6 +176,21 @@ var Bonisa = (function (){
 		}
 
 		Bonisa.slide.parentElement.removeChild(Bonisa.slide);
+	}
+	
+	Bonisa.createWait = function(){
+		var wait = document.createElement('div');
+		
+		wait.innerHTML = Bonisa.wait || "<img src='../media/img/loading.gif' style='width:15vw;margin-left:42.5%;margin-top:32.5vh;margin-bottom:2%;'>\n<p style='text-align: center;'>Loading... please, wait...</p>";
+		
+		wait.style.display = 'inline-block';
+		wait.style.visibility = 'visible';
+		wait.style.width = '100vw';
+		wait.style.height = '100vh';
+		
+		document.body.appendChild(wait);
+		
+		Bonisa.wait = wait;
 	}
 	
 	return Bonisa;
