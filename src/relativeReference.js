@@ -11,7 +11,9 @@ function getReferences(string){
 		rtr,
 			
 		regex = /(\u002e+|\D+|\d+)\u002F/g,
-		externalLink = /(\u002ecom|\u002egov|\u002enet)/g;
+		externalLink = /(\u002ecom|\u002egov|\u002enet)/g,
+		hName = curLocation.hostname,
+		pName = curLocation.pathname.replace('/','').split('/')[0];
 	
 	rtr = string;
 	
@@ -23,7 +25,10 @@ function getReferences(string){
 			link = string[str];
 			
 			if(!externalLink.test(link)){
-				console.log(link.replace(/\u002e+\u002f/g, ""));
+				var
+					newLink = curLocation.protocol + '//' + hName + '/' + pName + '/' +link.replace(/\u002e+\u002f/g, "");
+				
+				rtr = rtr.replace(link, newLink);
 			}
 		}
 	}
