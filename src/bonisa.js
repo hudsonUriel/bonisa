@@ -163,7 +163,7 @@ var Bonisa = (function (){
 	}
 	
 	Bonisa.createSlide = function(content){
-		content = relativeReference(content);
+		content = relativize(content);
 		
 		content = content.split('---');
 

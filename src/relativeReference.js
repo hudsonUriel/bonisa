@@ -1,10 +1,6 @@
-function relativeReference(reference){
-	return getReferences(reference);
-}
-
-function getReferences(string){
+function relativize(content){
 	var 
-		string ,
+		content ,
 			
 		link,
 		curLocation = window.location,
@@ -15,15 +11,18 @@ function getReferences(string){
 		hName = curLocation.hostname,
 		pName = curLocation.pathname.replace('/','').split('/')[0];
 	
-	rtr = string;
+	rtr = content;
 	
-	string = string.split(/(\u0028|\u0029|\u005b|\u005d| +)/g);
+	// Split each [Link Reference](link/here) element found in the content
+	content = content.split(/(\u0028|\u0029|\u005b|\u005d| +)/g);
 	
-	// Search for link
-	for(let str in string){
-		if(regex.test(string[[str]])){
-			link = string[str];
+	// Search for links
+	for(let str in content){
+		// Test if it is a link
+		if(regex.test(content[[str]])){
+			link = content[str];
 			
+			// Tests if it is not an external link
 			if(!externalLink.test(link)){
 				var
 					newLink = curLocation.protocol + '//' + hName + '/' + pName + '/' +link.replace(/\u002e+\u002f/g, "");
