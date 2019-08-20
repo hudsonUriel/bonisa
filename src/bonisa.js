@@ -158,6 +158,9 @@ var Bonisa = (function (){
 				case 'reveal':
 					Reveal.initialize();
 					break;
+				case 'impress':
+					impress().init();
+					break;
 			}					 
 	 	});
 	}
