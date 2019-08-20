@@ -53,12 +53,27 @@ var Bonisa = (function (){
 		// If there is no file, returns an error
 		if(!file){Bonisa.error(); return -1;}
 
+		// Get the current location
+		Bonisa.location = 
+			window.location.protocol + '//' +
+			window.location.host + '/' +
+			window.location.pathname.replace('/','').split('/')[0];
+		
 		// Otherwise, let's play the game
 		Bonisa.file = file;
+		Bonisa.fileFormat = file.split('.')[file.split('.').length - 1];
+		
 		Bonisa.dir = dir;
+		
 		// Make sure that a valid engine is selected
 		Bonisa.engine = Bonisa.engines.hasOwnProperty(engine) ? engine : 'reveal';
 		Bonisa.callback = callback;
+		
+		// Get the dependencies
+		Bonisa.dependencies = configs.dependencies;
+		
+		// Load the necessary libraries/dependencies
+		Bonisa.loadDependencies();
 		
 		// Creats the wait page
 		Bonisa.createWait();
@@ -71,8 +86,6 @@ var Bonisa = (function (){
 		
 		// Opens the file(s)
 		Bonisa.openFiles();
-		
-		// Fix the references (links)
 	};
 	
 	Bonisa.openFiles = function(){
@@ -133,7 +146,7 @@ var Bonisa = (function (){
 	
 	Bonisa.configEngine = function(){
 		var
-			baseDir = '../libs/',
+			baseDir = Bonisa.location + '/libs/',
 			script, link;
 		
 		// Creates the script and the link
@@ -184,7 +197,7 @@ var Bonisa = (function (){
 	Bonisa.createWait = function(){
 		var wait = document.createElement('div');
 		
-		wait.innerHTML = Bonisa.wait || "<img src='../media/img/loading.gif' style='width:15vw;margin-left:42.5%;margin-top:32.5vh;margin-bottom:2%;'>\n<p style='text-align: center;'>Loading... please, wait...</p>";
+		wait.innerHTML = Bonisa.wait || "<img src='" + Bonisa.location + "../media/img/loading.gif' style='width:15vw;margin-left:42.5%;margin-top:32.5vh;margin-bottom:2%;'>\n<p style='text-align: center;'>Loading... please, wait...</p>";
 		
 		wait.style.display = 'inline-block';
 		wait.style.visibility = 'visible';
@@ -194,6 +207,28 @@ var Bonisa = (function (){
 		document.body.appendChild(wait);
 		
 		Bonisa.wait = wait;
+	}
+
+	Bonisa.loadDependencies = function(){
+		var
+		  dependencies = [],
+		  formats = {
+		    'md': 'marked',
+		    'adoc': 'asciidoctor'
+		  };
+		
+		// Check if it is an Array
+		Bonisa.dependencies = Array.isArray(Bonisa.dependencies) ?
+			Bonisa.dependencies.push(formats[Bonisa.fileFormat]) :
+		    [formats[Bonisa.fileFormat]];
+		
+		// Opens each dependecie
+		for(let dep in Bonisa.dependencies){
+			var lib = document.createElement('script');
+			lib.src = Bonisa.location + '/libs/' + Bonisa.dependencies + '/' +  Bonisa.dependencies + '.min.js';
+			document.head.appendChild(lib);
+		
+		}
 	}
 	
 	return Bonisa;
