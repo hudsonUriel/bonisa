@@ -72,20 +72,23 @@ var Bonisa = (function (){
 		// Get the dependencies
 		Bonisa.dependencies = configs.dependencies;
 		
-		// Load the necessary libraries/dependencies
-		Bonisa.loadDependencies();
-		
 		// Creats the wait page
 		Bonisa.createWait();
 		
-		// Creates the framework structure
-		Bonisa.configStructure();
+		// Load the necessary libraries/dependencies
+		Bonisa.loadDependencies();
 		
-		// Configures the framework
-		Bonisa.configEngine();
+		// Waits a little time until everything is ok...
+		sleep(500).then(() => {
+		    // Creates the framework structure
+		    Bonisa.configStructure();
 		
-		// Opens the file(s)
-		Bonisa.openFiles();
+		    // Configures the framework
+		    Bonisa.configEngine();
+		
+		    // Opens the file(s)
+		    Bonisa.openFiles();
+		});
 	};
 	
 	Bonisa.openFiles = function(){
@@ -163,7 +166,7 @@ var Bonisa = (function (){
 		document.body.appendChild(script);
 		document.body.appendChild(link);
 		
-		sleep(1500).then(() => {
+		sleep(500).then(() => {
 				// Initializes the slide
 			Bonisa.wait.style.display = 'none';
 			
