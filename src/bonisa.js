@@ -69,6 +69,10 @@ var Bonisa = (function (){
 		Bonisa.engine = Bonisa.engines.hasOwnProperty(engine) ? engine : 'reveal';
 		Bonisa.callback = callback;
 		
+		// Get the configurations
+		Bonisa.config = configs.options || configs.configs || {};
+		Bonisa.process = configs.process || function(){};
+		
 		// Get the dependencies
 		Bonisa.dependencies = configs.dependencies;
 		
@@ -83,11 +87,15 @@ var Bonisa = (function (){
 		    // Creates the framework structure
 		    Bonisa.configStructure();
 		
+				// Opens the file(s)
+		    Bonisa.openFiles();
+				
+				// Personal configurations
+				Bonisa.process();
+			
 		    // Configures the framework
 		    Bonisa.configEngine();
-		
-		    // Opens the file(s)
-		    Bonisa.openFiles();
+		    
 		});
 	};
 	
@@ -167,15 +175,15 @@ var Bonisa = (function (){
 		document.body.appendChild(link);
 		
 		sleep(500).then(() => {
-				// Initializes the slide
+			// Initializes the slide
 			Bonisa.wait.style.display = 'none';
 			
 			switch(Bonisa.engine){
 				case 'reveal':
-					Reveal.initialize();
+					Reveal.initialize(Bonisa.config);
 					break;
 				case 'impress':
-					impress().init();
+					impress().init(Bonisa.config);
 					break;
 			}					 
 	 	});
@@ -184,7 +192,8 @@ var Bonisa = (function (){
 	Bonisa.createSlide = function(content){
 		content = relativize(content);
 		
-		content = content.split('---');
+		// Split the content by marker '---' in the beggining of lines
+		content = content.split(/^\u002D{3,}/gm);
 
 		for(let c in content){
 			var 
@@ -200,7 +209,7 @@ var Bonisa = (function (){
 	Bonisa.createWait = function(){
 		var wait = document.createElement('div');
 		
-		wait.innerHTML = Bonisa.wait || "<img src='" + Bonisa.location + "../media/img/loading.gif' style='width:15vw;margin-left:42.5%;margin-top:32.5vh;margin-bottom:2%;'>\n<p style='text-align: center;'>Loading... please, wait...</p>";
+		wait.innerHTML = Bonisa.wait || "<img src='" + Bonisa.location + "/media/img/loading.gif' style='width:15vw;margin-left:42.5%;margin-top:32.5vh;margin-bottom:2%;'>\n<p style='text-align: center;'>Loading... please, wait...</p>";
 		
 		wait.style.display = 'inline-block';
 		wait.style.visibility = 'visible';
