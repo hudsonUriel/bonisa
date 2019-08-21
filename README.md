@@ -24,7 +24,7 @@ Bonisa was originaly a ~framework~ set of JS scripts  built to allow the creatio
 
 The goal now is to centralize a, at least, a little bit more complete framework to turn .md files in web-based presentations.
 
-With Bonisa, the inclusion of more dynamic and visual impacting elements in presentations will (i hope so...) make them more modern and interactive.
+With Bonisa, the inclusion of more dynamic and visual impacting elements in presentations will make them more modern and interactive.
 
 And more important: it must be easy, quick and free to use.
 
@@ -36,78 +36,95 @@ The creation of presentations with Bonisa starts with the inclusion of the libra
 <script src="bonisa.js"></script>
 ```
 
-The Bonisa library will start the job as soon as the page is opened. To begin a new presentation it's necessary to write a Markdown or AsciiDoc file containig the textual content of the presentation, like this:
+To begin a new presentation it's necessary to write a Markdown or AsciiDoc file containig the textual content of the presentation, like this:
 
-```
-# My First Presentation
-## by: Someone
+```markdown
+# Markdown
 
----
+A presentation by [zmdy](https://github.com/zmdy)
 
-# This is the first slide.
+***
 
----
+# What is Markdown?
 
-# This is the slide #2
+Markdown is a text format created in 2004 by [John Gruber](https://daringfireball.net/projects/markdown/).
 
-And it have a little text somewhere about something
+***
 
----
-
-You can put list here too...
-* Like this
-* one
-* over
-* here
-* ...
-
----
-
-And whatever else you want to
-
+> Markdown is a text-to-HTML conversion tool for web writers. Markdown allows you to write using an easy-to-read, easy-to-write plain text format, then convert it to structurally valid XHTML (or HTML). (...) The overriding design goal for Markdown’s formatting syntax is to make it as readable as possible. *John Gruber*
 ```
 
-To loads this file and begins the show, it's just necessary to inform to Bonisa the file location and some minor configurations.
+To loads this file and begins the show, it's just necessary to inform to Bonisa the file location. _Et voilà_, the presentation will begins!
 
+```html
+<script>
+	// When the page loads...
+	window.onload = function(){
+		// Defines where your file is
+		var myFile = 'path/to/my/file/myFile.md';
+		
+		// Initializes Bonisa with this text file
+		Bonisa.init({
+			file: myFile
+		});
+	}
+</script>
 ```
-presentationConfig = {
-		file: 'fileName.extension',
-		dir: 'fileLocation',
-		tool: 'fileFramework',
 
-		libs: ['anime', 'd3', 'typed'],
+***
 
-		subject: 'Presentation subject/theme',
-		author: 'Author Name',
-		lang: 'language',
-		date: '01/01/01',
-		license: 'CC-BY',
-		comments: 'Presentation notes or comments'
-	};
+# Frameworks
+
+You can, of course, chose the library used to build the presentation.  By default, Bonisa will turn your text file in to a [reveal.js](https://github.com/hakimel/reveal.js/) presentation, with none stylesheet.
+
+Bonisa allows you to use:
+
+* [Reveal](https://github.com/hakimel/reveal.js/)
+* [Impress](https://github.com/impress/impress.js/)
+* [Bespoke](https://github.com/bespokejs/bespoke)
+* [Big](https://github.com/tmcw/big)
+
+You can create your own styles or used the ones available with the selected framework.
+
+***
+
+# How does it works?
+
+When you calls the `bonisa.init` function, it will loads and process all of the configurations passed to it. Most of them are optional, but you can, of course, change it's values.
+
+The most basic Bonisa options are the insertion of text files. You can open an unique or multiple text files, indicating it's location with the `dir` property.
+
+| Property | Use | Example |
+| --- | :---: | :---: |
+| file | (REQUIRED) Defines an unique text file | `file: 'your/file/location/myFile.md'`|
+| dir | (OPTIONAL) Defines a base directory to open the file(s). The default value is './' | `dir: 'your/files/location/folder'` |
+| file + dir | (OPTIONAL) Defines several text files, in a specific directory | `dir: 'your/files/location/folder', file: ['file1.md', 'file2.md', 'file3.md']`|
+
+When you defines a file name, Bonisa will get it's format - `fileFormat` - like md, adoc, txt, html... This `fileFormat` will be used soon, remember it!
+
+Other very important Bonisa option is the framework used to construct the presentation.  The default Bonisa framework is [reveal.js](https://github.com/hakimel/reveal.js/), but you can change it using either `framework`, `tool` or `engine` properties, with these engine options:
+
+* bespoke
+* big
+* impress
+* reveal
+
+| Property | Use | Example |
+| --- | :---: | :---: |
+| framework OR tool OR engine | (OPTIONAL) Defines the presentation framework | `tool: 'impress'`|
+
+
+
+```json
+configs = {
+	// Defines a single text file...
+	file: 'your/file/location/myFile.md',
 	
-	Bonisa.init(presentationConfig);
+	// Defines lots of files...
+ 	file: ['file1.md', 'file2.md', 'file3.md'],
+	// ... all of them stored in this directory (folder)
+	dir: 'your/files/location/folder'
+					 
+}
+
 ```
-
-You need, of course, chose the library used to build the presentation, like Reveal, Impress, Bespoke...
-
-(IN PROGRESS...)
-
-Each slide of the presentation is represented by a `section` element, while
-the presentation itself is structured in a `main .bonisa` element.
-
-### Semantics
-
-The choice of slides as a `section` element was made according to [W3C](https://www.w3.org/TR/html52/),
-in which the semantic meaning of HTML elements can:
-
-* provide additional and critical functionalities to Assistive Technologies;
-* provide valuable semantic informations;
-* convey hints to Assistive Technologies and SEO's (Search Engines).
-
-It means that the correct semantic structuring of a web-page or web-application is extremely important! In this context, the semantic meaning of the `section` element, makes each individual slide of the presentation works as a [thematic grouping of contents](https://www.w3.org/TR/html52/sections.html#sections).
-
-The complete meaning of the presentation itself is made by using the grouping element `main`,
-which [provides unique meaning to that document and excludes content that is repeated across others](https://www.w3.org/TR/html52/grouping-content.html#the-main-element).
-
-In short, all of it means that each slide of the presentation is semantically independent,
-but also part of a bigger content: the presentation itself.
