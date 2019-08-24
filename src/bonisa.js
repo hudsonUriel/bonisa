@@ -32,23 +32,23 @@ var Bonisa = (function (){
 		return new Promise(resolve => setTimeout(resolve, milliseconds))
 	}
 	
+	// Here is where all the magic happens...
 	Bonisa.init = function(configs){
 		// Normalizes the input
 		configs = typeof configs == 'object' ? configs : {configs};
 		
 		// Get the basic properties
-		var
-			file,
-			dir,
-			engine,
-			callback,
-			wait;
+		var file, dir, engine, callback, delimiter, config, process, style;
 		
+		// Basic configuration properties
 		file = configs.file || null;
 		dir = configs.dir || './';
 		engine = configs.engine || configs.framework || configs.tool || 'reveal';
 		callback = configs.callback || Bonisa.createSlide;
-		wait = configs.wait;
+		delimiter = configs.delimiter || '---';
+		config = configs.options || configs.configs || {};
+		process = configs.process || function(){};
+		style = configs.themes || configs.styles || [];
 		
 		// If there is no file, returns an error
 		if(!file){Bonisa.error(); return -1;}
@@ -65,13 +65,22 @@ var Bonisa = (function (){
 		
 		Bonisa.dir = dir;
 		
+		// Get the delimiter
+		Bonisa.delimiter = delimiter;
+		
 		// Make sure that a valid engine is selected
 		Bonisa.engine = Bonisa.engines.hasOwnProperty(engine) ? engine : 'reveal';
 		Bonisa.callback = callback;
 		
+		// Defines the used structure
+		Bonisa.structure = Bonisa.engines[Bonisa.engine];
+		
 		// Get the configurations
-		Bonisa.config = configs.options || configs.configs || {};
-		Bonisa.process = configs.process || function(){};
+		Bonisa.config = config;
+		Bonisa.process = process;
+		
+		// Get the styles
+		Bonisa.styles = Array.isArray(style) ? style : [style];
 		
 		// Get the dependencies
 		Bonisa.dependencies = configs.dependencies;
@@ -82,7 +91,7 @@ var Bonisa = (function (){
 		// Load the necessary libraries/dependencies
 		Bonisa.loadDependencies();
 		
-		// Waits a little time until everything is ok...
+		// Waits a little time until everything is loaded...
 		sleep(500).then(() => {
 		    // Creates the framework structure
 		    Bonisa.configStructure();
@@ -93,68 +102,16 @@ var Bonisa = (function (){
 				// Personal configurations
 				Bonisa.process();
 			
+				// Stylizes
+				Bonisa.stylize();
+			
 		    // Configures the framework
 		    Bonisa.configEngine();
 		    
 		});
 	};
 	
-	Bonisa.openFiles = function(){
-		var 
-			file = Array.isArray(Bonisa.file) ? Bonisa.file : [Bonisa.file];
-		
-		for(let f in file){
-			openFile(
-				Bonisa.dir + file,
-				file[f].split('.')[file[f].split('.').length - 1],
-				Bonisa.callback
-			);
-		}
-	}
-	
-	Bonisa.error = function(){
-		 console.log("%cYou've got an error message, don't you? If you did, read this: ", "color: #44d; font-weight: bold; font-size: 1.5em;");
-		
-		console.log("%cHouston, we've got a problem...\n\n%cIt's kind of... impossible to create a presentation without a text file. To configure it do this:\n\n%cBonisa.init({\n\tfile: 'yourFileName.extension',\n\tdir: 'file/directory/location',\n\tengine: 'engine-name'\n});", "color: #111; text-transform: uppercase; font-size: 1.25em; font-weight: bold;", "color: #111;", "color: #44f; font-family: monospace; padding: 2%;");
-
-		alert("ERROR: No input file was selected to create the presentation. Open DevTools (F12) to more details ;)");
-		
-		console.log()
-	}
-	
-	Bonisa.configStructure = function(){
-		var
-			structure = {
-				'.': 'className',
-				'#': 'id'
-			},
-			frameworkStructure;
-		
-		frameworkStructure = Bonisa.engines[Bonisa.engine];
-		
-		frameworkStructure = frameworkStructure.split(' ');
-
-		for(let area in frameworkStructure){
-			var
-				identification = frameworkStructure[area].replace('#', '') != frameworkStructure[area] ? 'id' : 'className',
-				element,
-				parent;
-
-			parent = frameworkStructure[area].replace(/(\u0023|\u002e)/g, ' ').split(' ');
-
-			// Creates the object
-			element = document.createElement(parent[0]);
-			element[identification] = parent[1];
-
-			// Append it
-			parent = frameworkStructure[area - 1] || 'body';
-			document.querySelector(parent).appendChild(element);
-		}
-		
-		Bonisa.slide = element;
-		return element;
-	}
-	
+	// Configures the Engine, opening the necessary files
 	Bonisa.configEngine = function(){
 		var
 			baseDir = Bonisa.location + '/libs/',
@@ -189,23 +146,84 @@ var Bonisa = (function (){
 	 	});
 	}
 	
+	// Creates the slides with the read text
 	Bonisa.createSlide = function(content){
+		var regexp = '^';
+		
+		// Get all local links and put them in to absolute paths
 		content = relativize(content);
 		
-		// Split the content by marker '---' in the beggining of lines
-		content = content.split(/^\u002D{3,}/gm);
-
+		// Turn the delimiter in to regexp
+		for(let c in Bonisa.delimiter)
+			regexp += '\\u00' + Bonisa.delimiter.charCodeAt(c).toString(16);
+		
+		regexp = RegExp(regexp, 'gm');
+		
+		// Split the content by selected marker (default is '---')
+		content = content.split(regexp);
+		
+		// Defines which convert library to use
+		switch(Bonisa.fileFormat){
+			case 'md':
+				Bonisa.convert = marked;
+				break;
+			case 'adoc':
+				Bonisa.convert = asciidoctor.convert; 
+				break;
+		}
+		
+		// Converts the text AND creates the slide
 		for(let c in content){
 			var 
 				elm = Bonisa.slide.cloneNode(true);
-
-			elm.innerHTML += marked(content[c]);
+			
+			elm.innerHTML += Bonisa.convert(content[c]);
 			Bonisa.slide.parentElement.appendChild(elm);
 		}
-
+		
+		// Removes an extra element - the original void element
 		Bonisa.slide.parentElement.removeChild(Bonisa.slide);
 	}
 	
+	// Creates and configures the structure
+	Bonisa.configStructure = function(){
+		var
+			structure = {
+				'.': 'className',
+				'#': 'id'
+			},
+			frameworkStructure;
+		
+		// Get the structure of the selected framework
+		frameworkStructure = Bonisa.structure;
+		
+		frameworkStructure = frameworkStructure.split(' ');
+		
+		// Creates the HTML object and configure it's ID or CLASSNAME
+		for(let area in frameworkStructure){
+			var
+				identification = frameworkStructure[area].replace('#', '') != frameworkStructure[area] ? 'id' : 'className',
+				element,
+				parent;
+			
+			// Element parent
+			parent = frameworkStructure[area].replace(/(\u0023|\u002e)/g, ' ').split(' ');
+			
+			// Creates the object
+			element = document.createElement(parent[0]);
+			element[identification] = parent[1] || '';
+			
+			// Append it
+			parent = frameworkStructure[area - 1] || 'body';
+			document.querySelector(parent).appendChild(element);
+		}
+		
+		// Defines
+		Bonisa.slide = element;
+		return element;
+	}
+	
+	// This is showed when everything is still loading
 	Bonisa.createWait = function(){
 		var wait = document.createElement('div');
 		
@@ -220,7 +238,17 @@ var Bonisa = (function (){
 		
 		Bonisa.wait = wait;
 	}
+	
+	// Error message
+	Bonisa.error = function(){
+		 console.log("%cYou've got an error message, don't you? If you did, read this: ", "color: #44d; font-weight: bold; font-size: 1.5em;");
+		
+		console.log("%cHouston, we've got a problem...\n\n%cIt's kind of... impossible to create a presentation without a text file. To configure it do this:\n\n%cBonisa.init({\n\tfile: 'yourFileName.extension',\n\tdir: 'file/directory/location',\n\tengine: 'engine-name'\n});", "color: #111; text-transform: uppercase; font-size: 1.25em; font-weight: bold;", "color: #111;", "color: #44f; font-family: monospace; padding: 2%;");
 
+		alert("ERROR: No input file was selected to create the presentation. Open DevTools (F12) to more details ;)");
+	}
+	
+	// Loads the requested and obligatory dependencies
 	Bonisa.loadDependencies = function(){
 		var
 		  dependencies = [],
@@ -239,7 +267,32 @@ var Bonisa = (function (){
 			var lib = document.createElement('script');
 			lib.src = Bonisa.location + '/libs/' + Bonisa.dependencies + '/' +  Bonisa.dependencies + '.min.js';
 			document.head.appendChild(lib);
+		}
+	}
+	
+	// Teaches the computer how to make a pancake...
+	Bonisa.openFiles = function(){
+		var 
+			file = Array.isArray(Bonisa.file) ? Bonisa.file : [Bonisa.file];
 		
+		// Opens each file
+		for(let f in file){
+			openFile(
+				Bonisa.dir + file,
+				file[f].split('.')[file[f].split('.').length - 1],
+				Bonisa.callback
+			);
+		}
+	}
+	
+	// Apply the selected styles
+	Bonisa.stylize = function(){
+		// Opens all styles
+		for(let style in Bonisa.styles){
+			var link = document.createElement('link');
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = Bonisa.styles[style];
 		}
 	}
 	

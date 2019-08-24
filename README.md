@@ -113,6 +113,10 @@ Other very important Bonisa option is the framework used to construct the presen
 | --- | :---: | :---: |
 | framework OR tool OR engine | (OPTIONAL) Defines the presentation framework | `tool: 'impress'`|
 
+After choose the file(s) and the library, you can start the presentation with `Bonisa.init()`, as show above.
+
+It's necessary to wait 1 second until all the libraries and files are read and ready.
+
 
 
 ```json

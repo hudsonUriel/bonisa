@@ -1,3 +1,15 @@
+/*
+* Bonisa
+* http://github.com/zmdy/bonisa
+* MIT Licensed
+*
+* Copyright (C) 2019 Hudson Uriel Ferreira, http://gihub.com/zmdy
+*/
+
+/*
+* Searches for local links and turn them in to absolute paths
+*/
+
 function relativize(content){
 	var 
 		content ,
@@ -27,7 +39,6 @@ function relativize(content){
 				
 			var
 				newLink = Bonisa.location + '/' + link.replace(/\u002E+\u002F/g, "");
-			console.log(newLink);
 
 			rtr = rtr.replace(link, newLink);
 		}
