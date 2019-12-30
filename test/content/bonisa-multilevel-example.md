@@ -81,7 +81,31 @@ Now, you just need to indicate to Bonisa which file it's going to read... _et vo
 	}
 </script>
 ```
+___
 
+# Bonisa
+
+You can edit a lot of other properties.
+
+| Property | Type | Definition |
+| --- | :---: | :---: |
+| callback | Function | Function to turn the text `content` in to a presentation |
+| config | Object | Options passed to the `Bonisa.init` function |
+| convert | Function | Function used to parse the text content to HTML |
+| createSlide | Function | Default `callback` function |
+| delimiter | String | Delimiter used to split the text content |
+| engine OR framework OR tool | String | Defines the presentation framework |
+| file | String or Array | Text file(s) |
+| fileFormat | String or Array | Text file(s) formats |
+| process | Function | Defines a processing function to your presentation |
+| slide | DOM | Defines the HTML element used as slide |
+| strucutre | String | Query structure of the framework presentation |
+| styles OR themes | String OR Array | Loads the presentation styles |
+| stylize | Function | Function used to stylizes the presentation. By default opens all the stylesheets defined in `styles` |
+
+___
+
+To know more, read the source!
 ---
 
 # Frameworks 
