@@ -7,20 +7,22 @@
 */
 
 /*
-* Opens file
+* Generic function to open text files and process them
 */
-function openFile(file, fileFormats, callbackFunctions){
+function openFile(properties){
 	'use strict';
 	
+		
+
 	// Creates the request
 	var 
-	    request = new XMLHttpRequest(),
-		rtr;
-	
-	// Creates array
-	fileFormats = Array.isArray(fileFormats) ? fileFormats : [fileFormats];
-	callbackFunctions = Array.isArray(callbackFunctions) ? callbackFunctions : [callbackFunctions];
+		request = new XMLHttpRequest(),
 
+		file = properties.file,
+		callbackFunction = properties.callback,
+		format = properties.format || file.split('.').slice(-1)[0]
+	;
+	
 	// Try opens the file using GET method
 	try{
 		request.open('GET', file);
@@ -35,23 +37,15 @@ function openFile(file, fileFormats, callbackFunctions){
 	
 	// When file is opened
 	request.onreadystatechange = function () {
-	    if (request.readyState === 4) {
-			var format = file.split('.')[file.split('.').length - 1].toLowerCase();
-			
-			for(let formats in fileFormats){
-				
-				if(format == fileFormats[formats]){
-					try{
-							callbackFunctions[formats](request.responseText);
-				    } catch (err){
-					    console.error(err);
-								console.log(callbackFunctions[formats] + " is not a function!");
-					    continue;
-				    }
-				}
+		// If we already have a full response
+		if (request.readyState === 4) {
+			try{
+					callbackFunction({content: request.responseText, file: file, fileFormat: format});
+			} catch (err){
+				console.error(err);
+				console.log("No function was passed as argument.");
+				return -1;
 			}
-			
-			var rtrn = request.responseText;
 		}
 	};
     

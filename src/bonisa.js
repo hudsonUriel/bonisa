@@ -38,8 +38,8 @@ var Bonisa = (function () {
     Bonisa = {
       version: '1.1-alpha',
       engines: {
-        reveal: ['div.reveal>div.slides>section', 'div.reveal>div.slides>section>section'],
-        impress: ['div#impress>div.step']
+        impress: ['div#impress>div.step'],
+        reveal: ['div.reveal>div.slides>section', 'div.reveal>div.slides>section>section']
       }
     },
     waitTime = 500; // WAIT TIME (miliseconds)
@@ -58,7 +58,6 @@ var Bonisa = (function () {
   * 
   * @param  {Object}  objectVar   Configuration properties of the presentation.
   *
-  *
   * @return {type} Return value description.
   */
   Bonisa.init = function (configs) {
@@ -67,27 +66,8 @@ var Bonisa = (function () {
       configs
     };
 
-    // Declares the basic properties
-    var 
-      callback,   // Callback function
-      config,     // Configuration function
-      delimiter,  // Delimter(s) used to spilt textual content
-      delimiters,
-      dir,        // Base file directory
-      engine,     // Engine (tool/library) used to make the presentations
-      file,       // File(s) used to create the presentation
-      process,    // Special function
-      style;      // Set (loads) the styles of the presentation
-
-    // Gets the configuration properties
-    callback = configs.callback || Bonisa.createSlides;
-    config = configs.options || configs.configs || {};
-    delimiters = configs.delimiters || ['---', '___', '***'];
-    dir = configs.dir || './';
-    engine = configs.engine || configs.framework || configs.tool || 'reveal';
-    file = configs.file || null;
-    process = configs.process || function () {};
-    style = configs.themes || configs.styles || [];
+    // Get the file(s) necessary to the presentation
+    var file = configs.file || null;
 
     // If there is no file, returns an error
     if (!file) {
@@ -95,71 +75,13 @@ var Bonisa = (function () {
       return -1;
     } // Otherwise it will works just fine
     
-    // Get the current location
-    Bonisa.location =
-      window.location.protocol + '//' +
-      window.location.host + '/' +
-      window.location.pathname.replace('/', '').split('/')[0];
+    // Get and configures all necessary properties
+    configBonisaProperties(configs);
 
-    // Get the file AND file(s) format
-    Bonisa.file = file;
-    Bonisa.fileFormat = file.split('.')[file.split('.').length - 1];
-
-    // Get the directory
-    Bonisa.dir = dir;
-
-    // Get the delimiter
-    Bonisa.delimiters = delimiters;
-
-    // Make sure that a valid engine is selected
-    Bonisa.engine = Bonisa.engines.hasOwnProperty(engine) ? engine : 'reveal';
-    Bonisa.callback = callback;
-
-    // Defines the used structure
-    Bonisa.structure = Bonisa.engines[Bonisa.engine];
-
-    // Get the configurations
-    Bonisa.config = config;
-    Bonisa.process = process;
-
-    // Get the styles
-    Bonisa.styles = Array.isArray(style) ? style : [style];
-
-    // Get the dependencies
-    Bonisa.dependencies = configs.dependencies;
-
-    // Creats the wait page
-    Bonisa.createWait();
-
-    // Load the necessary libraries/dependencies
-    Bonisa.loadDependencies();
-
-    // Waits a little time until everything is loaded...
+    // Waits a little time until everything is loaded
     sleep(waitTime).then(() => {
-      // Defines which convert library to use
-      switch (Bonisa.fileFormat) {
-        case 'md':
-          Bonisa.convert = marked;
-          break;
-        case 'adoc':
-          Bonisa.convert = asciidoctor.convert;
-          break;
-      }
-
-      // Creates the framework structure
-      Bonisa.configStructure();
-
-      // Opens the file(s)
-      Bonisa.openFiles();
-
-      // Personal configurations
-      Bonisa.process();
-
-      // Stylizes
-      Bonisa.stylize();
-
-      // Configures the framework
-      Bonisa.configEngine();
+      // Calls all necessary functions to make Bonisa works
+      startBonisa();
     });
   };
 
@@ -229,12 +151,13 @@ var Bonisa = (function () {
       Bonisa.wait.style.display = 'none';
 
       switch (Bonisa.engine) {
-        case 'reveal':
-          Reveal.initialize(Bonisa.config);
-          break;
         case 'impress':
           impress().init(Bonisa.config);
           break;
+        case 'reveal':
+          Reveal.initialize(Bonisa.config);
+          break;
+       
       }
     });
   };
@@ -304,7 +227,12 @@ var Bonisa = (function () {
   // Creates the presentation itself
   Bonisa.createSlides = function (content) {
     // Defines the last 1st-level slide
-    var lastSlide = [];
+    var
+      lastSlide = [],
+      contentFormat = content.fileFormat
+    ;
+
+    content = content.content;
 
     // Starts all the last slides with a default value
     for(let level in Bonisa.structure)
@@ -336,7 +264,7 @@ var Bonisa = (function () {
       structure = Bonisa.structure[ content[c].level ];
       
       // Turns the textual content in to HTML
-      content[c].content = Bonisa.convert(content[c].content);
+      content[c].content = Bonisa.convert[contentFormat](content[c].content);
 
       // Creates a clone node AND inserts the content
       clone = structure.element.cloneNode(true);
@@ -414,11 +342,12 @@ var Bonisa = (function () {
         'adoc': 'asciidoctor'
       };
     
-    // Check if it is an Array
-    Bonisa.dependencies = Array.isArray(Bonisa.dependencies) ?
-      Bonisa.dependencies.push(formats[Bonisa.fileFormat]) : [formats[Bonisa.fileFormat]];
-    
-    Bonisa.dependencies = Bonisa.dependencies.concat(dependencies);
+    // Get all dependencies
+    for(let format in Bonisa.fileFormat)
+      if(dependencies.indexOf( formats[Bonisa.fileFormat[format]] ) == -1)
+        dependencies.push(formats[Bonisa.fileFormat[format]]);
+
+    Bonisa.dependencies = dependencies;
     
     // Opens each dependecie
     for (let dep in Bonisa.dependencies) {
@@ -431,15 +360,13 @@ var Bonisa = (function () {
 
   // Teaches the computer how to make a pancake...
   Bonisa.openFiles = function () {
-    var
-      file = Array.isArray(Bonisa.file) ? Bonisa.file : [Bonisa.file];
-
     // Opens each file
-    for (let f in file) {
+    for (let file in Bonisa.file) {
       openFile(
-        Bonisa.dir + file,
-        file[f].split('.')[file[f].split('.').length - 1],
-        Bonisa.callback
+        {
+          file: Bonisa.dir + Bonisa.file[file],
+          callback: Bonisa.callback
+        }
       );
     }
   };
@@ -454,6 +381,115 @@ var Bonisa = (function () {
       link.href = Bonisa.styles[style];
     }
   };
+
+  function configBonisaProperties(configs){
+    // Declares the basic properties
+    var 
+      callback,       // Callback function
+      config,         // Configuration function
+      convert,        // Convertion function from text to HTML
+      delimiters,     // Delimter(s) used to spilt textual content
+      dependencies,   // Necessary dependecies
+      dir,            // Base file directory
+      engine,         // Engine (tool/library) used to make the presentations
+      file,           // File(s) used to create the presentation
+      process,        // Special function
+      style;          // Set (loads) the styles of the presentation
+
+    // Gets the configuration properties
+    callback = configs.callback || Bonisa.createSlides;
+    config = configs.options || configs.configs || {};
+    delimiters = configs.delimiters || ['---', '___', '***'];
+    dependencies = config.dependencies || [];
+    dir = configs.dir || './';
+    engine = configs.engine || configs.framework || configs.tool || 'reveal';
+    file = configs.file || null;
+    process = configs.process || function () {};
+    style = configs.themes || configs.styles || [];
+
+    // Get the current location
+    Bonisa.location =
+    window.location.protocol + '//' +
+    window.location.host + '/' +
+    window.location.pathname.replace('/', '').split('/')[0];
+
+    // Get the file(s) AND file(s) format
+    Bonisa.file = file;
+    Bonisa.file = Array.isArray(Bonisa.file) ? Bonisa.file : [Bonisa.file];
+    Bonisa.fileFormat = [];
+
+    // Get the dependencies
+    Bonisa.dependencies = dependencies;
+
+    // Set fileFormats
+    for(let file in Bonisa.file)
+      Bonisa.fileFormat.push(Bonisa.file[file].split('.').slice(-1)[0]);
+
+    // Get the directory
+    Bonisa.dir = dir;
+
+    // Get the delimiter
+    Bonisa.delimiters = delimiters;
+
+    // Make sure that a valid engine is selected
+    Bonisa.engine = Bonisa.engines.hasOwnProperty(engine) ? engine : 'reveal';
+    Bonisa.callback = callback;
+
+    // Defines the used structure
+    Bonisa.structure = Bonisa.engines[Bonisa.engine];
+
+    // Get the configurations
+    Bonisa.config = config;
+    Bonisa.process = process;
+
+    // Set the convert functions
+    Bonisa.convert = {};
+
+    // Get the styles
+    Bonisa.styles = Array.isArray(style) ? style : [style];
+
+    // Creats the wait page
+    Bonisa.createWait();
+
+    // Load the necessary libraries/dependencies
+    Bonisa.loadDependencies();
+  }
+
+  function startBonisa(){
+    // Sets Bonisa convert function for each file
+    for(let file in Bonisa.fileFormat){
+      var fct;  
+
+      // Defines which convert library to use
+      switch (Bonisa.fileFormat[file]) {
+        case 'md':
+          fct = marked;
+          break;
+        case 'adoc':
+          fct = asciidoctor.convert;
+          break;
+      }
+
+      // If the function was not yet declared, make it so
+      if(!Bonisa.convert[ Bonisa.fileFormat[file] ])
+        Bonisa.convert[ Bonisa.fileFormat[file] ] = fct;
+    }
+
+    // Creates the framework structure
+    Bonisa.configStructure();
+
+    // Opens the file(s)
+    Bonisa.openFiles();
+
+    // Personal configurations
+    Bonisa.process();
+
+    // Stylizes
+    Bonisa.stylize();
+
+    // Configures the framework
+    Bonisa.configEngine();
+  }
     
   return Bonisa;
 }());
