@@ -84,6 +84,11 @@ var Bonisa = ( function(){
       // Waits a little bit more to starts the presentation
       sleep(waitTime).then( () => {
         start();
+
+      // Deletes temporary properties
+      delete(Bonisa.configConvert);
+      delete( Bonisa.location );
+      delete( Bonisa.slides );
       });
     });
   };
@@ -250,7 +255,7 @@ var Bonisa = ( function(){
   // Loads the requested and obligatory dependencies
   function loadDependencies() {
     var
-      dependencies = ['jshashes'],
+      dependencies = [],
       formats = {
         'md': 'marked',
         'adoc': 'asciidoctor'

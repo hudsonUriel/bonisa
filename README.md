@@ -78,6 +78,9 @@ To loads this file and begins the show, it's just necessary to inform Bonisa the
   * Allows the creation of web-based presentations with MARKDOWN and ASCIIDOC text files;
   * Allows the use of Reveal or Impress presentation frameworks;
   * Do not support additional styles or standard templates of graphic elements
+* `jan-05-20` [Version 1.1.alpha](https://github.com/zmdy/bonisa/releases/tag/v1.0-alpha)
+  * Allows the creation of multi-level web-based presentations with MARKDOWN and ASCIIDOC text files;
+  * Allows the use of multiple files
 
 ***
 
@@ -165,19 +168,25 @@ This object contains all functions and options necessary to make Bonisa works. T
 Bonisa = {
 	callback: ƒ (content),
 	config: {},
-	convert: ƒ k(e,n,r),
-	createSlide: ƒ (content),
-	delimiter: "---",
-	dependencies: ["marked"],
+	configConvert: ƒ (),
+	content: [slide0: {…}, slide1: {…}, slide2: {…}, slide3: {…}, slide4: {…}, …],
+	convert: {md: ƒ, adoc: ƒ},
+	createWait: ƒ (),
+	delimiters: {text: Array(3), regexp: /^(\u002d\u002d\u002d|\u005f\u005f\u005f|\u002a\u002a\u002a)$/gm},
+	dependencies: (2) ["marked", "asciidoctor"],
 	dir: "./",
 	engine: "reveal",
-	file: "bonisa-example.md",
-	fileFormat: "md",
+	engines: {impress: Array(1), reveal: Array(2)},
+	error: ƒ (),
+	file: ["bonisa-example.md", "bonisa-example.adoc"],
+	fileFormat: ["md", "adoc"],
+	init: ƒ (configs),
 	process: ƒ (),
-	slide: section,
-	structure: "div.reveal div.slides section",
+	structure: (2) [{…}, {…}],
 	styles: [],
-	stylize: ƒ ()
+	stylize: ƒ (),
+	version: "1.1-alpha",
+	wait: div
 }
 ```
 
@@ -185,17 +194,24 @@ Bonisa = {
 | --- | :---: | :---: |
 | callback | Function | Function to turn the text `content` in to a presentation |
 | config | Object | Options passed to the `Bonisa.init` function |
+| content | Array of Objects | Presentation content, including the text content, file(s) format, slide(s) level, etc |
 | convert | Function | Function used to parse the text content to HTML |
-| createSlide | Function | Default `callback` function |
-| delimiter | String | Delimiter used to split the text content |
+| createWait | Function | Function used to creates the 'wait' element, showed when the presentation is not started yet |
+| delimiters | String | Delimiters used to split the text content |
+| dependencies | Array | Libraries used to makes everything works |
+| dir | (OPTIONAL) Defines a base directory to open the file(s). The default value is './' | `dir: 'your/files/location/folder'` |
 | engine OR framework OR tool | String | Defines the presentation framework |
-| file | String or Array | Text file(s) |
-| fileFormat | String or Array | Text file(s) formats |
+| engines | Array | All available Bonisa engines |
+| error | Function | Bonisa special function to informs when an error has happened |
+| file | Array of Strings | Text file(s) |
+| fileFormat | Array of Strings | Text file(s) formats |
+| init | Function | Bonisa special function to creates the presentation with the required parameters |
 | process | Function | Defines a processing function to your presentation |
-| slide | DOM | Defines the HTML element used as slide |
-| strucutre | String | Query structure of the framework presentation |
+| strucutre | Array | Query structure of the framework presentation |
 | styles OR themes | String OR Array | Loads the presentation styles |
 | stylize | Function | Function used to stylizes the presentation. By default opens all the stylesheets defined in `styles` |
+| version | String | Bonisa version |
+| wait | DOM | Element showed when the presentation is not started yet|
 
 ***
 
