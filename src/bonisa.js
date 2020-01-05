@@ -53,13 +53,6 @@ var Bonisa = ( function(){
 
   // Here is where all the magic happens...
   Bonisa.init = function (configs) {
-    // Personal console.log output
-    console.log(
-      "%cBONISA\n%cThink it, show it!",
-      "color: #ec3236; font-size: 1.5em; font-weight: bold;",
-      "color: #1a1a1a; font-size: 1.25em;"
-    );
-
     // Normalizes the input
     configs = typeof configs == 'object' ? configs : {
       configs
@@ -76,41 +69,21 @@ var Bonisa = ( function(){
     
     // Get and configures all necessary properties
     config(configs);
-    console.log(
-      "%cAll properties are loaded!",
-      "color: #111; border-left: solid 1em #181; padding-left: 0.5em; background: #8d8;"
-    );
 
     // Load the necessary libraries/dependencies
     loadDependencies();
-    console.log(
-      "%cAll dependencies are loaded!",
-      "color: #111; border-left: solid 1em #181; padding-left: 0.5em; background: #8d8;"
-    );
 
     // Waits a little time until everything is loaded
     sleep(waitTime).then(() => {
       // Calls all necessary functions to make Bonisa works
       process();
-      console.log(
-        "%cAll processes are configured!",
-        "color: #111; border-left: solid 1em #181; padding-left: 0.5em; background: #8d8;"
-      );
       
       // Opens the file(s)
       openFiles();
-      console.log(
-        "%cAll files are opened!",
-        "color: #111; border-left: solid 1em #181; padding-left: 0.5em; background: #8d8;"
-      );
       
       // Waits a little bit more to starts the presentation
       sleep(waitTime).then( () => {
         start();
-        console.log(
-          "%cThe presentation is ready to begin!",
-          "color: #111; border-left: solid 1em #181; padding-left: 0.5em; background: #8d8;"
-        );
       });
     });
   };
@@ -154,7 +127,6 @@ var Bonisa = ( function(){
 
     // Defines the content
     Bonisa.content = [];
-    Bonisa.slides = [];
 
     // Get the dependencies
     Bonisa.dependencies = dependencies;
@@ -189,7 +161,7 @@ var Bonisa = ( function(){
 
     // Defines the used structure
     Bonisa.structure = Bonisa.engines[Bonisa.engine];
-    Bonisa.slides = {length: 0, content: []};
+    Bonisa.slides = {length: 0, content: [], lastParent: []};
 
     // Get the configurations
     Bonisa.config = config;
@@ -254,8 +226,16 @@ var Bonisa = ( function(){
       if(contentTest[slide].replace(Bonisa.delimiters.regexp, "") != ''){
         contentTree['slide' + Bonisa.slides.length] = {
           'content': contentTest[slide],
-          'level': Bonisa.delimiters.text.indexOf(contentTest[lastDelimiter])
+          'level': Bonisa.delimiters.text.indexOf(contentTest[lastDelimiter]),
+          'isParent': false
         };
+
+      // Adjusts the level(s) of the content
+      if(contentTree['slide' + Bonisa.slides.length]['level'] 
+        >= Bonisa.structure.length)
+
+          contentTree['slide' + Bonisa.slides.length]['level'] = Bonisa.structure.length - 1;
+
         Bonisa.slides.length++;
 
       } else{
@@ -296,85 +276,97 @@ var Bonisa = ( function(){
   function process(){
     // Configures the convertion libraries
     Bonisa.configConvert();
-    console.log("CONFIG CONVERT IS OK");
 
     // Creates the framework structure
-    createStrucutre();
-    console.log("CREATE STRUCTURES IS OK");
+    createStructure();
   }
 
   // Starts the presentation itself
   function start(){
     // Personal configurations
     Bonisa.process();
-    console.log("PROCESS IS OK");
 
     // Stylizes
     Bonisa.stylize();
-    console.log("STYLES ARE OK");
 
     // Configures the framework
     configEngine(); // WORKS AS START
-    console.log("CONFIG IS OK");
   }
 
   // Soon will be implemented
   function createSlides(content){
     // Configures the content
     configContent(content);
-    
+
+    // Makes the individual slides
     for(let ctnt in content.content){
       var
-        structure,
-        clone,
-        currentContent = content.content[ctnt]
-      ;
-
-      // Adjusts the level(s) of the content
-      if(currentContent.level >= Bonisa.structure.length)
-        currentContent['level'] = Bonisa.structure.length - 1;
-
-
-      // Gets the object structure (content, parent, structure)
-      structure = Bonisa.structure[ currentContent.level ];
-
-      // Turns the textual content in to HTML
-      currentContent.content = 
-        Bonisa.convert[ currentContent.fileFormat ](
-          currentContent.content 
-        )
-      ;
-
-      // Creates a clone node AND inserts the content
-      clone = structure.element.cloneNode(true);
-      clone.innerHTML = currentContent.content ;
-
-      // Appends the content of multi-level slides
-      // if(slide.level > 0){
-      //   // Gets the right parent of the current slide
-      //   parent = Bonisa.slides[ lastSlide[slide.level - 1]];
-
-      //   // Clones the parent
-      //   cloneParent = parent.content.cloneNode(true);
-        
-      //   // Make sure that all contents are correctly shown
-      //   if(parent.isParent == false){
-      //     parent.isParent = true;
-      //     // Re-clones the default object
-      //     parent.content.innerHTML = null;
-      //     parent.content.appendChild(cloneParent);
-      //   }
-        
-      //   // Updates
-      //   parent = parent.content;
-      //   lastSlide[slide.level] ++;
-      // } else{
-      //   parent = document.querySelector(structure.parent);
-      //   lastSlide[0] = Bonisa.slides.length;
-      // }
-
+        currentSlide = content.content[ctnt];
       
+      // Turns the content in HTML
+      currentSlide.content = Bonisa.convert[currentSlide.fileFormat]( 
+        currentSlide.content
+      );
+      
+      // Configures the current slide
+      currentSlide = configSlide(currentSlide);
+      
+      // Creates the slide ID and Classname
+      currentSlide.structure.id += 'bonisaSlide' + ctnt.replace(/\D/g, '');
+      currentSlide.structure.className += 'bonisaLevel' + currentSlide.level;
+
+      // Appens the content
+      currentSlide.parent.appendChild( currentSlide.structure );
     }
+  }
+
+  function configSlide(slide){
+    var  
+      clone;  
+
+    // Defines the structure of the slide
+    slide.structure = Bonisa.structure[ slide.level ].element.cloneNode(true);
+    
+    // Inserts the content
+    slide.structure.innerHTML = slide.content;
+
+    if(slide.level == 0){
+      // Defines the parent
+      slide.parent = document.querySelector(
+        Bonisa.structure[ 0 ].parent
+      );
+
+      // Updates
+      Bonisa.slides.lastParent[ slide.level ]++;
+      Bonisa.slides.content.push( slide );
+
+    }else{
+      // Defines the parent
+      slide.parent = Bonisa.slides.lastParent[ slide.level - 1 ] - 1;
+      
+      // Updates the parent
+      if( Bonisa.slides.content[slide.parent].isParent == false){
+        // Updates the isParent flag
+        Bonisa.slides.content[slide.parent].isParent = true;
+
+        // Creates a new object with the 2nd slide level
+        clone = Bonisa.structure[1].element.cloneNode(true);
+        clone.innerHTML = Bonisa.slides.content[
+          slide.parent
+        ].structure.cloneNode(true).innerHTML;
+
+        // Cleans its original content
+        Bonisa.slides.content[slide.parent].structure.innerHTML = '';
+        
+        // Puts the original content within itself
+        Bonisa.slides.content[slide.parent].structure.appendChild ( clone );
+      }
+
+      // Gets the updated parent
+      slide.parent = Bonisa.slides.content[slide.parent].structure ;
+    }
+    
+    return slide;
   }
 
   function configContent(content){
@@ -394,7 +386,7 @@ var Bonisa = ( function(){
   }
 
   // Creates and configures the structure
-  function createStrucutre(){
+  function createStructure(){
     var
       frameworkStructure = [];
     
@@ -513,6 +505,10 @@ var Bonisa = ( function(){
       if(!Bonisa.convert[ Bonisa.fileFormat[file] ])
         Bonisa.convert[ Bonisa.fileFormat[file] ] = fct;
     }
+
+    // Sets the Bonisa.slides.lastParent flag with default value
+    for(let i=0; i<Bonisa.structure.length; i++)
+      Bonisa.slides.lastParent[ i ] = 0;
   }
 
   // Apply the selected styles
