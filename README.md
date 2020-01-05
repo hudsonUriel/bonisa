@@ -71,6 +71,14 @@ To loads this file and begins the show, it's just necessary to inform Bonisa the
 </script>
 ```
 
+## What's new?
+
+* `sep-02-19` [First Alpha Version](https://github.com/zmdy/bonisa/releases/tag/v1.0-alpha)
+  * All basic functions of reading and processing the files, creating the basic presentation (horizontal presentations) structures and appending the textual content to it are done.
+  * Allows the creation of web-based presentations with MARKDOWN and ASCIIDOC text files;
+  * Allows the use of Reveal or Impress presentation frameworks;
+  * Do not support additional styles or standard templates of graphic elements
+
 ***
 
 # Frameworks
