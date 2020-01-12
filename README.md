@@ -78,9 +78,11 @@ To loads this file and begins the show, it's just necessary to inform Bonisa the
   * Allows the creation of web-based presentations with MARKDOWN and ASCIIDOC text files;
   * Allows the use of Reveal or Impress presentation frameworks;
   * Do not support additional styles or standard templates of graphic elements
-* `jan-05-20` [Version 1.1.alpha](https://github.com/zmdy/bonisa/releases/tag/v1.0-alpha)
+* `jan-12-20` [Version 1.1.alpha](https://github.com/zmdy/bonisa/releases/tag/v1.0-alpha)
   * Allows the creation of multi-level web-based presentations with MARKDOWN and ASCIIDOC text files;
   * Allows the use of multiple files
+	* Allows the creation of presentation without text files, by just informing the string content
+	* Allows the creation of CSS themes by using the `.bonisa` class included in every Bonisa slide, and the `Bonisa.rootStructure` element created based on the engine
 
 ***
 
@@ -109,7 +111,14 @@ The most basic Bonisa option is the insertion of text files. You can open an uni
 | dir | (OPTIONAL) Defines a base directory to open the file(s). The default value is './' | `dir: 'your/files/location/folder'` |
 | file + dir | (OPTIONAL) Defines several text files, in a specific directory | `dir: 'your/files/location/folder', file: ['file1.md', 'file2.md', 'file3.md']`|
 
-When you use a text file to create a slide you must, somehow, indicate where the individual slides begin and finishes in your file, right?
+If you rather choose to construct your presentation without text files, like, for example, getting the `innerHTML` or `value` property of a HTML form element (or even by just passing and real-time converting the crude text content in a presentation), you can bypass the `file` and `dir` properties using the `content` option:
+
+| Property | Use | Example |
+| --- | :---: | :---: |
+| content | (OPTIONAL) Defines the string content of the presentation, without text files | `content: '# My Markdown presentation\n---\nThis is another slide!'`|
+| fileFormat | (OPTIONAL) Defines the text format of the string `content`. The default value is `md`. | `fileFormat: 'md'`|
+
+When you use a text file (or text content) to create a slide you must, somehow, indicate where the individual slides begin and finishes in your file, right?
 
 To make it, you just need to use a marker in your text file. Every markup language has its own structures. Markdown, for example, have the `---`, `***` and `___` flags to indicate horizontal rules, which visually split and organizes your textual content.
 
@@ -148,13 +157,55 @@ In reveal.js, for example, each slide is a HTML `<section>` element inserted in 
 </div>
 ```
 
-Once your HTML presentation is done, you can configure extra styles and JavaScript functionalities using the properties `style` and `process`. By default, each presentation will load the basic stylesheet of the framework.
+Once your HTML presentation is done, you can configure extra styles and JavaScript functionalities using the properties `styles` and `process`. By default, each presentation will load the basic stylesheet of the framework.
 
 | Property | Use | Example |
 | --- | :---: | :---: |
-| styles OR themes | (OPTIONAL) Loads the presentation styles | `style: 'style1.css'`|
-| styles OR themes | (OPTIONAL) Loads the presentation styles | `style: ['style1.css', 'style2.css']`|
+| styles OR themes | (OPTIONAL) Loads the presentation styles | `styles: 'style1.css'`|
+| styles OR themes | (OPTIONAL) Loads the presentation styles | `styles: ['style1.css', 'style2.css']`|
 | process | (OPTIONAL) Defines a processing function to your presentation | `process: processPresentation()`|
+
+With the power of [CSS3 Selectors](https://www.w3.org/TR/selectors-3/) and [DOM](https://www.w3.org/DOM/), you can configure your personal presentations with unique IDs, styles or interactive functions.
+
+If you want to create your own themes or stylesheets, you can use the `.bonisa` CSS class, defined in every Bonisa slide.
+
+```css
+/* Configures the 1st slide */
+.bonisa:nth-child(1){
+	color: #1a1a1a;
+
+	text-transform: uppercase;
+	text-align: right;
+}
+
+/* Configures the image of the 3rd slide */
+.bonisa:nth-child(3) img{
+	border: solid 0.1em #d11;
+	width: 25vw;
+}
+```
+
+To create more generic and engine-independent themes, you can also use `Bonisa.rootStructure` attribute, or the `#bonisaRoot` CSS selector.
+
+```js
+/* Configures all background using querySelector */
+document.querySelector('#bonisaRoot').style.background = '#2d86d5';
+
+/* Configures all font-family using Bonisa */
+document.querySelector( Bonisa.rootStructure ).style.fontFamily = 'Ubuntu';
+
+/* Creates an image in every slide */
+presentation = document.querySelectorAll('.bonisa');
+
+for(let slide in presentation){
+	var content = "<img src='./img/logo.png' alt='Logo Image' class='logo-img'/>";
+
+	presentation[slide].innerHTML += content;
+
+	/* Defines a new ID to every slide */
+	presentation[slide].id += ' myNewID' + slide; // myNewID + number
+}
+```
 
 ***
 
@@ -183,6 +234,7 @@ Bonisa = {
 	init: ƒ (configs),
 	process: ƒ (),
 	structure: (2) [{…}, {…}],
+	rootStructure: "body>div.reveal",
 	styles: [],
 	stylize: ƒ (),
 	version: "1.1-alpha",
@@ -208,6 +260,7 @@ Bonisa = {
 | init | Function | Bonisa special function to creates the presentation with the required parameters |
 | process | Function | Defines a processing function to your presentation |
 | strucutre | Array | Query structure of the framework presentation |
+| rootStructure | String | Query structure of the root framework presentation. It can be used to defines themes. |
 | styles OR themes | String OR Array | Loads the presentation styles |
 | stylize | Function | Function used to stylizes the presentation. By default opens all the stylesheets defined in `styles` |
 | version | String | Bonisa version |
