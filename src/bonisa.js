@@ -3,7 +3,7 @@
 * http://github.com/zmdy/bonisa
 * MIT Licensed
 *
-* Copyright (C) 2019 Hudson Uriel Ferreira, http://gihub.com/zmdy
+* Copyright (C) 2020 Hudson Uriel Ferreira, http://gihub.com/zmdy
 *
 * -------------------- *
 * 
@@ -59,10 +59,12 @@ var Bonisa = ( function(){
     };
 
     // Get the file(s) necessary to the presentation
-    var file = configs.file || null;
+    var
+      file = configs.file || null,
+      textContent = configs.content || null;
 
     // If there is no file, returns an error
-    if (!file) {
+    if (!file & !textContent) {
       Bonisa.error();
       return -1;
     } // Otherwise it will works just fine
@@ -78,8 +80,10 @@ var Bonisa = ( function(){
       // Calls all necessary functions to make Bonisa works
       process();
       
-      // Opens the file(s)
-      openFiles();
+      if(file)
+        openFiles(); // Opens the file(s)
+      else
+        Bonisa.callback ( {content: textContent} );
       
       // Waits a little bit more to starts the presentation
       sleep(waitTime).then( () => {
@@ -99,14 +103,14 @@ var Bonisa = ( function(){
     var 
       callback,       // Callback function
       config,         // Configuration function
-      convert,        // Convertion function from text to HTML
       delimiters,     // Delimter(s) used to spilt textual content
       dependencies,   // Necessary dependecies
       dir,            // Base file directory
       engine,         // Engine (tool/library) used to make the presentations
       file,           // File(s) used to create the presentation
       process,        // Special function
-      style;          // Set (loads) the styles of the presentation
+      style,          // Set (loads) the styles of the presentation
+      textContent;
 
     // Gets the configuration properties
     callback = configs.callback || createSlides;
@@ -118,6 +122,7 @@ var Bonisa = ( function(){
     file = configs.file || null;
     process = configs.process || function () {};
     style = configs.themes || configs.styles || [];
+    textContent = configs.content || null;
 
     // Get the current location
     Bonisa.location =
@@ -125,23 +130,33 @@ var Bonisa = ( function(){
     window.location.host + '/' +
     window.location.pathname.replace('/', '').split('/')[0];
 
-    // Get the file(s) AND file(s) format
-    Bonisa.file = file;
-    Bonisa.file = Array.isArray(Bonisa.file) ? Bonisa.file : [Bonisa.file];
-    Bonisa.fileFormat = [];
+    // If there are text files to be loaded
+    if(file){
+      // Get the file(s) AND file(s) format
+      Bonisa.file = file;
+      Bonisa.file = Array.isArray(Bonisa.file) ? Bonisa.file : [Bonisa.file];
+      Bonisa.fileFormat = [];
+
+      // Set fileFormats
+      for(let file in Bonisa.file)
+        Bonisa.fileFormat.push(Bonisa.file[file].split('.').slice(-1)[0]);
+
+      // Get the directory
+      Bonisa.dir = dir;
+    }else{
+      // Defines the textContent
+      Bonisa.textContent = textContent;
+
+      // Configures the fileFormat
+      configs.fileFormat = configs.fileFormat == null ? ['md'] : configs.fileFormat;
+      Bonisa.fileFormat = Array.isArray( configs.fileFormat ) ? configs.fileFormat : [ configs.fileFormat ];
+    }
 
     // Defines the content
     Bonisa.content = [];
 
     // Get the dependencies
     Bonisa.dependencies = dependencies;
-
-    // Set fileFormats
-    for(let file in Bonisa.file)
-      Bonisa.fileFormat.push(Bonisa.file[file].split('.').slice(-1)[0]);
-
-    // Get the directory
-    Bonisa.dir = dir;
 
     // Get the delimiter
     Bonisa.delimiters = {
@@ -308,6 +323,10 @@ var Bonisa = ( function(){
       var
         currentSlide = content.content[ctnt];
       
+      // If no textFile was informed, configures the currentSlide.fileFormat property
+      if(!currentSlide.fileFormat)
+        currentSlide.fileFormat = Bonisa.fileFormat[0];
+
       // Turns the content in HTML
       currentSlide.content = Bonisa.convert[currentSlide.fileFormat]( 
         currentSlide.content
@@ -318,7 +337,7 @@ var Bonisa = ( function(){
       
       // Creates the slide ID and Classname
       currentSlide.structure.id += 'bonisaSlide' + ctnt.replace(/\D/g, '');
-      currentSlide.structure.className += 'bonisaLevel' + currentSlide.level;
+      currentSlide.structure.className += 'bonisa';
 
       // Appens the content
       currentSlide.parent.appendChild( currentSlide.structure );
@@ -359,6 +378,10 @@ var Bonisa = ( function(){
         clone.innerHTML = Bonisa.slides.content[
           slide.parent
         ].structure.cloneNode(true).innerHTML;
+
+        // Sets the id and class
+        clone.id += 'bonisaSlide' + slide.parent;
+        clone.className += 'bonisa';
 
         // Cleans its original content
         Bonisa.slides.content[slide.parent].structure.innerHTML = '';
@@ -449,6 +472,11 @@ var Bonisa = ( function(){
       }
     }
     
+    // Defines the root structure
+    Bonisa.rootStructure = frameworkStructure[0].selector;
+    document.querySelector( Bonisa.rootStructure ).id += 'bonisaRoot';
+
+    // Defines the engine-structure used in the presentation
     Bonisa.structure = frameworkStructure.slice(Bonisa.structure.length);
   };
 
@@ -505,7 +533,7 @@ var Bonisa = ( function(){
           fct = asciidoctor.convert;
           break;
       }
-
+      
       // If the function was not yet declared, make it so
       if(!Bonisa.convert[ Bonisa.fileFormat[file] ])
         Bonisa.convert[ Bonisa.fileFormat[file] ] = fct;
@@ -524,6 +552,8 @@ var Bonisa = ( function(){
       link.rel = 'stylesheet';
       link.type = 'text/css';
       link.href = Bonisa.styles[style];
+
+      document.head.appendChild(link);
     }
   };
 
