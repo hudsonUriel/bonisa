@@ -78,7 +78,7 @@ To loads this file and begins the show, it's just necessary to inform Bonisa the
   * Allows the creation of web-based presentations with MARKDOWN and ASCIIDOC text files;
   * Allows the use of Reveal or Impress presentation frameworks;
   * Do not support additional styles or standard templates of graphic elements
-* `jan-12-20` [Version 1.1.alpha](https://github.com/zmdy/bonisa/releases/tag/v1.0-alpha)
+* `fev-2020` [Version 1.1.alpha](https://github.com/zmdy/bonisa/releases/tag/v1.0-alpha)
   * Allows the creation of multi-level web-based presentations with MARKDOWN and ASCIIDOC text files;
   * Allows the use of multiple files
 	* Allows the creation of presentation without text files, by just informing the string content
@@ -122,9 +122,36 @@ When you use a text file (or text content) to create a slide you must, somehow, 
 
 To make it, you just need to use a marker in your text file. Every markup language has its own structures. Markdown, for example, have the `---`, `***` and `___` flags to indicate horizontal rules, which visually split and organizes your textual content.
 
-The standard Bonisa marker flag is `---`, but you can change it through the property `delimiter` when you call `bonisa.init`. This delimiter will be processed as an individual line beginning with the defined pattern.
+This Markdown structure is used as default Bonisa marker flags, but you can change it through the property `delimiter` when you call `bonisa.init`. Each delimiter will be processed as an individual line beginning with the defined pattern.
 
-The delimiter is used to indicate to Bonisa where to split your text file to generates the individual slides of the presentation. It's important to remember that your file needs to be parsed into HTML (because you can write your text file in *any* markup language you want to).
+The delimiter is used to indicate to Bonisa where to split your text file to generates the individual slides of the presentation.
+
+Some frameworks, like [reveal.js](https://github.com/hakimel/reveal.js/) and [flowtime.js](https://marcolago.github.io/flowtime.js), allows the creation of vertical slides. To use them, you need to use the secondary delimiter `___`.
+
+```markdown
+# This is the first slide
+
+---
+
+This is the second slide
+
+---
+
+## This is the third slide
+
+___
+
+_This is a vertical slide_
+
+---
+
+**This is the fourth slide**
+
+```
+
+The delimiters are within an array that can be overwritten by your own flags. In theory you can define how many delimiters you want to, but the creation of horizontal (1st. level slides), vertical (2nd. level slides), or even nth-level slides, depends on the framework used to the presentation.
+
+It's important to remember that your file needs to be parsed into HTML to become a real presentation (because you can write your text file in *any* markup language you want to).
 
 This process is made by a callback function, that receives your brute text content as an argument. By default, Bonisa has a built-in function to do all the job, but you can override it with the property `callback` or `createSlide`.
 
@@ -151,7 +178,21 @@ In reveal.js, for example, each slide is a HTML `<section>` element inserted in 
 		</section>
 	
 		<section>
-			<h1>This is the second slide</h1>
+			<p>This is the second slide</p>
+		</section>
+
+		<section>
+			<section>
+				<h2>This is the third slide</h2>
+			</section>
+
+			<section>
+				<em>This is a vertical slide</em>
+			</section>
+		</section>
+
+		<section>
+			<strong>This is the fourth slide</strong>
 		</section>
 	</div>
 </div>
@@ -215,43 +256,17 @@ Once you open your presentation is opened in a web-browser, Bonisa will be acces
 
 This object contains all functions and options necessary to make Bonisa works. The most important ones are shown below:
 
-```json
-Bonisa = {
-	callback: ƒ (content),
-	config: {},
-	configConvert: ƒ (),
-	content: [slide0: {…}, slide1: {…}, slide2: {…}, slide3: {…}, slide4: {…}, …],
-	convert: {md: ƒ, adoc: ƒ},
-	createWait: ƒ (),
-	delimiters: {text: Array(3), regexp: /^(\u002d\u002d\u002d|\u005f\u005f\u005f|\u002a\u002a\u002a)$/gm},
-	dependencies: (2) ["marked", "asciidoctor"],
-	dir: "./",
-	engine: "reveal",
-	engines: {impress: Array(1), reveal: Array(2)},
-	error: ƒ (),
-	file: ["bonisa-example.md", "bonisa-example.adoc"],
-	fileFormat: ["md", "adoc"],
-	init: ƒ (configs),
-	process: ƒ (),
-	structure: (2) [{…}, {…}],
-	rootStructure: "body>div.reveal",
-	styles: [],
-	stylize: ƒ (),
-	version: "1.1-alpha",
-	wait: div
-}
-```
-
 | Property | Type | Definition |
 | --- | :---: | :---: |
 | callback | Function | Function to turn the text `content` in to a presentation |
+| clear | Function | Deletes the presentation |
 | config | Object | Options passed to the `Bonisa.init` function |
 | content | Array of Objects | Presentation content, including the text content, file(s) format, slide(s) level, etc |
 | convert | Function | Function used to parse the text content to HTML |
 | createWait | Function | Function used to creates the 'wait' element, showed when the presentation is not started yet |
 | delimiters | String | Delimiters used to split the text content |
 | dependencies | Array | Libraries used to makes everything works |
-| dir | (OPTIONAL) Defines a base directory to open the file(s). The default value is './' | `dir: 'your/files/location/folder'` |
+| dir | String | Defines tha base directory |
 | engine OR framework OR tool | String | Defines the presentation framework |
 | engines | Array | All available Bonisa engines |
 | error | Function | Bonisa special function to informs when an error has happened |

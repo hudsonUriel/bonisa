@@ -493,30 +493,14 @@ var Bonisa = ( function(){
     }
   };
 
-  // This is showed when everything is still loading
-  Bonisa.createWait = function () {
-    var wait = document.createElement('div');
+  // Clears (deletes) the full presentation - future implementation
+  Bonisa.clear = function(){
+    // Gets the presentation
+    var presentation = document.querySelector(Bonisa.rootStructure);
 
-    wait.innerHTML = Bonisa.wait || "<img src='" + Bonisa.location + "/media/img/loading.gif' style='width:15vw;margin-left:42.5%;margin-top:32.5vh;margin-bottom:2%;'>\n<p style='text-align: center;'>Loading... please, wait...</p>";
-
-    wait.style.display = 'inline-block';
-    wait.style.visibility = 'visible';
-    wait.style.width = '100vw';
-    wait.style.height = '100vh';
-
-    document.body.appendChild(wait);
-
-    Bonisa.wait = wait;
-  };
-
-  // Error message
-  Bonisa.error = function () {
-    console.log("%cYou've got an error message, don't you? If you did, read this: ", "color: #44d; font-weight: bold; font-size: 1.5em;");
-
-    console.log("%cHouston, we've got a problem...\n\n%cIt's kind of... impossible to create a presentation without a text file. To configure it do this:\n\n%cBonisa.init({\n\tfile: 'yourFileName.extension',\n\tdir: 'file/directory/location',\n\tengine: 'engine-name'\n});", "color: #111; text-transform: uppercase; font-size: 1.25em; font-weight: bold;", "color: #111;", "color: #44f; font-family: monospace; padding: 2%;");
-
-    alert("ERROR: No input file was selected to create the presentation. Open DevTools (F12) to more details ;)");
-  };
+    // Deletes the presentation
+    presentation.parentNode.removeChild( presentation );
+  }
 
   // Configures/sets the convertion library(ies) used
   Bonisa.configConvert = function(){
@@ -543,6 +527,31 @@ var Bonisa = ( function(){
     for(let i=0; i<Bonisa.structure.length; i++)
       Bonisa.slides.lastParent[ i ] = 0;
   }
+
+  // This is showed when everything is still loading
+  Bonisa.createWait = function () {
+    var wait = document.createElement('div');
+
+    wait.innerHTML = Bonisa.wait || "<img src='" + Bonisa.location + "/media/img/loading.gif' style='width:15vw;margin-left:42.5%;margin-top:32.5vh;margin-bottom:2%;'>\n<p style='text-align: center;'>Loading... please, wait...</p>";
+
+    wait.style.display = 'inline-block';
+    wait.style.visibility = 'visible';
+    wait.style.width = '100vw';
+    wait.style.height = '100vh';
+
+    document.body.appendChild(wait);
+
+    Bonisa.wait = wait;
+  };
+
+  // Error message
+  Bonisa.error = function () {
+    console.log("%cYou've got an error message, don't you? If you did, read this: ", "color: #44d; font-weight: bold; font-size: 1.5em;");
+
+    console.log("%cHouston, we've got a problem...\n\n%cIt's kind of... impossible to create a presentation without a text file. To configure it do this:\n\n%cBonisa.init({\n\tfile: 'yourFileName.extension',\n\tdir: 'file/directory/location',\n\tengine: 'engine-name'\n});", "color: #111; text-transform: uppercase; font-size: 1.25em; font-weight: bold;", "color: #111;", "color: #44f; font-family: monospace; padding: 2%;");
+
+    alert("ERROR: No input file was selected to create the presentation. Open DevTools (F12) to more details ;)");
+  };
 
   // Apply the selected styles
   Bonisa.stylize = function() {
