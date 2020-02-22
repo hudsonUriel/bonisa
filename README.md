@@ -78,7 +78,7 @@ To loads this file and begins the show, it's just necessary to inform Bonisa the
   * Allows the creation of web-based presentations with MARKDOWN and ASCIIDOC text files;
   * Allows the use of Reveal or Impress presentation frameworks;
   * Do not support additional styles or standard templates of graphic elements
-* `fev-2020` [Version 1.1.alpha](https://github.com/zmdy/bonisa/releases/tag/v1.0-alpha)
+* `fev-2020` [Version 1.1.alpha](https://github.com/zmdy/bonisa/releases/tag/v1.1-alpha)
   * Allows the creation of multi-level web-based presentations with MARKDOWN and ASCIIDOC text files;
   * Allows the use of multiple files
 	* Allows the creation of presentation without text files, by just informing the string content
