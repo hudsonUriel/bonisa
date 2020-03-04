@@ -1,9 +1,8 @@
 /*
-  * Script utilizado para criar um servidor NODEJS
-  * utilizando Express e incluindo arquivos estáticos
+  * NODEJS/Express HTTP Server
 */
 
-// Definições globais
+// Global definitions
 var
   express = require('express'),
   app = express()
@@ -11,17 +10,23 @@ var
 
 const
   port = 8086,
-  DIRNAME = __dirname.split('\\').slice(0, -1).join('\\');
+  
+  // The splitter is used to generate the correct path name
+    // eg. Linux   --> /home/myUser/Documents
+    // eg. Windows --> C:\Users\myUser\Documents --> \ is a special JS char
+  splitter = __dirname.split('\\') == __dirname ? '/' : '\\';
+  DIRNAME = __dirname.split(splitter).slice(0, -1).join(splitter);
 
-// Adiciona os arquivos estáticos ao servidor como caminho virtuais
+// Add static files to the server as a virtual path
+app.use('/libs', express.static(DIRNAME + '/libs/'));
 app.use('/src', express.static(DIRNAME + '/src'));
 
-// Cria a rota padrão
+// Standard express routes
 app.get('/', function(req, res){
   res.sendFile(DIRNAME + '/test/index.html');
 })
 
-// Inicia o servidor
+// Turns on the server
 app.listen(port, function(){
   console.log('Servidor rodando em 127.0.0.1:' + port);
 });
