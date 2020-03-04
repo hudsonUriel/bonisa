@@ -16,53 +16,54 @@
 * console.log(test.content);      // Shows all loaded files content
 *
 */
-
-var fileReader = ( function(){
-  'use strict';
-
-  // Basic definitions
-  var fileReader = {
-    files: [],
-    content: [],
-    creationTime: null
-  };
-
-  // Init function
-  fileReader.init = function(){
-    fileReader.creationTime = new Date();
-
-    return fileReader;
-  }
-
-  // Read a textFile
-  fileReader.readFile = function(file){
-    // Requires the standard NODEJS file library
-    var fs = require('fs');
-
-    // Try open the file
-    try {
-      var data = fs.readFileSync(file, 'utf8');
+module.exports = {
+  fileReader: ( function(){
+    'use strict';
+  
+    // Basic definitions
+    var fileReader = {
+      files: [],
+      content: [],
+      creationTime: null
+    };
+  
+    // Init function
+    fileReader.init = function(){
+      fileReader.creationTime = new Date();
+  
+      return fileReader;
+    }
+  
+    // Read a textFile
+    fileReader.readFile = function(file){
+      // Requires the standard NODEJS file library
+      var fs = require('fs');
+  
+      // Try open the file
+      try {
+        var data = fs.readFileSync(file, 'utf8');
+        
+        // Updates fileReader
+        this.files.push(file);
+        this.content.push(data.toString());
+  
+        return this;
+      }
+      // Otherwise, returns the error stack
+      catch(e) {
       
-      // Updates fileReader
-      this.files.push(file);
-      this.content.push(data.toString());
-
-      return this;
-    }
-    // Otherwise, returns the error stack
-    catch(e) {
-    
-      console.log('Error:', e.stack);
-    }
-  };
-
-  // Read multiple files
-  fileReader.readFiles = function(files){
-    for(let file in files)
-      fileReader.setFile(files[file]);
-    
+        console.log('Error:', e.stack);
+      }
+    };
+  
+    // Read multiple files
+    fileReader.readFiles = function(files){
+      for(let file in files)
+        fileReader.readFile(files[file]);
+      
+      return fileReader;
+    };
+  
     return fileReader;
-  };
-
-  return fileReader;
-}());
+  }())
+}

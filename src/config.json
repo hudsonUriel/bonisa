@@ -1,0 +1,7 @@
+{
+  "textFiles":    [
+    "../test/avisos-iniciais.md"
+  ],
+  
+  "outputFile":   "../test/teste.html"
+}
