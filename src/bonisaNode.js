@@ -83,7 +83,17 @@ var Bonisa = ( function(){
       process();
 
       // Configures the content
-      Bonisa.callback ( {content: textContent} );
+      if(Bonisa.decode)
+        textContent = decodeURI(textContent);
+
+      try{
+        Bonisa.callback ( {content: textContent} );
+      }catch (err){
+        Bonisa.wait.innerHTML += '<strong>Error configuring presentation content!</strong>';
+        console.error(err);
+        return -1;
+      }
+      
 
       // Waits a little bit more to starts the presentation
       sleep(waitTime).then( () => {
@@ -107,6 +117,9 @@ var Bonisa = ( function(){
         
         // Configuration function
         config = configs.options || configs.configs || {},
+
+        // Decode URI content
+        decode = true,
 
         // Delimter(s) used to spilt textual content
         delimiters = configs.delimiters || ['---', '___', '***'],
@@ -136,6 +149,9 @@ var Bonisa = ( function(){
 
       // Defines the textContent
       Bonisa.textContent = textContent;
+
+      // Defines the decode mode
+      Bonisa.decode = decode;
 
       // Configures the fileFormat
       configs.fileFormat = configs.fileFormat == null ? ['md'] : configs.fileFormat;

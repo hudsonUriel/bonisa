@@ -27,7 +27,7 @@ fileResponse.readFiles(config.textFiles);
 // Creates a new html file
 fs.writeFile(
   // File name
-  config.outputFile,
+  DIRNAME + splitter + config.outputFile,
   // File content
   "<script src='../src/bonisaNode.js'></script>\n<script>\nwindow.onload = function(){\nBonisa.init({\n\tcontent: " + 
   "\"" + encodeURI(fileResponse.content) + "\""
@@ -35,7 +35,6 @@ fs.writeFile(
   // Callback function
   function (err) {
     if (err) throw err;
-      console.log('File is created successfully.');
   }
 ); 
 
@@ -44,8 +43,6 @@ app.use('/libs', express.static(DIRNAME + '/libs/'));
 app.use('/src', express.static(DIRNAME + '/src'));
 app.use('/test', express.static(DIRNAME + '/test'));
 
-console.log(config)
-
 // Standard express routes
 app.get('/', function(req, res){
   res.sendFile(DIRNAME +  splitter + config.outputFile);
@@ -53,5 +50,5 @@ app.get('/', function(req, res){
 
 // Turns on the server
 app.listen(port, function(){
-  console.log('Servidor rodando em 127.0.0.1:' + port);
+  console.log('Server running in 127.0.0.1:' + port);
 });
