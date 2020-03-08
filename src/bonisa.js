@@ -78,48 +78,35 @@ var Bonisa = ( function(){
 
     // Get the file(s) necessary to the presentation
     var
+      file = configs.file || null,
       textContent = configs.content || null;
 
-    // If there is no content returns an error
-    if (!textContent) {
-      Bonisa.error();
-      return -1;
-    } // Otherwise it will works just fine
+    // Creats the wait page
+      Bonisa.createWait();
 
-    // Otherwise, do it:
-    config(configs);
+    // If there are text files, open them
+    if(file){
+      // Defines file format
+      configs.fileFormat = [];
 
-    // Load the necessary libraries/dependencies
-    loadDependencies();
+      // Defines the read content
+      Bonisa.fileContent = [];
+      Bonisa.fileFormat = [];
 
-    // Waits a little time until everything is loaded
-    sleep(waitTime).then(() => {
-      // Calls all necessary functions to make Bonisa works
-      process();
+      // Creates an array of files
+      file = Array.isArray(file) ? file : [file];
 
-      // Configures the content
-      if(Bonisa.decode)
-        textContent = decodeURI(textContent);
+      // Process al text files
+      processFiles(file);
 
-      try{
-        Bonisa.callback ( {content: textContent} );
-      }catch (err){
-        Bonisa.wait.innerHTML += '<strong>Error configuring presentation content!</strong>';
-        console.error(err);
-        return -1;
-      }
-      
-
-      // Waits a little bit more to starts the presentation
-      sleep(waitTime).then( () => {
-        start();
-
-      // Deletes temporary properties
-      delete(Bonisa.configConvert);
-      delete( Bonisa.location );
-      delete( Bonisa.slides );
-      });
-    });
+      // Process the text content and makes everything else
+      sleep(waitTime * file.length).then(() => {
+        processContent(Bonisa.fileContent, configs);
+      })
+    } else{
+      processContent(textContent, configs);
+    }
+    
   }
 
   /********** 1st step = get the configurations and load first dependecies **********/
@@ -167,7 +154,9 @@ var Bonisa = ( function(){
 
       // Configures the fileFormat
       configs.fileFormat = configs.fileFormat == null ? ['md'] : configs.fileFormat;
-      Bonisa.fileFormat = Array.isArray( configs.fileFormat ) ? configs.fileFormat : [ configs.fileFormat ];
+      
+      if(!Bonisa.fileFormat)
+        Bonisa.fileFormat = Array.isArray( configs.fileFormat ) ? configs.fileFormat : [ configs.fileFormat ];
 
       // Defines the content
       Bonisa.content = [];
@@ -209,9 +198,6 @@ var Bonisa = ( function(){
 
       // Get the styles
       Bonisa.styles = Array.isArray(style) ? style : [style];
-
-      // Creats the wait page
-      Bonisa.createWait();
     }
 
     // Loads the requested and obligatory dependencies
@@ -242,6 +228,129 @@ var Bonisa = ( function(){
         
       }
     };
+
+    // Loads text files, if requested
+    function openFile(properties){
+      'use strict';
+
+      // Creates the request
+      var 
+        request = new XMLHttpRequest(),
+
+        file = properties.file,
+        callbackFunction = properties.callback
+      ;
+      
+      // Try opens the file using GET method
+      try{
+        request.open('GET', file);
+      } catch(err){
+        console.error(err);
+        console.log("Attempt failed!");
+        return -1;
+      }
+      
+      // Sends the request
+      request.send();
+      
+      // When file is opened
+      request.onreadystatechange = function () {
+        // If we already have a full response
+        if (request.readyState === 4) {
+          try{
+              callbackFunction(
+                encodeURI(request.responseText)
+              );
+          } catch (err){
+            console.error(err);
+            console.log("No function was passed as argument.");
+            return -1;
+          }
+        }
+      };
+        
+      return request;
+    }
+
+    async function processFiles(files){
+      var
+        filesFormat = [];
+
+      for(let file in files){
+        // Defines the text file with it's location
+        files[file] = __CONTENT_DIR + files[file];
+
+        // Defines the file format
+        Bonisa.fileFormat.push(files[file].split('.').slice(-1)[0]);
+
+        // Opens the current text file
+        openFile({
+            file: files[file],
+            callback: Bonisa.setFileContent
+          });
+
+        // Updates the progress
+        Bonisa.wait.innerHTML +=
+          "<p>Reading file " + 
+          (parseInt(file)+1) +  
+          " of " + files.length + "</p>"
+        ;
+        
+        // Waits
+        await sleep(waitTime);
+      }
+
+      // Turns the array in string
+      Bonisa.fileContent = encodeURI(Bonisa.fileContent.join('\n'));
+
+      await sleep(waitTime);
+    
+      return filesFormat;
+    }
+
+    function processContent(textContent, configs){
+      // If there is no content returns an error
+      if (!textContent) {
+        Bonisa.error();
+        return -1;
+      } // Otherwise it will works just fine
+
+      // Otherwise, do it:
+      config(configs);
+
+      // Load the necessary libraries/dependencies
+      loadDependencies();
+
+      // Waits a little time until everything is loaded
+      sleep(waitTime).then(() => {
+        // Calls all necessary functions to make Bonisa works
+        process();
+
+        // Configures the content
+        if(Bonisa.decode)
+          textContent = decodeURI(textContent);
+
+        try{
+          Bonisa.callback ( {content: textContent} );
+        }catch (err){
+          Bonisa.wait.innerHTML += '<strong>Error configuring presentation content!</strong>';
+          console.error(err);
+          return -1;
+        }
+        
+
+        // Waits a little bit more to starts the presentation
+        sleep(waitTime).then( () => {
+          start();
+
+        // Deletes temporary properties
+        delete( Bonisa.configConvert );
+        delete( Bonisa.location );
+        delete( Bonisa.slides );
+        delete( Bonisa.fileContent );
+        });
+      });
+    }
 
   /********** 2nd step = pre-configure everything **********/
     // Processes everything
@@ -582,6 +691,10 @@ var Bonisa = ( function(){
 
       alert("ERROR: No input file was selected to create the presentation. Open DevTools (F12) to more details ;)");
     };
+
+    Bonisa.setFileContent = function(content){
+      Bonisa.fileContent.push(content);
+    }
 
   return Bonisa;
 }());

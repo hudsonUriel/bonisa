@@ -1,2 +1,13 @@
+test*
+
+/content
+
 /test/
 /node_modules
+
+bonisaNode.js
+server.js
+parseHTML.js
+fileReader.js
+
+*.json

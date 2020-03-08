@@ -30,6 +30,19 @@ And more important: it must be easy, quick and free to use.
 
 ## How to?
 
+WEB SERVER STRUCTURE
+		.
+		├── content
+		|
+		├── src                    
+		│   ├── css          		 # Stylesheets and themes
+		│   ├── libs         		 # Libraries
+		│   ├── js         		 	 # JS files
+		│   ├── themes         	 # Presentation themes
+		│   └── bonisa.js        # Bonisa.js script
+		|
+		└── presentation.html
+
 The creation of presentations with Bonisa starts with the inclusion of the library in an HTML file.
 
 ```
