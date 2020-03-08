@@ -1,9 +1,0 @@
-{
-  "textFiles":    [
-    "inform/the/path/to/file01.txt",
-    "inform/the/path/to/file02.txt",
-    "inform/the/path/to/file03.txt"    
-  ],
-  
-  "outputFile":   "your-output-html-file.html"
-}
