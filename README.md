@@ -30,6 +30,7 @@ And more important: it must be easy, quick and free to use.
 
 ## How to?
 
+```
 WEB SERVER STRUCTURE
 		.
 		├── content
@@ -42,6 +43,7 @@ WEB SERVER STRUCTURE
 		│   └── bonisa.js        # Bonisa.js script
 		|
 		└── presentation.html
+```
 
 The creation of presentations with Bonisa starts with the inclusion of the library in an HTML file.
 
