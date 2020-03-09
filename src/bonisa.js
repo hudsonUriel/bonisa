@@ -43,14 +43,7 @@
 
 var Bonisa = ( function(){
   // A simple command to make JS code more secure and with better syntax/logic
-  'use strict';
-
-  // Declares the basic directories used
-    const
-    __SLIDE_DIR   = './',
-    __CONTENT_DIR = __SLIDE_DIR + 'content/',
-    __ENGINE_DIR  = __SLIDE_DIR + 'src/'
-  ;
+  'use strict';   
 
   // Local variables
   var
@@ -62,6 +55,11 @@ var Bonisa = ( function(){
       }
     },
     waitTime = 500; // WAIT TIME (miliseconds)
+
+    // Declares the basic directories used
+    __SLIDE_DIR   = './',
+    __CONTENT_DIR = __SLIDE_DIR + 'content/',
+    __SRC_DIR  = __SLIDE_DIR + 'src/'
   ;
 
   // Sleep function used to wait the dependiencies (and other stuff) opens
@@ -114,6 +112,11 @@ var Bonisa = ( function(){
     function config(configs){
       // Declares the basic properties
       var 
+        // Basic directories used
+        SLIDE_DIR = configs.SLIDE_DIR || __SLIDE_DIR,
+        CONTENT_DIR =  configs.CONTENT_DIR || __CONTENT_DIR,
+        SRC_DIR = configs.SRC_DIR || __SRC_DIR,
+
         // Callback function
         callback = configs.callback || createSlides,
         
@@ -141,6 +144,11 @@ var Bonisa = ( function(){
         // Defines the content of the presentation
         textContent = configs.content || null;
 
+      // Updates the basic directories
+      __SLIDE_DIR = SLIDE_DIR;
+      __CONTENT_DIR = CONTENT_DIR;
+      __SRC_DIR = SRC_DIR;
+      
       // Get the current location
       Bonisa.location = 
         window.location.host + '/' +
@@ -223,7 +231,7 @@ var Bonisa = ( function(){
       for (let dep in Bonisa.dependencies) {
         
         var lib = document.createElement('script');
-        lib.src = __ENGINE_DIR + 'libs/' + Bonisa.dependencies[dep] + '/' + Bonisa.dependencies[dep] + '.min.js';
+        lib.src = __SRC_DIR + 'libs/' + Bonisa.dependencies[dep] + '/' + Bonisa.dependencies[dep] + '.min.js';
         document.head.appendChild(lib);
         
       }
@@ -597,7 +605,7 @@ var Bonisa = ( function(){
         var link = document.createElement('link');
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        link.href = __ENGINE_DIR + 'themes/' + Bonisa.styles[style];
+        link.href = __SRC_DIR + 'themes/' + Bonisa.styles[style];
 
         document.head.appendChild(link);
       }
@@ -606,7 +614,7 @@ var Bonisa = ( function(){
     // Configures the Engine, opening the necessary files
     function configEngine() {
       var
-        baseDir =  __ENGINE_DIR + 'libs/',
+        baseDir =  __SRC_DIR + 'libs/',
         script, link;
 
       // Creates the script and the link
