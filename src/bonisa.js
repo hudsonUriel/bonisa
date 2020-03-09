@@ -79,7 +79,18 @@ var Bonisa = ( function(){
     // Get the file(s) necessary to the presentation
     var
       file = configs.file || null,
-      textContent = configs.content || null;
+      textContent = configs.content || null,
+      
+      // Basic directories used
+      SLIDE_DIR = configs.SLIDE_DIR || null,
+      CONTENT_DIR =  configs.CONTENT_DIR || null,
+      SRC_DIR = configs.SRC_DIR || null
+    ;
+
+    // Updates the basic directories
+    __SLIDE_DIR = SLIDE_DIR || __SLIDE_DIR;
+    __CONTENT_DIR = CONTENT_DIR || __CONTENT_DIR;
+    __SRC_DIR = SRC_DIR || __SRC_DIR;
 
     // Creats the wait page
       Bonisa.createWait();
@@ -114,11 +125,6 @@ var Bonisa = ( function(){
     function config(configs){
       // Declares the basic properties
       var 
-        // Basic directories used
-        SLIDE_DIR = configs.SLIDE_DIR || __SLIDE_DIR,
-        CONTENT_DIR =  configs.CONTENT_DIR || __CONTENT_DIR,
-        SRC_DIR = configs.SRC_DIR || __SRC_DIR,
-
         // Callback function
         callback = configs.callback || createSlides,
         
@@ -145,11 +151,6 @@ var Bonisa = ( function(){
 
         // Defines the content of the presentation
         textContent = configs.content || null;
-
-      // Updates the basic directories
-      __SLIDE_DIR = SLIDE_DIR;
-      __CONTENT_DIR = CONTENT_DIR;
-      __SRC_DIR = SRC_DIR;
       
       // Get the current location
       Bonisa.location = 
