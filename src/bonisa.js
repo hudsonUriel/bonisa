@@ -92,6 +92,13 @@ var Bonisa = ( function(){
     __CONTENT_DIR = CONTENT_DIR || __CONTENT_DIR;
     __SRC_DIR = SRC_DIR || __SRC_DIR;
 
+    // Defines Bonisa paths
+    Bonisa.SLIDE_DIR = __SLIDE_DIR;
+    Bonisa.CONTENT_DIR = __CONTENT_DIR;
+    Bonisa.SRC_DIR = __SRC_DIR;
+    Bonisa.THEMES_DIR = __SRC_DIR + 'themes/';
+    Bonisa.LIBS_DIR = __SRC_DIR + 'libs/',
+
     // Creats the wait page
       Bonisa.createWait();
 
@@ -618,7 +625,7 @@ var Bonisa = ( function(){
         var link = document.createElement('link');
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        link.href = __SRC_DIR + 'themes/' + Bonisa.styles[style];
+        link.href = Bonisa.THEMES_DIR + Bonisa.styles[style];
 
         document.head.appendChild(link);
       }
@@ -627,18 +634,17 @@ var Bonisa = ( function(){
     // Configures the Engine, opening the necessary files
     function configEngine() {
       var
-        baseDir =  __SRC_DIR + 'libs/',
         script, link;
 
       // Creates the script and the link
       script = document.createElement('script');
       link = document.createElement('link');
 
-      script.src = baseDir + Bonisa.engine + '/' + Bonisa.engine + '.min.js';
+      script.src = Bonisa.LIBS_DIR + Bonisa.engine + '/' + Bonisa.engine + '.min.js';
 
       link.rel = 'stylesheet';
       link.type = 'text/css';
-      link.href = baseDir + Bonisa.engine + '/' + Bonisa.engine + '.min.css';
+      link.href = Bonisa.LIBS_DIR + Bonisa.engine + '/' + Bonisa.engine + '.min.css';
 
       // Appends in the end of the document
       document.body.appendChild(script);
