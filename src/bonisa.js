@@ -102,14 +102,20 @@ var Bonisa = ( function(){
       // Process the text content and makes everything else
       sleep(waitTime * file.length).then(() => {
         processContent(Bonisa.fileContent, configs);
-      })
+
+        // Final configurations
+        postConfig();
+        
+      });      
     } else{
       processContent(textContent, configs);
+
+      // Final configurations
+      postConfig();
     }
-    
   }
 
-  /********** 1st step = get the configurations and load first dependecies **********/
+  /********** 1st step = get the configurations and loads the dependencies **********/
     // Configures all Bonisa properties
     function config(configs){
       // Declares the basic properties
@@ -333,16 +339,15 @@ var Bonisa = ( function(){
         try{
           Bonisa.callback ( {content: textContent} );
         }catch (err){
-          Bonisa.wait.innerHTML += '<strong>Error configuring presentation content!</strong>';
+          Bonisa.wait.innerHTML += '<strong>Error configuring presentation content! Try reloads the page (F5)!</strong>';
           console.error(err);
           return -1;
         }
         
-
         // Waits a little bit more to starts the presentation
         sleep(waitTime).then( () => {
           start();
-
+        
         // Deletes temporary properties
         delete( Bonisa.configConvert );
         delete( Bonisa.location );
@@ -458,10 +463,6 @@ var Bonisa = ( function(){
         
         // Configures the current slide
         currentSlide = configSlide(currentSlide);
-        
-        // Creates the slide ID and Classname
-        currentSlide.structure.id += 'bonisaSlide' + ctnt.replace(/\D/g, '');
-        currentSlide.structure.className += 'bonisa';
 
         // Appens the content
         currentSlide.parent.appendChild( currentSlide.structure );
@@ -638,6 +639,18 @@ var Bonisa = ( function(){
       });
     };
 
+    function postConfig(){
+      sleep(waitTime).then(() => {
+        for(let ctnt in Bonisa.content){
+          // Defines the generic slide classname
+          Bonisa.content[ctnt].structure.className += 'bonisa';
+
+          // Defines the slide ID
+          Bonisa.content[ctnt].structure.id += 'bonisaSlide' + ctnt.replace(/\D/g, '');
+        }
+      });
+    }
+
   /********** Bonisa necessary functions **********/
 
     // Configures/sets the convertion library(ies) used
@@ -670,8 +683,11 @@ var Bonisa = ( function(){
     Bonisa.createWait = function () {
       var wait = document.createElement('div');
 
+      wait.id = 'bonisaWait';
+
       wait.innerHTML = Bonisa.wait || "<p>Preparing presentation...</p>";
 
+      wait.style.overflow = 'hidden';
       wait.style.display = 'inline-block';
       wait.style.visibility = 'visible';
       wait.style.width = '100vw';

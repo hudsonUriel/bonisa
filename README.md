@@ -92,12 +92,16 @@ To loads this file and begins the show, it's just necessary to inform Bonisa the
   * All basic functions of reading and processing the files, creating the basic presentation (horizontal presentations) structures and appending the textual content to it are done.
   * Allows the creation of web-based presentations with MARKDOWN and ASCIIDOC text files;
   * Allows the use of Reveal or Impress presentation frameworks;
-  * Do not support additional styles or standard templates of graphic elements
+  * Do not support additional styles or standard templates of graphic elements.
 * `fev-2020` [Version 1.1.alpha](https://github.com/zmdy/bonisa/releases/tag/v1.1-alpha)
-  * Allows the creation of multi-level web-based presentations with MARKDOWN and ASCIIDOC text files;
-  * Allows the use of multiple files
-	* Allows the creation of presentation without text files, by just informing the string content
-	* Allows the creation of CSS themes by using the `.bonisa` class included in every Bonisa slide, and the `Bonisa.rootStructure` element created based on the engine
+  * Allows the creation of multi-level (*a.k.a. vertical slides*) web-based presentations with MARKDOWN and ASCIIDOC text files;
+  * Allows the use of multiple files;
+	* Allows the creation of presentation without text files, by just informing the string content;
+	* Allows the creation of CSS themes by using the `.bonisa` class included in every Bonisa slide, and the `Bonisa.rootStructure` element created based on the engine.
+* `apr-2020` [Version 1.2.alpha](https://github.com/zmdy/bonisa/releases/tag/v1.2-alpha)
+ * Fixing problems related to `.bonisa` class, which didn't returned the first slide;
+ * Allows the modification of Bonisa directories using 
+ 
 
 ***
 
