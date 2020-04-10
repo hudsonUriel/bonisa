@@ -43,14 +43,7 @@
 
 var Bonisa = ( function(){
   // A simple command to make JS code more secure and with better syntax/logic
-  'use strict';
-
-  // Declares the basic directories used
-    const
-    __SLIDE_DIR   = './',
-    __CONTENT_DIR = __SLIDE_DIR + 'content/',
-    __ENGINE_DIR  = __SLIDE_DIR + 'src/'
-  ;
+  'use strict';   
 
   // Local variables
   var
@@ -61,7 +54,14 @@ var Bonisa = ( function(){
         reveal: ['div.reveal>div.slides>section', 'div.reveal>div.slides>section>section']
       }
     },
-    waitTime = 500; // WAIT TIME (miliseconds)
+    
+    // WAIT TIME (miliseconds)
+    waitTime = 500,
+
+    // Declares the basic directories used
+    __SLIDE_DIR   = './',
+    __CONTENT_DIR = __SLIDE_DIR + 'content/',
+    __SRC_DIR  = __SLIDE_DIR + 'src/'
   ;
 
   // Sleep function used to wait the dependiencies (and other stuff) opens
@@ -79,7 +79,25 @@ var Bonisa = ( function(){
     // Get the file(s) necessary to the presentation
     var
       file = configs.file || null,
-      textContent = configs.content || null;
+      textContent = configs.content || null,
+      
+      // Basic directories used
+      SLIDE_DIR = configs.SLIDE_DIR || null,
+      CONTENT_DIR =  configs.CONTENT_DIR || null,
+      SRC_DIR = configs.SRC_DIR || null
+    ;
+
+    // Updates the basic directories
+    __SLIDE_DIR = SLIDE_DIR || __SLIDE_DIR;
+    __CONTENT_DIR = CONTENT_DIR || __CONTENT_DIR;
+    __SRC_DIR = SRC_DIR || __SRC_DIR;
+
+    // Defines Bonisa paths
+    Bonisa.SLIDE_DIR = __SLIDE_DIR;
+    Bonisa.CONTENT_DIR = __CONTENT_DIR;
+    Bonisa.SRC_DIR = __SRC_DIR;
+    Bonisa.THEMES_DIR = __SRC_DIR + 'themes/';
+    Bonisa.LIBS_DIR = __SRC_DIR + 'libs/',
 
     // Creats the wait page
       Bonisa.createWait();
@@ -146,7 +164,7 @@ var Bonisa = ( function(){
 
         // Defines the content of the presentation
         textContent = configs.content || null;
-
+      
       // Get the current location
       Bonisa.location = 
         window.location.host + '/' +
@@ -229,7 +247,7 @@ var Bonisa = ( function(){
       for (let dep in Bonisa.dependencies) {
         
         var lib = document.createElement('script');
-        lib.src = __ENGINE_DIR + 'libs/' + Bonisa.dependencies[dep] + '/' + Bonisa.dependencies[dep] + '.min.js';
+        lib.src = __SRC_DIR + 'libs/' + Bonisa.dependencies[dep] + '/' + Bonisa.dependencies[dep] + '.min.js';
         document.head.appendChild(lib);
         
       }
@@ -244,7 +262,8 @@ var Bonisa = ( function(){
         request = new XMLHttpRequest(),
 
         file = properties.file,
-        callbackFunction = properties.callback
+        callbackFunction = properties.callback,
+        encode = properties.encode
       ;
       
       // Try opens the file using GET method
@@ -264,9 +283,14 @@ var Bonisa = ( function(){
         // If we already have a full response
         if (request.readyState === 4) {
           try{
-              callbackFunction(
-                encodeURI(request.responseText)
-              );
+              if(encode)
+                callbackFunction(
+                  encodeURI(request.responseText)
+                );
+              else
+                callbackFunction(
+                  request.responseText
+                );
           } catch (err){
             console.error(err);
             console.log("No function was passed as argument.");
@@ -292,7 +316,8 @@ var Bonisa = ( function(){
         // Opens the current text file
         openFile({
             file: files[file],
-            callback: Bonisa.setFileContent
+            callback: Bonisa.setFileContent,
+            encode: files.length > 1 ? true: false
           });
 
         // Updates the progress
@@ -333,11 +358,15 @@ var Bonisa = ( function(){
         process();
 
         // Configures the content
-        if(Bonisa.decode)
+        if(Bonisa.decode){
+          //console.log(textContent);
           textContent = decodeURI(textContent);
-
+          Bonisa.wait.innerHTML += "<p>Decoding text(s) contents.</p>";
+        }
+          
         try{
           Bonisa.callback ( {content: textContent} );
+          
         }catch (err){
           Bonisa.wait.innerHTML += '<strong>Error configuring presentation content! Try reloads the page (F5)!</strong>';
           console.error(err);
@@ -500,7 +529,7 @@ var Bonisa = ( function(){
         if(contentTest[slide].replace(Bonisa.delimiters.regexp, "") != ''){
           contentTree['slide' + Bonisa.slides.length] = {
             'content': contentTest[slide],
-            'level': Bonisa.delimiters.text.indexOf(contentTest[lastDelimiter]),
+            'level': Bonisa.delimiters.text.indexOf(contentTest[lastDelimiter]) >=0 ? Bonisa.delimiters.text.indexOf(contentTest[lastDelimiter]) : 0,
             'isParent': false
           };
 
@@ -598,7 +627,7 @@ var Bonisa = ( function(){
         var link = document.createElement('link');
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        link.href = __ENGINE_DIR + 'themes/' + Bonisa.styles[style];
+        link.href = Bonisa.THEMES_DIR + Bonisa.styles[style];
 
         document.head.appendChild(link);
       }
@@ -607,18 +636,17 @@ var Bonisa = ( function(){
     // Configures the Engine, opening the necessary files
     function configEngine() {
       var
-        baseDir =  __ENGINE_DIR + 'libs/',
         script, link;
 
       // Creates the script and the link
       script = document.createElement('script');
       link = document.createElement('link');
 
-      script.src = baseDir + Bonisa.engine + '/' + Bonisa.engine + '.min.js';
+      script.src = Bonisa.LIBS_DIR + Bonisa.engine + '/' + Bonisa.engine + '.min.js';
 
       link.rel = 'stylesheet';
       link.type = 'text/css';
-      link.href = baseDir + Bonisa.engine + '/' + Bonisa.engine + '.min.css';
+      link.href = Bonisa.LIBS_DIR + Bonisa.engine + '/' + Bonisa.engine + '.min.css';
 
       // Appends in the end of the document
       document.body.appendChild(script);
