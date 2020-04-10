@@ -5,6 +5,15 @@
 *
 * Copyright (C) 2020 Hudson Uriel Ferreira, http://gihub.com/zmdy
 *
+*/
+
+/*
+* Bonisa
+* http://github.com/zmdy/bonisa
+* MIT Licensed
+*
+* Copyright (C) 2020 Hudson Uriel Ferreira, http://gihub.com/zmdy
+*
 * -------------------- *
 * 
 * Welcome!
@@ -586,10 +595,6 @@ var Bonisa = ( function(){
             slide.parent
           ].structure.cloneNode(true).innerHTML;
   
-          // Sets the id and class
-          clone.id += 'bonisaSlide' + slide.parent;
-          clone.className += 'bonisa';
-  
           // Cleans its original content
           Bonisa.slides.content[slide.parent].structure.innerHTML = '';
           
@@ -627,7 +632,7 @@ var Bonisa = ( function(){
         var link = document.createElement('link');
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        link.href = Bonisa.THEMES_DIR + Bonisa.styles[style];
+        link.href = Bonisa.THEMES_DIR + Bonisa.styles[style] + '/' + Bonisa.styles[style] + '.css';
 
         document.head.appendChild(link);
       }
@@ -715,11 +720,11 @@ var Bonisa = ( function(){
 
       wait.innerHTML = Bonisa.wait || "<p>Preparing presentation...</p>";
 
-      wait.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
       wait.style.display = 'inline-block';
       wait.style.visibility = 'visible';
-      wait.style.width = '100vw';
-      wait.style.height = '100vh';
+      wait.style.width = '100%';
+      wait.style.height = '100%';
       wait.style.textAlign = 'center';
 
       document.body.appendChild(wait);
