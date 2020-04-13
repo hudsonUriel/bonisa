@@ -100,7 +100,8 @@ To loads this file and begins the show, it's just necessary to inform Bonisa the
 	* Allows the creation of CSS themes by using the `.bonisa` class included in every Bonisa slide, and the `Bonisa.rootStructure` element created based on the engine.
 * `apr-2020` [Version 1.2.alpha](https://github.com/zmdy/bonisa/releases/tag/v1.2-alpha)
  * Fixing problems related to `.bonisa` class, which didn't returned the first slide;
- * Allows the modification of Bonisa directories using 
+ * Allows the modification of Bonisa directories using `SLIDE_DIR`, `CONTENT_DIR` and `SRC_DIR`;
+ * 
  
 
 ***

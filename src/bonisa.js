@@ -156,10 +156,10 @@ var Bonisa = ( function(){
         // Decode URI content
         decode = true,
 
-        // Delimter(s) used to spilt textual content
+        // Delimiter(s) used to spilt textual content
         delimiters = configs.delimiters || ['---', '___', '***'],
 
-        // Necessary dependecies
+        // Necessary dependencies
         dependencies = config.dependencies || [],
 
         // Engine (tool/library) used to make the presentations
@@ -252,7 +252,7 @@ var Bonisa = ( function(){
 
       Bonisa.dependencies = dependencies;
       
-      // Opens each dependecie
+      // Opens each dependencies
       for (let dep in Bonisa.dependencies) {
         
         var lib = document.createElement('script');
@@ -401,7 +401,7 @@ var Bonisa = ( function(){
       // Update the wait page
       Bonisa.wait.innerHTML += "<p>Creating empty structure...</p>";
 
-      // Configures the convertion libraries
+      // Configures the conversion libraries
       Bonisa.configConvert();
 
       // Creates the framework structure
@@ -502,7 +502,7 @@ var Bonisa = ( function(){
         // Configures the current slide
         currentSlide = configSlide(currentSlide);
 
-        // Appens the content
+        // Appends the content
         currentSlide.parent.appendChild( currentSlide.structure );
       }
     }
@@ -629,12 +629,42 @@ var Bonisa = ( function(){
     Bonisa.stylize = function() {
       // Opens all styles
       for (let style in Bonisa.styles) {
-        var link = document.createElement('link');
+        var
+          link = document.createElement('link'),
+          script = document.createElement('script')
+        ;
+
+        // Gets the stylesheet
         link.rel = 'stylesheet';
         link.type = 'text/css';
         link.href = Bonisa.THEMES_DIR + Bonisa.styles[style] + '/' + Bonisa.styles[style] + '.css';
+        
+        // Gets the (optional) script
+        script.src = Bonisa.THEMES_DIR + Bonisa.styles[style] + '/' + Bonisa.styles[style] + '.js';
 
+        // Appends it
         document.head.appendChild(link);
+
+        // Try opens the scripts
+        try{
+          document.head.appendChild(script);
+        } catch(err){
+          console.warn('The requested Bonisa theme "' + Bonisa.styles[style] + '" doesn\'t have a related script file - "' + Bonisa.styles[style] + '.js"');
+        }
+
+        // Try opens the script function
+        try{
+          
+
+          sleep(waitTime).then(() => {
+            var fct = 'theme_' + Bonisa.styles[style];
+            fct();
+          });  
+          
+          
+        } catch(err){
+          console.warn('The requested Bonisa theme "' + Bonisa.styles[style] + '" doesn\'t have a related script function: theme_' + Bonisa.styles[style] + '() not found!');
+        }
       }
     };
 
@@ -686,7 +716,7 @@ var Bonisa = ( function(){
 
   /********** Bonisa necessary functions **********/
 
-    // Configures/sets the convertion library(ies) used
+    // Configures/sets the conversion library(ies) used
     Bonisa.configConvert = function(){
       // Sets Bonisa convert function for each file
       for(let file in Bonisa.fileFormat){
