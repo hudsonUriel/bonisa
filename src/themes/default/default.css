@@ -1,0 +1,141 @@
+/** Defines the current theme font-families **/
+@font-face{
+  src: url('../../../media/fonts/raleway/Raleway-Black.woff');
+  font-family: 'Raleway Black';
+}
+
+@font-face{
+  src: url('../../../media/fonts/raleway/Raleway-Bold.woff');
+  font-family: 'Raleway Bold';
+}
+
+@font-face{
+  src: url('../../../media/fonts/roboto/Roboto-Regular.woff');
+  font-family: 'Roboto';
+}
+
+@font-face{
+  src: url('../../../media/fonts/icofont/fonts/icofont.woff');
+  font-family: 'IcoFont';
+}
+
+/** Defines the globals **/
+:root{
+  --font-regular:   1.25em;
+  --font-small:     1.00em;
+  --font-smaller:   0.75em;
+  --font-medium:    1.50em;
+  --font-big:       2.00em;
+  --font-bigger:    2.50em;
+  --font-title:     3.00em;
+}
+
+/** Defines the theme **/
+*{
+  font-family: 'Roboto';
+}
+
+p, a, em, i, blockquote, cite,
+li, table{
+  font-size: var(--font-regular);
+}
+
+h1, h2, h3, h4, h5, h6{
+  font-family: 'Raleway Bold';
+  font-size: var(--font-big);
+}
+
+b, strong,
+.controls-arrow{
+  color: #d33;
+}
+
+table{
+  table-layout: fixed;
+}
+
+.progress span{
+  color: #111;
+}
+
+/** Configures all .bonisa content as absolute/relative positions **/
+main .bonisa,
+section .bonisa,
+div .bonisa{
+  width: 100vw;
+  height: 100vh;
+}
+
+#bonisaRoot{
+  background-image: url('./white-background.jpg');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.bonisa h1{
+  color: #222;
+  border-bottom: 1vw solid #d33;
+  font-size: 3em;
+}
+
+/** Cover Page **/
+#bonisaSlide0 h1{
+  font-family: 'Raleway Black';
+  font-size: 4em;
+  text-transform: uppercase;
+  text-align: center;
+  border-bottom: 1vw solid #d33;
+
+  margin-top: 25vh;
+  padding-bottom: 1%;
+
+  color: #111;
+}
+
+#bonisaSlide0 h2{
+  font-size: 2.5em;
+  text-align: center;
+  padding: 0;
+  margin-top: -4%;
+  color: #d33;
+}
+
+/** Lists **/
+.bonisa li{
+  list-style-type: none;
+  text-align: justify;
+  padding: .75%;
+}
+
+.bonisa li::before{
+  content: '\ea6d';
+  padding-right: 1%;
+  font-family: 'IcoFont';
+  font-size: var(--font-medium);
+  color: #d33 !important;
+}
+
+/** Tables **/
+.bonisa table{
+  width: 75vw;
+  margin-left: 12.5vw;
+  outline: none;
+  border: none;
+  border-spacing: 0;
+}
+
+.bonisa table th{
+  color: #fff;
+  font-weight: bolder;
+  background-color: #dd3333dd;
+  font-weight: bolder;
+}
+
+table td:nth-child(odd){
+  border-right: solid 0.05vw #d33; 
+}
+
+.bonisa table td{
+  border-bottom: solid 0.05vw #d33;
+  padding: 0.5%;
+}

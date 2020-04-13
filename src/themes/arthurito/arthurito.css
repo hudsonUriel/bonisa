@@ -1,0 +1,308 @@
+/** Defines the current theme font-families **/
+  @font-face{
+    src: url('../../../media/fonts/raleway/Raleway-Black.woff');
+    font-family: 'Raleway Black';
+  }
+
+
+  @font-face{
+    src: url('../../../media/fonts/eb-garamond/EBGaramondSC08-Regular.woff');
+    font-family: 'EB Garamond SC 08';
+  }
+
+  @font-face{
+    src: url('../../../media/fonts/eb-garamond/EBGaramond12-Regular.woff');
+    font-family: 'EB Garamond';
+  }
+
+/** Defines the globals **/
+  :root{
+    --font-regular:   1.25em;
+    --font-small:     1.00em;
+    --font-smaller:   0.75em;
+    --font-medium:    1.50em;
+    --font-big:       2.00em;
+    --font-bigger:    2.50em;
+    --font-title:     3.00em;
+
+    --color-black:       #111111;
+    --color-brown:       #3B3322;
+    --color-yellow:      #eec600;
+    --color-pale-yellow: #f0d040;
+  }
+
+  main .bonisa,
+  section .bonisa,
+  div .bonisa{
+    width: 100vw;
+    height: 100vh;
+  }
+
+  #bonisaRoot{
+    background-image: url('./white-background.jpg');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+
+/** Defines the theme **/
+  *{
+    font-family: 'EB Garamond';
+  }
+
+  p, a, em, i, blockquote, cite,
+  li, table, figcaption{
+    font-size: var(--font-medium);
+    text-align: justify;
+    color: var(--color-black);
+  }
+
+  h1, h2, h3, h4, h5, h6{
+    font-family: 'Raleway Black';
+    font-size: var(--font-big);
+    text-transform: uppercase;
+    color: var(--color-brown);
+  }
+
+  * > em,
+  * > a{
+    font-size: var(--font-small)!important;
+  }
+
+  a{
+    font-size: var(--font-regular)!important;
+    text-decoration-color: var(--color-pale-yellow);
+  }
+  
+  em, i{
+    font-size: var(--font-regular)!important;
+    color: var(--color-yellow);
+  }
+
+  code{
+    padding: 0.25%;
+    background-color: var(--color-pale-yellow);
+    color: var(--color-black);
+  }
+
+  b, strong,
+  .controls-arrow{
+    color: var(--color-brown);
+  }
+
+  table{
+    table-layout: fixed;
+  }
+
+  .progress span{
+    color: var(--color-black);
+  }
+
+  img{
+    height: 50vh;
+    margin-right: 1.5%;
+    display: inline-block;
+    float: left;
+  }
+
+
+/** Defines the Cover **/
+  #bonisaSlide0 h1{
+    font-size: 3.5em;
+    margin-top: 25%!important;
+    border: none!important;
+    padding: 0%!important;
+  }
+
+  #bonisaSlide0 h2{
+    padding: 1%;
+    width: 73%;
+    margin-top: -4%!important;
+    margin-left: 12.5%;
+
+    font-family:  'EB Garamond SC 08';
+    border-top: solid 0.3em var(--color-pale-yellow);
+    border-bottom: solid 0.3em var(--color-pale-yellow);
+    }
+
+/** Defines the titles **/
+  .bonisa h2,
+  .bonisa h3,
+  .bonisa h4,
+  .bonisa h5,
+  .bonisa h6{
+    font-family:  'EB Garamond SC 08';
+    width: 73%;
+    margin-top: 25%!important;
+    margin-left: 12.5%;
+    padding: 1%;
+  }
+
+  .bonisa h1{
+    padding: 0.5%;
+    font-size: var(--font-bigger);
+    border-bottom: solid 0.15em var(--color-pale-yellow);
+  }
+
+  .bonisa h2{
+    border-top: solid 0.3em var(--color-pale-yellow);
+    border-bottom: solid 0.3em var(--color-pale-yellow);
+  }
+
+  .bonisa h3{
+    width: 80%;
+    height: 7vh;
+    padding-top: 3.5%;
+
+    border: solid 0.2em var(--color-pale-yellow);
+  } .bonisa h3::after{
+    content: '';
+    display: block;
+    border: inherit;
+    width: 80%;
+    height: 20vh;
+    margin-top: -11.5%!important; 
+    margin-left: 10%;
+  } 
+
+  .bonisa h5{
+    color: var(--color-black)!important;
+  }
+
+  .bonisa h6{
+    color: var(--color-yellow)!important;
+  }
+
+/** Defines the quotes **/
+  blockquote,
+  blockquote p,
+  blockquote p>*{
+    font-size: var(--font-regular)!important;
+    color: var(--color-black);
+  }
+
+  blockquote{
+    border-left: solid 1vw var(--color-pale-yellow);
+    padding: 0.25% 1%;
+    margin-left: 0%;
+  }
+
+/** Defines the images **/
+  .bonisa img{
+    height: 67vh;
+    max-width: 50vw;
+    width: auto;
+    
+    margin-right: 1%;
+    margin-top: -1.5vh;
+
+    float: left;
+    
+    border: solid 1vw transparent;
+    border-image: url(./yellow-border.png) 15 stretch;
+  }
+
+  .bonisa img.center{
+    display: block;
+
+    width: 33vw;
+    height: auto;
+    
+    margin-left: 33.5vw;
+  }
+
+  .bonisa img.img50{
+    width: 50vw;
+    height: auto;
+  }
+
+  .bonisa img.img50center{
+    width: 50vw;
+    height: auto;
+    margin-left: 25vw;
+  }
+
+  .bonisa img.img25{
+    width: 25vw;
+    height: auto;
+  }
+
+  .bonisa img.img25center{
+    width: 25vw;
+    height: auto;
+    margin-left: 37.5vw;
+  }
+
+  .bonisa figure{
+    position: absolute;
+  }
+
+  .bonisa figure figcaption{
+    width: 50%;
+    height: auto;
+
+    margin-left: 25%;
+    padding: 1%;
+    background-color: var(--color-yellow);
+    text-align: center;
+  }
+
+  .bonisa figure img{
+    border: solid 0.75vw var(--color-yellow);
+    position: relative;
+  }
+
+  .bonisa figure ~ *{
+    margin-left: 50vw;
+    position: relative;
+  }
+
+  .bonisa figure.center{
+    position: absolute;
+    width: 50vw;
+    max-height: 50vh!important;
+    margin-left: 25vw;
+  }
+
+  .bonisa figure.center figcaption{
+    width: 50%;
+    height: auto;
+    padding: 1%;
+    
+    margin-left: 12.5%;
+  }
+
+  .bonisa figure.center ~ *{
+    width: 75vw;
+    
+    margin-top: 76vh;
+    margin-left: 12.5vw;
+    
+
+    text-align: center;
+  }
+
+  /** Defines the tables **/
+  .bonisa table{
+    width: 75vw;
+    margin-left: 12.5vw;
+    outline: none;
+    border: none;
+    border-spacing: 0;
+  }
+  
+  .bonisa table th{
+    color: var(--color-black);
+    font-weight: bolder;
+    background-color: var(--color-pale-yellow);
+    padding: 0.5%;
+  }
+  
+  table td:nth-child(odd){
+    border-right: solid 0.05vw var(--color-black); 
+  }
+  
+  .bonisa table td{
+    border-bottom: solid 0.05vw var(--color-black);
+    padding: 0.5%;
+    color: var(--color-brown);
+  }
