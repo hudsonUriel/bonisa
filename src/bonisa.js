@@ -172,7 +172,10 @@ var Bonisa = ( function(){
         style = configs.themes || configs.styles || [],
 
         // Defines the content of the presentation
-        textContent = configs.content || null;
+        textContent = configs.content || null,
+
+        // Defines the content of the presentation
+        title = configs.title || 'Bonisa Presentation';
       
       // Get the current location
       Bonisa.location = 
@@ -181,6 +184,10 @@ var Bonisa = ( function(){
 
       // Defines the textContent
       Bonisa.textContent = textContent;
+
+      // Defines the page title
+      Bonisa.title = title;
+      document.title = Bonisa.title;
 
       // Defines the decode mode
       Bonisa.decode = decode;
