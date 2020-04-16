@@ -5,15 +5,6 @@
 *
 * Copyright (C) 2020 Hudson Uriel Ferreira, http://gihub.com/zmdy
 *
-*/
-
-/*
-* Bonisa
-* http://github.com/zmdy/bonisa
-* MIT Licensed
-*
-* Copyright (C) 2020 Hudson Uriel Ferreira, http://gihub.com/zmdy
-*
 * -------------------- *
 * 
 * Welcome!
@@ -30,18 +21,7 @@
 
 /** 
 * When everything is ok, BONISA is acessible through
-* the navigator itself by the object Bonisa.
-*
-* If you opens the console, present in the dev-tools of your browser,
-* and type Bonisa you will see a object with some properties.
-* Soon, we will explore all of them.
-* 
-* The start point of everything is down here.
-*/
-
-/** 
-* When everything is ok, BONISA is acessible through
-* the navigator itself by the object Bonisa.
+* the browser itself by the object Bonisa.
 *
 * If you opens the console, present in the dev-tools of your browser,
 * and type Bonisa you will see a object with some properties.
@@ -661,11 +641,8 @@ var Bonisa = ( function(){
 
         // Try opens the script function
         try{
-          
-
           sleep(waitTime).then(() => {
-            var fct = 'theme_' + Bonisa.styles[style];
-            fct();
+            window[Bonisa.styles[style]]();
           });  
           
           
